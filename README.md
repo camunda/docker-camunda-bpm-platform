@@ -19,19 +19,22 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 
 ## Supported Tags/Releases
 
-- `tomcat-7.2.0`, `latest` ([Dockerfile][tomcat-7.2.0])
+- `tomcat-7.2.0`, `tomcat-latest`, `latest` ([Dockerfile][tomcat-7.2.0])
+- `jboss-7.2.0`, `jboss-latest` ([Dockerfile][jboss-7.2.0])
 
 ## Java Version
 
-All images have Oracle JDK 8 installed, which allows you to use the latest Java
-features in your own applications.
+All images have Oracle JDK installed. The tomcat and wildfly image use
+JDK 8 and the jboss image uses JDK 7.
+
 
 ## Environment variables
 
 The used database can be configured by providing the following environment
 variables:
 
-- `DB_DRIVER` the database driver class name
+- `DB_DRIVER` the database driver class name (**Note**: use for jboss and wildfly only
+  the database identifier `h2`, `mysql` or `postgresql`)
 - `DB_URL` the database jdbc url
 - `DB_USERNAME` the database username
 - `DB_PASSWORD` the database password
@@ -150,6 +153,7 @@ Apache License, Version 2.0
 
 
 [tomcat-7.2.0]: docker-camunda-bpm-platform/blob/master/Dockerfile
+[jboss-7.2.0]: docker-camunda-bpm-platform/blob/jboss-7.2.0/Dockerfile
 [Sebastian Menski]: https://github.com/menski
 [twitter demo]: https://github.com/camunda/camunda-consulting/tree/master/showcases/twitter
 [docker registry]: https://registry.hub.docker.com/
