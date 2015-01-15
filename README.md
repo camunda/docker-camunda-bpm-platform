@@ -153,9 +153,9 @@ ADD my.war /camunda/webapps/my.war
 Apache License, Version 2.0
 
 
-[tomcat-7.2.0]: docker-camunda-bpm-platform/blob/master/Dockerfile
-[jboss-7.2.0]: docker-camunda-bpm-platform/blob/jboss-7.2.0/Dockerfile
-[wildfly-7.2.0]: docker-camunda-bpm-platform/blob/wildfly-7.2.0/Dockerfile
+[tomcat-7.2.0]: Dockerfile
+[jboss-7.2.0]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.2.0/Dockerfile
+[wildfly-7.2.0]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.2.0/Dockerfile
 [Sebastian Menski]: https://github.com/menski
 [twitter demo]: https://github.com/camunda/camunda-consulting/tree/master/showcases/twitter
 [docker registry]: https://registry.hub.docker.com/
