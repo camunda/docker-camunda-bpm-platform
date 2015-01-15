@@ -3,8 +3,8 @@
 This camunda BPM community project provides docker images of the latest camunda
 BPM platform releases.  The images can be used to demonstrate and test the
 camunda BPM platform or can be extended with own process applications. It is
-planed to provide images for every upcoming release, which includes alpha
-releases.
+planed to provide images on the official [docker registry][] for every upcoming
+release, which includes alpha releases.
 
 
 ## Get started
@@ -21,6 +21,7 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 
 - `tomcat-7.2.0`, `tomcat-latest`, `latest` ([Dockerfile][tomcat-7.2.0])
 - `jboss-7.2.0`, `jboss-latest` ([Dockerfile][jboss-7.2.0])
+- `wildfly-7.2.0`, `wildfly-latest` ([Dockerfile][wildfly-7.2.0])
 
 ## Java Version
 
@@ -154,6 +155,7 @@ Apache License, Version 2.0
 
 [tomcat-7.2.0]: docker-camunda-bpm-platform/blob/master/Dockerfile
 [jboss-7.2.0]: docker-camunda-bpm-platform/blob/jboss-7.2.0/Dockerfile
+[wildfly-7.2.0]: docker-camunda-bpm-platform/blob/wildfly-7.2.0/Dockerfile
 [Sebastian Menski]: https://github.com/menski
 [twitter demo]: https://github.com/camunda/camunda-consulting/tree/master/showcases/twitter
 [docker registry]: https://registry.hub.docker.com/
