@@ -158,4 +158,4 @@ Apache License, Version 2.0
 [wildfly-7.2.0]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.2.0/Dockerfile
 [Sebastian Menski]: https://github.com/menski
 [twitter demo]: https://github.com/camunda/camunda-consulting/tree/master/showcases/twitter
-[docker registry]: https://registry.hub.docker.com/
+[docker registry]: https://registry.hub.docker.com/repos/camunda/
