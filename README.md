@@ -6,6 +6,11 @@ camunda BPM platform or can be extended with own process applications. It is
 planed to provide images on the official [docker registry][] for every upcoming
 release, which includes alpha releases.
 
+## Status ![Status][status]
+
+| Version  | Tomcat                      | JBoss                     | WildFly                       |
+| -------- | --------------------------- | ------------------------- | ----------------------------- |
+| 7.2.0    | ![Tomcat 7.2.0][tomcat-720] | ![JBoss 7.2.0][jboss-720] | ![WildFly 7.2.0][wildfly-720] |
 
 ## Get started
 
@@ -159,3 +164,8 @@ Apache License, Version 2.0
 [Sebastian Menski]: https://github.com/menski
 [twitter demo]: https://github.com/camunda/camunda-consulting/tree/master/showcases/twitter
 [docker registry]: https://registry.hub.docker.com/u/camunda/camunda-bpm-platform/
+
+[status]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform
+[tomcat-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/master
+[jboss-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.2.0
+[wildfly-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.2.0
