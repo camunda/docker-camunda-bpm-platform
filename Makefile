@@ -12,7 +12,7 @@ ADDITIONAL_TAGS=$(wordlist 2, $(words $(TAGS)), $(TAGS))
 # the image name which will be build
 IMAGE=$(IMAGE_NAME):$(FIRST_TAG)
 # options to use for running the image, can be extended by FLAGS variable
-OPTS=--name $(NAME) $(FLAGS)
+OPTS=--name $(NAME) -t $(FLAGS)
 # the docker command which can be configured by the DOCKER_OPTS variable
 DOCKER=docker $(DOCKER_OPTS)
 
@@ -59,7 +59,7 @@ stage: rmf
 
 # start interactive container with bash
 bash:
-	$(DOCKER) run --rm -it $(OPTS) $(IMAGE) /bin/bash
+	$(DOCKER) run --rm -i $(OPTS) $(IMAGE) /bin/bash
 
 # remove container by name
 rmf:
