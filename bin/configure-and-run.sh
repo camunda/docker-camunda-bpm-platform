@@ -5,16 +5,17 @@ DB_URL=${DB_URL:-jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_F
 DB_USERNAME=${DB_USERNAME:-sa}
 DB_PASSWORD=${DB_PASSWORD:-sa}
 
-XML_DRIVER="/Server/GlobalNamingResources/Resource[@name='jdbc/ProcessEngine']/@driverClassName"
-XML_URL="/Server/GlobalNamingResources/Resource[@name='jdbc/ProcessEngine']/@url"
-XML_USERNAME="/Server/GlobalNamingResources/Resource[@name='jdbc/ProcessEngine']/@username"
-XML_PASSWORD="/Server/GlobalNamingResources/Resource[@name='jdbc/ProcessEngine']/@password"
+XML_DRIVER="//Resource[@name='jdbc/ProcessEngine']/@driverClassName"
+XML_URL="//Resource[@name='jdbc/ProcessEngine']/@url"
+XML_USERNAME="//Resource[@name='jdbc/ProcessEngine']/@username"
+XML_PASSWORD="//Resource[@name='jdbc/ProcessEngine']/@password"
 
-XML_ED="xmlstarlet ed -S -L -u"
-
-${XML_ED} "${XML_DRIVER}" -v "${DB_DRIVER}" ${SERVER_CONFIG}
-${XML_ED} "${XML_URL}" -v "${DB_URL}" ${SERVER_CONFIG}
-${XML_ED} "${XML_USERNAME}" -v "${DB_USERNAME}" ${SERVER_CONFIG}
-${XML_ED} "${XML_PASSWORD}" -v "${DB_PASSWORD}" ${SERVER_CONFIG}
+echo "Configure database"
+xmlstarlet ed -L \
+  -u "${XML_DRIVER}" -v "${DB_DRIVER}" \
+  -u "${XML_URL}" -v "${DB_URL}" \
+  -u "${XML_USERNAME}" -v "${DB_USERNAME}" \
+  -u "${XML_PASSWORD}" -v "${DB_PASSWORD}" \
+  ${SERVER_CONFIG}
 
 exec /camunda/bin/catalina.sh run
