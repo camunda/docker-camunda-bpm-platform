@@ -44,6 +44,7 @@ variables:
 - `DB_URL` the database jdbc url
 - `DB_USERNAME` the database username
 - `DB_PASSWORD` the database password
+- `SKIP_DB_CONFIG` skips the database configuration
 
 For example to use a postgresql docker image as database you can start the
 platform as follows:
@@ -79,6 +80,15 @@ docker run -d --name camunda -p 8080:8080 --link postgresql:db \
 
 The docker image already contains drivers for `h2`, `mysql` and `postgresql`.
 If you want to use other databases you have to add the driver to the container.
+
+To skip the configuration of the database by the docker container and use our
+own configuration set the environment variable `SKIP_DB_CONFIG` to a non
+empty value:
+
+```
+docker run -d --name camunda -p 8080:8080 -e SKIP_DB_CONFIG=true \
+           camunda/camunda-bpm-platform:latest
+```
 
 
 ## Volumes

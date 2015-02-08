@@ -10,12 +10,14 @@ XML_URL="//Resource[@name='jdbc/ProcessEngine']/@url"
 XML_USERNAME="//Resource[@name='jdbc/ProcessEngine']/@username"
 XML_PASSWORD="//Resource[@name='jdbc/ProcessEngine']/@password"
 
-echo "Configure database"
-xmlstarlet ed -L \
-  -u "${XML_DRIVER}" -v "${DB_DRIVER}" \
-  -u "${XML_URL}" -v "${DB_URL}" \
-  -u "${XML_USERNAME}" -v "${DB_USERNAME}" \
-  -u "${XML_PASSWORD}" -v "${DB_PASSWORD}" \
-  ${SERVER_CONFIG}
+if [ -z "$SKIP_DB_CONFIG" ]; then
+  echo "Configure database"
+  xmlstarlet ed -L \
+    -u "${XML_DRIVER}" -v "${DB_DRIVER}" \
+    -u "${XML_URL}" -v "${DB_URL}" \
+    -u "${XML_USERNAME}" -v "${DB_USERNAME}" \
+    -u "${XML_PASSWORD}" -v "${DB_PASSWORD}" \
+    ${SERVER_CONFIG}
+fi
 
 exec /camunda/bin/catalina.sh run
