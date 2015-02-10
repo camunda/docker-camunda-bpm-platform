@@ -5,10 +5,11 @@ DB_URL=${DB_URL:-jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_F
 DB_USERNAME=${DB_USERNAME:-sa}
 DB_PASSWORD=${DB_PASSWORD:-sa}
 
-XML_DRIVER="//Resource[@name='jdbc/ProcessEngine']/@driverClassName"
-XML_URL="//Resource[@name='jdbc/ProcessEngine']/@url"
-XML_USERNAME="//Resource[@name='jdbc/ProcessEngine']/@username"
-XML_PASSWORD="//Resource[@name='jdbc/ProcessEngine']/@password"
+XML_JDBC="//Resource[@name='jdbc/ProcessEngine']"
+XML_DRIVER="${XML_JDBC}/@driverClassName"
+XML_URL="${XML_JDBC}/@url"
+XML_USERNAME="${XML_JDBC}/@username"
+XML_PASSWORD="${XML_JDBC}/@password"
 
 if [ -z "$SKIP_DB_CONFIG" ]; then
   echo "Configure database"
