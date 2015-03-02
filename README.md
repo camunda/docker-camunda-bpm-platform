@@ -8,9 +8,10 @@ release, which includes alpha releases.
 
 ## Status ![Status][status]
 
-| Version  | Tomcat                      | JBoss                     | WildFly                       |
-| -------- | --------------------------- | ------------------------- | ----------------------------- |
-| 7.2.0    | ![Tomcat 7.2.0][tomcat-720] | ![JBoss 7.2.0][jboss-720] | ![WildFly 7.2.0][wildfly-720] |
+| Version      | Tomcat                                           | JBoss                                          | WildFly                                            |
+| ------------ | ------------------------------------------------ | ---------------------------------------------- | -------------------------------------------------- |
+| 7.2.0        | ![Tomcat 7.2.0][status-tomcat-720]               | ![JBoss 7.2.0][status-jboss-720]               | ![WildFly 7.2.0][status-wildfly-720]               |
+| 7.3.0-alpha1 | ![Tomcat 7.3.0-alpha1][status-tomcat-730-alpha1] | ![JBoss 7.3.0-alpha1][status-jboss-730-alpha1] | ![WildFly 7.3.0-alpha1][status-wildfly-730-alpha1] |
 
 ## Get started
 
@@ -24,9 +25,12 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 
 ## Supported Tags/Releases
 
-- `tomcat-7.2.0`, `tomcat-latest`, `latest` ([Dockerfile][tomcat-7.2.0])
-- `jboss-7.2.0`, `jboss-latest` ([Dockerfile][jboss-7.2.0])
-- `wildfly-7.2.0`, `wildfly-latest` ([Dockerfile][wildfly-7.2.0])
+- `tomcat-7.3.0-alpha1`, `tomcat-latest`, `latest` ([Dockerfile][dockerfile-tomcat-730-alpha1])
+- `tomcat-7.2.0` ([Dockerfile][dockerfile-tomcat-720])
+- `jboss-7.3.0-alpha1`, `jboss-latest` ([Dockerfile][dockerfile-jboss-730-alpha1])
+- `jboss-7.2.0` ([Dockerfile][dockerfile-jboss-720])
+- `wildfly-7.3.0-alpha1`, `wildfly-latest` ([Dockerfile][dockerfile-wildfly-730-alpha1])
+- `wildfly-7.2.0` ([Dockerfile][dockerfile-wildfly-720])
 
 ## Java Version
 
@@ -168,14 +172,21 @@ ADD my.war /camunda/webapps/my.war
 Apache License, Version 2.0
 
 
-[tomcat-7.2.0]: https://github.com/camunda/docker-camunda-bpm-platform/blob/master/Dockerfile
-[jboss-7.2.0]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.2.0/Dockerfile
-[wildfly-7.2.0]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.2.0/Dockerfile
 [Sebastian Menski]: https://github.com/menski
 [twitter demo]: https://github.com/camunda/camunda-consulting/tree/master/showcases/twitter
 [docker registry]: https://registry.hub.docker.com/u/camunda/camunda-bpm-platform/
 
+[dockerfile-tomcat-720]: https://github.com/camunda/docker-camunda-bpm-platform/blob/tomcat-7.2.0/Dockerfile
+[dockerfile-jboss-720]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.2.0/Dockerfile
+[dockerfile-wildfly-720]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.2.0/Dockerfile
+[dockerfile-tomcat-730-alpha1]: https://github.com/camunda/docker-camunda-bpm-platform/blob/master/Dockerfile
+[dockerfile-jboss-730-alpha1]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.3.0-alpha1/Dockerfile
+[dockerfile-wildfly-730-alpha1]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.3.0-alpha1/Dockerfile
+
 [status]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform
-[tomcat-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/master
-[jboss-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.2.0
-[wildfly-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.2.0
+[status-tomcat-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.2.0
+[status-jboss-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.2.0
+[status-wildfly-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.2.0
+[status-tomcat-730-alpha1]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/master
+[status-jboss-730-alpha1]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.3.0-alpha1
+[status-wildfly-730-alpha1]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.3.0-alpha1
