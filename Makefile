@@ -36,6 +36,11 @@ pull:
 pull-from:
 	$(DOCKER) pull $(FROM)
 
+test:
+	cd test/h2 && bash ../test.sh
+	cd test/postgresql && bash ../test.sh
+	cd test/mysql && bash ../test.sh
+
 # push container to registry
 push:
 	@for tag in $(TAGS); do \
@@ -43,7 +48,7 @@ push:
 	done
 
 # pull parent image, pull image, build image and push to repository
-publish: pull-from pull build push
+publish: pull-from pull build test push
 
 # run container
 run:
@@ -71,4 +76,4 @@ rmi:
 		$(DOCKER) rmi $(IMAGE_NAME):$$tag; \
 	done
 
-.PHONY: build pull pull-from push publish run daemon stage bash rmf rmi
+.PHONY: build pull pull-from test push publish run daemon stage bash rmf rmi
