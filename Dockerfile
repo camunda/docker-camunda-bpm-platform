@@ -5,7 +5,7 @@ ENV DISTRO tomcat
 ENV SERVER apache-tomcat-7.0.50
 ENV LIB_DIR /camunda/lib/
 ENV SERVER_CONFIG /camunda/conf/server.xml
-ENV NEXUS https://app.camunda.com/nexus/content/groups/public/
+ENV NEXUS https://app.camunda.com/nexus/content/groups/public
 
 # install oracle java
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" > /etc/apt/sources.list.d/oracle-jdk.list && \
@@ -27,7 +27,7 @@ RUN tar xzf /tmp/camunda-bpm-platform.tar.gz -C /camunda/ server/${SERVER} --str
 ADD bin/* /usr/local/bin/
 
 # add database drivers
-RUN /usr/local/bin/download-database-drivers.sh https://raw.githubusercontent.com/camunda/camunda-bpm-platform/${VERSION}/parent/pom.xml
+RUN /usr/local/bin/download-database-drivers.sh ${NEXUS}/org/camunda/bpm/camunda-parent/${VERSION}/camunda-parent-${VERSION}.pom
 
 EXPOSE 8080
 
