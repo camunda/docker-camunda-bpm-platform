@@ -28,11 +28,11 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 
 ## Supported Tags/Releases
 
-- `tomcat-7.3.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
-- `tomcat-7.3.0-alpha2`, `tomcat-latest`, `latest` ([Dockerfile][dockerfile-tomcat-730-alpha2])
-- `tomcat-7.3.0-alpha1` ([Dockerfile][dockerfile-tomcat-730-alpha1])
-- `tomcat-7.2.0` ([Dockerfile][dockerfile-tomcat-720])
-- `tomcat-7.1.0` ([Dockerfile][dockerfile-tomcat-710])
+- `tomcat-7.3.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `7.3.0-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
+- `tomcat-7.3.0-alpha2`, `tomcat-latest`, `7.3.0-alpha2`, `latest` ([Dockerfile][dockerfile-tomcat-730-alpha2])
+- `tomcat-7.3.0-alpha1`, `7.3.0-alpha1` ([Dockerfile][dockerfile-tomcat-730-alpha1])
+- `tomcat-7.2.0`, `7.2.0` ([Dockerfile][dockerfile-tomcat-720])
+- `tomcat-7.1.0`, `7.1.0` ([Dockerfile][dockerfile-tomcat-710])
 - `jboss-7.3.0-SNAPSHOT`, `jboss-SNAPSHOT` ([Dockerfile][dockerfile-jboss-snapshot])
 - `jboss-7.3.0-alpha2`, `jboss-latest` ([Dockerfile][dockerfile-jboss-730-alpha2])
 - `jboss-7.3.0-alpha1` ([Dockerfile][dockerfile-jboss-730-alpha1])
