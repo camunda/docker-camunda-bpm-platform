@@ -18,7 +18,7 @@ function _exit {
 
 function start_container {
   docker-compose up -d db
-  sleep $WAIT
+  sleep 10
   docker-compose up -d --no-recreate camunda || _exit 1 "Unable to start compose"
 }
 
