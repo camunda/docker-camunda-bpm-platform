@@ -10,6 +10,7 @@ release, which includes alpha releases.
 
 | Version      | Tomcat                                           | JBoss                                          | WildFly                                            |
 | ------------ | ------------------------------------------------ | ---------------------------------------------- | -------------------------------------------------- |
+| SNAPSHOT     | ![Tomcat SNAPSHOT][status-tomcat-snapshot]       | ![JBoss SNAPSHOT][status-jboss-snapshot]       | ![WildFly SNAPSHOT][status-wildfly-snapshot]       |
 | 7.3.0-alpha2 | ![Tomcat 7.3.0-alpha2][status-tomcat-730-alpha2] | ![JBoss 7.3.0-alpha2][status-jboss-730-alpha2] | ![WildFly 7.3.0-alpha2][status-wildfly-730-alpha2] |
 | 7.3.0-alpha1 | ![Tomcat 7.3.0-alpha1][status-tomcat-730-alpha1] | ![JBoss 7.3.0-alpha1][status-jboss-730-alpha1] | ![WildFly 7.3.0-alpha1][status-wildfly-730-alpha1] |
 | 7.2.0        | ![Tomcat 7.2.0][status-tomcat-720]               | ![JBoss 7.2.0][status-jboss-720]               | ![WildFly 7.2.0][status-wildfly-720]               |
@@ -27,14 +28,17 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 
 ## Supported Tags/Releases
 
+- `tomcat-7.3.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
 - `tomcat-7.3.0-alpha2`, `tomcat-latest`, `latest` ([Dockerfile][dockerfile-tomcat-730-alpha2])
 - `tomcat-7.3.0-alpha1` ([Dockerfile][dockerfile-tomcat-730-alpha1])
 - `tomcat-7.2.0` ([Dockerfile][dockerfile-tomcat-720])
 - `tomcat-7.1.0` ([Dockerfile][dockerfile-tomcat-710])
+- `jboss-7.3.0-SNAPSHOT`, `jboss-SNAPSHOT` ([Dockerfile][dockerfile-jboss-snapshot])
 - `jboss-7.3.0-alpha2`, `jboss-latest` ([Dockerfile][dockerfile-jboss-730-alpha2])
 - `jboss-7.3.0-alpha1` ([Dockerfile][dockerfile-jboss-730-alpha1])
 - `jboss-7.2.0` ([Dockerfile][dockerfile-jboss-720])
 - `jboss-7.1.0` ([Dockerfile][dockerfile-jboss-710])
+- `wildfly-7.3.0-SNAPSHOT` `wildfly-SNAPSHOT` ([Dockerfile][dockerfile-wildfly-snapshot])
 - `wildfly-7.3.0-alpha2`, `wildfly-latest` ([Dockerfile][dockerfile-wildfly-730-alpha2])
 - `wildfly-7.3.0-alpha1`, ([Dockerfile][dockerfile-wildfly-730-alpha1])
 - `wildfly-7.2.0` ([Dockerfile][dockerfile-wildfly-720])
@@ -195,6 +199,10 @@ Apache License, Version 2.0
 [dockerfile-jboss-730-alpha2]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.3.0-alpha2/Dockerfile
 [dockerfile-wildfly-730-alpha2]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.3.0-alpha2/Dockerfile
 
+[dockerfile-tomcat-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/tomcat-SNAPSHOT/Dockerfile
+[dockerfile-jboss-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-SNAPSHOT/Dockerfile
+[dockerfile-wildfly-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-SNAPSHOT/Dockerfile
+
 [status]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform
 [status-tomcat-710]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.1.0
 [status-jboss-710]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.1.0
@@ -207,3 +215,7 @@ Apache License, Version 2.0
 [status-tomcat-730-alpha2]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/master
 [status-jboss-730-alpha2]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.3.0-alpha2
 [status-wildfly-730-alpha2]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.3.0-alpha2
+
+[status-tomcat-snapshot]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform-SNAPSHOT/tomcat-SNAPSHOT
+[status-jboss-snapshot]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform-SNAPSHOT/jboss-SNAPSHOT
+[status-wildfly-snapshot]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform-SNAPSHOT/wildfly-SNAPSHOT
