@@ -1,9 +1,9 @@
 # camunda BPM platform docker images
 
 This camunda BPM community project provides docker images of the latest camunda
-BPM platform releases.  The images can be used to demonstrate and test the
+BPM platform releases. The images can be used to demonstrate and test the
 camunda BPM platform or can be extended with own process applications. It is
-planed to provide images on the official [docker registry][] for every upcoming
+planned to provide images on the official [docker registry][] for every upcoming
 release, which includes alpha releases.
 
 ## Status ![Status][status]
