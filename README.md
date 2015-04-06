@@ -24,6 +24,7 @@ To start the latest release:
 docker pull camunda/camunda-bpm-platform:latest
 docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 # open browser with url: http://localhost:8080/camunda/
+# Login with username: demo, password: demo
 ```
 
 ## Supported Tags/Releases
