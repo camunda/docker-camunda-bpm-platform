@@ -177,6 +177,16 @@ ADD my.war /camunda/webapps/my.war
 ```
 
 
+### Change timezone
+
+To change the timezone of the docker container you can set the environment variable `TZ`.
+
+```
+docker run -d --name camunda -p 8080:8080 \
+           -e TZ=Europe/Berlin \
+          camunda/camunda-bpm-platform:latest
+```
+
 ## Maintainer
 
 [Sebastian Menski][]
