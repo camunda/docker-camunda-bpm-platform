@@ -6,11 +6,11 @@ source ${DIR}/test_helper.sh
 
 start_container
 
-poll_log "^INFO: Server startup in" "^SEVERE" || _exit 1 "Server not started"
+poll_log "org.apache.catalina.startup.Catalina.start Server startup in" "^SEVERE" || _exit 1 "Server not started"
 
 _log "Server started"
 
-grep_log "INFO: Process Application camunda-invoice successfully deployed" || _exit 2 "Process application not deployed"
+grep_log "org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /camunda/webapps/camunda-invoice has finished in" || _exit 2 "Process application not deployed"
 
 _log "Process application deployed"
 
