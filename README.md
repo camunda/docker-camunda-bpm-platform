@@ -234,7 +234,7 @@ Apache License, Version 2.0
 [dockerfile-jboss-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-SNAPSHOT/Dockerfile
 [dockerfile-wildfly-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-SNAPSHOT/Dockerfile
 
-[status]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform
+[status]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/master
 [status-tomcat-710]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.1.0
 [status-jboss-710]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.1.0
 [status-tomcat-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.2.0
