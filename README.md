@@ -1,8 +1,8 @@
-# camunda BPM platform docker images
+# Camunda BPM Platform Docker Images
 
-This camunda BPM community project provides docker images of the latest camunda
+This Camunda BPM community project provides docker images of the latest Camunda
 BPM platform releases. The images can be used to demonstrate and test the
-camunda BPM platform or can be extended with own process applications. It is
+Camunda BPM platform or can be extended with own process applications. It is
 planned to provide images on the official [docker registry][] for every upcoming
 release, which includes alpha releases.
 
@@ -124,7 +124,7 @@ docker run -d --name camunda -p 8080:8080 -e SKIP_DB_CONFIG=true \
 
 ## Volumes
 
-The camunda BPM platform is installed inside the `/camunda` directory. Which
+The Camunda BPM Platform is installed inside the `/camunda` directory. Which
 means the tomcat configuration files are inside the `/camunda/conf/` directory
 and the deployments on tomcat are in `/camunda/webapps/`. The directory
 structure depends on the application server.
@@ -180,7 +180,7 @@ docker run -d --name camunda -p 8080:8080 \
 As we release these docker images on the offical [docker registry][] it is
 easy to create your own image. This way you can deploy your applications
 with docker or provided an own demo image. Just specify in the `FROM`
-clause which camunda image you want to use as a base image:
+clause which Camunda image you want to use as a base image:
 
 ```
 FROM camunda/camunda-bpm-platform:tomcat-7.2.0
