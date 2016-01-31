@@ -8,19 +8,19 @@ release, which includes alpha releases.
 
 ## Status ![Status][status]
 
-| Version      | Tomcat                                           | JBoss                                          | WildFly                                            |
-| ------------ | ------------------------------------------------ | ---------------------------------------------- | -------------------------------------------------- |
-| SNAPSHOT     | ![Tomcat SNAPSHOT][status-tomcat-snapshot]       | ![JBoss SNAPSHOT][status-jboss-snapshot]       | ![WildFly SNAPSHOT][status-wildfly-snapshot]       |
-| 7.4.0        | ![Tomcat 7.4.0][status-tomcat-740]               | ![JBoss 7.4.0-alpha1][status-jboss-740]        | ![WildFly 7.4.0][status-wildfly-740]               |
-| 7.4.0-alpha3 | ![Tomcat 7.4.0-alpha3][status-tomcat-740-alpha3] | ![JBoss 7.4.0-alpha1][status-jboss-740-alpha3] | ![WildFly 7.4.0][status-wildfly-740-alpha3]        |
-| 7.4.0-alpha2 | ![Tomcat 7.4.0-alpha2][status-tomcat-740-alpha2] | ![JBoss 7.4.0-alpha1][status-jboss-740-alpha2] | ![WildFly 7.4.0][status-wildfly-740-alpha2]        |
-| 7.4.0-alpha1 | ![Tomcat 7.4.0-alpha1][status-tomcat-740-alpha1] | ![JBoss 7.4.0-alpha1][status-jboss-740-alpha1] | ![WildFly 7.4.0][status-wildfly-740-alpha1]        |
-| 7.3.0        | ![Tomcat 7.3.0][status-tomcat-730]               | ![JBoss 7.3.0][status-jboss-730]               | ![WildFly 7.3.0][status-wildfly-730]               |
-| 7.3.0-alpha3 | ![Tomcat 7.3.0-alpha3][status-tomcat-730-alpha3] | ![JBoss 7.3.0-alpha3][status-jboss-730-alpha3] | ![WildFly 7.3.0-alpha3][status-wildfly-730-alpha3] |
-| 7.3.0-alpha2 | ![Tomcat 7.3.0-alpha2][status-tomcat-730-alpha2] | ![JBoss 7.3.0-alpha2][status-jboss-730-alpha2] | ![WildFly 7.3.0-alpha2][status-wildfly-730-alpha2] |
-| 7.3.0-alpha1 | ![Tomcat 7.3.0-alpha1][status-tomcat-730-alpha1] | ![JBoss 7.3.0-alpha1][status-jboss-730-alpha1] | ![WildFly 7.3.0-alpha1][status-wildfly-730-alpha1] |
-| 7.2.0        | ![Tomcat 7.2.0][status-tomcat-720]               | ![JBoss 7.2.0][status-jboss-720]               | ![WildFly 7.2.0][status-wildfly-720]               |
-| 7.1.0        | ![Tomcat 7.1.0][status-tomcat-710]               | ![JBoss 7.1.0][status-jboss-710]               |                                                    |
+| Version      | Tomcat                                                     | JBoss                                                    | WildFly                                                      |
+| ------------ | ---------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------ |
+| SNAPSHOT     | [![Tomcat SNAPSHOT][status-tomcat-snapshot]][travis]       | [![JBoss SNAPSHOT][status-jboss-snapshot]][travis]       | [![WildFly SNAPSHOT][status-wildfly-snapshot]][travis]       |
+| 7.4.0        | [![Tomcat 7.4.0][status-tomcat-740]][travis]               | [![JBoss 7.4.0-alpha1][status-jboss-740]][travis]        | [![WildFly 7.4.0][status-wildfly-740]][travis]               |
+| 7.4.0-alpha3 | [![Tomcat 7.4.0-alpha3][status-tomcat-740-alpha3]][travis] | [![JBoss 7.4.0-alpha1][status-jboss-740-alpha3]][travis] | [![WildFly 7.4.0][status-wildfly-740-alpha3]][travis]        |
+| 7.4.0-alpha2 | [![Tomcat 7.4.0-alpha2][status-tomcat-740-alpha2]][travis] | [![JBoss 7.4.0-alpha1][status-jboss-740-alpha2]][travis] | [![WildFly 7.4.0][status-wildfly-740-alpha2]][travis]        |
+| 7.4.0-alpha1 | [![Tomcat 7.4.0-alpha1][status-tomcat-740-alpha1]][travis] | [![JBoss 7.4.0-alpha1][status-jboss-740-alpha1]][travis] | [![WildFly 7.4.0][status-wildfly-740-alpha1]][travis]        |
+| 7.3.0        | [![Tomcat 7.3.0][status-tomcat-730]][travis]               | [![JBoss 7.3.0][status-jboss-730]][travis]               | [![WildFly 7.3.0][status-wildfly-730]][travis]               |
+| 7.3.0-alpha3 | [![Tomcat 7.3.0-alpha3][status-tomcat-730-alpha3]][travis] | [![JBoss 7.3.0-alpha3][status-jboss-730-alpha3]][travis] | [![WildFly 7.3.0-alpha3][status-wildfly-730-alpha3]][travis] |
+| 7.3.0-alpha2 | [![Tomcat 7.3.0-alpha2][status-tomcat-730-alpha2]][travis] | [![JBoss 7.3.0-alpha2][status-jboss-730-alpha2]][travis] | [![WildFly 7.3.0-alpha2][status-wildfly-730-alpha2]][travis] |
+| 7.3.0-alpha1 | [![Tomcat 7.3.0-alpha1][status-tomcat-730-alpha1]][travis] | [![JBoss 7.3.0-alpha1][status-jboss-730-alpha1]][travis] | [![WildFly 7.3.0-alpha1][status-wildfly-730-alpha1]][travis] |
+| 7.2.0        | [![Tomcat 7.2.0][status-tomcat-720]][travis]               | [![JBoss 7.2.0][status-jboss-720]][travis]               | [![WildFly 7.2.0][status-wildfly-720]][travis]               |
+| 7.1.0        | [![Tomcat 7.1.0][status-tomcat-710]][travis]               | [![JBoss 7.1.0][status-jboss-710]][travis]               |                                                              |
 
 ## Get started
 
@@ -255,38 +255,40 @@ Apache License, Version 2.0
 [dockerfile-jboss-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-SNAPSHOT/Dockerfile
 [dockerfile-wildfly-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-SNAPSHOT/Dockerfile
 
-[status]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/master
-[status-tomcat-710]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.1.0
-[status-jboss-710]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.1.0
-[status-tomcat-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.2.0
-[status-jboss-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.2.0
-[status-wildfly-720]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.2.0
-[status-tomcat-730-alpha1]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.3.0-alpha1
-[status-jboss-730-alpha1]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.3.0-alpha1
-[status-wildfly-730-alpha1]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.3.0-alpha1
-[status-tomcat-730-alpha2]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.3.0-alpha2
-[status-jboss-730-alpha2]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.3.0-alpha2
-[status-wildfly-730-alpha2]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.3.0-alpha2
-[status-tomcat-730-alpha3]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.3.0-alpha3
-[status-jboss-730-alpha3]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.3.0-alpha3
-[status-wildfly-730-alpha3]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.3.0-alpha3
-[status-tomcat-730]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.3.0
-[status-jboss-730]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.3.0
-[status-wildfly-730]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.3.0
-[status-tomcat-740-alpha1]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.4.0-alpha1
-[status-jboss-740-alpha1]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.4.0-alpha1
-[status-wildfly-740-alpha1]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.4.0-alpha1
-[status-tomcat-740-alpha2]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.4.0-alpha2
-[status-jboss-740-alpha2]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.4.0-alpha2
-[status-wildfly-740-alpha2]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.4.0-alpha2
-[status-tomcat-740-alpha3]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/tomcat-7.4.0-alpha3
-[status-jboss-740-alpha3]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.4.0-alpha3
-[status-wildfly-740-alpha3]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.4.0-alpha3
-[status-tomcat-740]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/master
-[status-jboss-740]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/jboss-7.4.0
-[status-wildfly-740]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform/wildfly-7.4.0
+[travis]: https://travis-ci.org/camunda/docker-camunda-bpm-platform
+
+[status]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=master
+[status-tomcat-710]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.1.0
+[status-jboss-710]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.1.0
+[status-tomcat-720]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.2.0
+[status-jboss-720]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.2.0
+[status-wildfly-720]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.2.0
+[status-tomcat-730-alpha1]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.3.0-alpha1
+[status-jboss-730-alpha1]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.3.0-alpha1
+[status-wildfly-730-alpha1]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.3.0-alpha1
+[status-tomcat-730-alpha2]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.3.0-alpha2
+[status-jboss-730-alpha2]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.3.0-alpha2
+[status-wildfly-730-alpha2]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.3.0-alpha2
+[status-tomcat-730-alpha3]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.3.0-alpha3
+[status-jboss-730-alpha3]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.3.0-alpha3
+[status-wildfly-730-alpha3]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.3.0-alpha3
+[status-tomcat-730]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.3.0
+[status-jboss-730]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.3.0
+[status-wildfly-730]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.3.0
+[status-tomcat-740-alpha1]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.4.0-alpha1
+[status-jboss-740-alpha1]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.4.0-alpha1
+[status-wildfly-740-alpha1]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.4.0-alpha1
+[status-tomcat-740-alpha2]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.4.0-alpha2
+[status-jboss-740-alpha2]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.4.0-alpha2
+[status-wildfly-740-alpha2]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.4.0-alpha2
+[status-tomcat-740-alpha3]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.4.0-alpha3
+[status-jboss-740-alpha3]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.4.0-alpha3
+[status-wildfly-740-alpha3]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.4.0-alpha3
+[status-tomcat-740]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=master
+[status-jboss-740]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.4.0
+[status-wildfly-740]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.4.0
 
 
-[status-tomcat-snapshot]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform-SNAPSHOT/tomcat-SNAPSHOT
-[status-jboss-snapshot]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform-SNAPSHOT/jboss-SNAPSHOT
-[status-wildfly-snapshot]: https://jenkins.menski.org/buildStatus/icon?job=docker-camunda-bpm-platform-SNAPSHOT/wildfly-SNAPSHOT
+[status-tomcat-snapshot]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-SNAPSHOT
+[status-jboss-snapshot]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-SNAPSHOT
+[status-wildfly-snapshot]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-SNAPSHOT
