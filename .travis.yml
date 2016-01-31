@@ -1,0 +1,16 @@
+language: generic
+
+sudo: required
+
+services:
+    - docker
+
+before_script:
+    - make pull-from pull build
+
+script:
+    - make test
+
+after_success:
+    - docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    - make push
