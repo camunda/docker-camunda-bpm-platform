@@ -1,4 +1,4 @@
-FROM ubuntu:14.04.1
+FROM ubuntu:latest
 
 ENV VERSION 7.5.0-alpha2
 ENV DISTRO tomcat
