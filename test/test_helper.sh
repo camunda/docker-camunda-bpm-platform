@@ -52,3 +52,8 @@ function poll_log {
 function test_login {
   curl --fail -s --data 'username=demo&password=demo' -D- -o/dev/null http://localhost:8080/camunda/api/admin/auth/user/default/login/${1}
 }
+
+function test_encoding {
+  curl --fail -w "\n" http://localhost:8080/engine-rest/deployment/create -F deployment-name=testEncoding -F testEncoding.bpmn=@../resources/testEncoding.bpmn
+  curl --fail -w "\n" -H "Content-Type: application/json" -d '{}'  http://localhost:8080/engine-rest/process-definition/key/testEncoding/start
+}

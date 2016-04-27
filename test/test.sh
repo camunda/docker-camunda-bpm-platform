@@ -20,4 +20,6 @@ test_login tasklist || _exit 5 "Unable to login to tasklist"
 
 _log "Login successfull"
 
+test_encoding || _exit 6 "Wrong encoding detected"
+
 _exit 0 "Test successfull"
