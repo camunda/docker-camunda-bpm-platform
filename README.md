@@ -34,7 +34,7 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 
 ## Supported Tags/Releases
 
-- `tomcat-7.5.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `7.5.0-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
+- `tomcat-7.6.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `7.6.0-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
 - `tomcat-7.5.0`, `tomcat-latest`, `7.5.0`, `latest` ([Dockerfile][dockerfile-tomcat-750])
 - `tomcat-7.5.0-alpha5`, `7.5.0-alpha5` ([Dockerfile][dockerfile-tomcat-750-alpha5])
 - `tomcat-7.5.0-alpha4`, `7.5.0-alpha4` ([Dockerfile][dockerfile-tomcat-750-alpha4])
@@ -45,7 +45,7 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 - `tomcat-7.3.0`, `7.3.0` ([Dockerfile][dockerfile-tomcat-730])
 - `tomcat-7.2.0`, `7.2.0` ([Dockerfile][dockerfile-tomcat-720])
 - `tomcat-7.1.0`, `7.1.0` ([Dockerfile][dockerfile-tomcat-710])
-- `jboss-7.5.0-SNAPSHOT`, `jboss-SNAPSHOT` ([Dockerfile][dockerfile-jboss-snapshot])
+- `jboss-7.6.0-SNAPSHOT`, `jboss-SNAPSHOT` ([Dockerfile][dockerfile-jboss-snapshot])
 - `jboss-7.5.0`, `jboss-latest` ([Dockerfile][dockerfile-jboss-750])
 - `jboss-7.5.0-alpha5` ([Dockerfile][dockerfile-jboss-750-alpha5])
 - `jboss-7.5.0-alpha4` ([Dockerfile][dockerfile-jboss-750-alpha4])
@@ -56,7 +56,7 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 - `jboss-7.3.0` ([Dockerfile][dockerfile-jboss-730])
 - `jboss-7.2.0` ([Dockerfile][dockerfile-jboss-720])
 - `jboss-7.1.0` ([Dockerfile][dockerfile-jboss-710])
-- `wildfly-7.5.0-SNAPSHOT` `wildfly-SNAPSHOT` ([Dockerfile][dockerfile-wildfly-snapshot])
+- `wildfly-7.6.0-SNAPSHOT` `wildfly-SNAPSHOT` ([Dockerfile][dockerfile-wildfly-snapshot])
 - `wildfly-7.5.0`, `wildfly-latest` ([Dockerfile][dockerfile-wildfly-750])
 - `wildfly-7.5.0-alpha5` ([Dockerfile][dockerfile-wildfly-750-alpha5])
 - `wildfly-7.5.0-alpha4` ([Dockerfile][dockerfile-wildfly-750-alpha4])
