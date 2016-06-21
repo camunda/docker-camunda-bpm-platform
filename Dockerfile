@@ -21,11 +21,13 @@ RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" > /e
     rm -rf /var/cache/* /var/lib/apt/lists/*
 
 # add camunda distro
-ADD ${NEXUS}?r=public&g=org.camunda.bpm.${DISTRO}&a=camunda-bpm-${DISTRO}&v=${VERSION}&p=tar.gz /tmp/camunda-bpm-platform.tar.gz
+RUN wget -O /tmp/camunda-bpm-platform.tar.gz "${NEXUS}?r=public&g=org.camunda.bpm.${DISTRO}&a=camunda-bpm-${DISTRO}&v=${VERSION}&p=tar.gz" && \
+    mkdir /camunda/ && \
+    tar xzf /tmp/camunda-bpm-platform.tar.gz -C /camunda/ server/${SERVER} --strip 2 && \
+    rm /tmp/camunda-bpm-platform.tar.gz
 
 # unpack camunda distro
 WORKDIR /camunda
-RUN tar xzf /tmp/camunda-bpm-platform.tar.gz -C /camunda/ server/${SERVER} --strip 2
 
 # add scripts
 ADD bin/* /usr/local/bin/
