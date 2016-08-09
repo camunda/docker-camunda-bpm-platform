@@ -25,7 +25,7 @@ NO_CACHE=false
 build:
 	$(DOCKER) build --rm=$(REMOVE) --force-rm=$(FORCE_RM) --no-cache=$(NO_CACHE) -t $(IMAGE) .
 	@for tag in $(ADDITIONAL_TAGS); do \
-		$(DOCKER) tag -f $(IMAGE) $(IMAGE_NAME):$$tag; \
+		$(DOCKER) tag $(IMAGE) $(IMAGE_NAME):$$tag; \
 	done
 
 # pull image from registry
