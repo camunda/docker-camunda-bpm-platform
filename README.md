@@ -11,6 +11,7 @@ release, which includes alpha releases.
 | Version      | Tomcat                                                     | JBoss                                                    | WildFly                                                      |
 | ------------ | ---------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------ |
 | SNAPSHOT     | [![Tomcat SNAPSHOT][status-tomcat-snapshot]][travis]       | [![JBoss SNAPSHOT][status-jboss-snapshot]][travis]       | [![WildFly SNAPSHOT][status-wildfly-snapshot]][travis]       |
+| 7.6.0        | [![Tomcat 7.6.0][status-tomcat-760]][travis]               | [![JBoss 7.6.0][status-jboss-760]][travis]               | [![WildFly 7.6.0][status-wildfly-760]][travis]               |
 | 7.6.0-alpha6 | [![Tomcat 7.6.0-alpha6][status-tomcat-760-alpha6]][travis] | [![JBoss 7.6.0-alpha6][status-jboss-760-alpha6]][travis] | [![WildFly 7.6.0-alpha6][status-wildfly-760-alpha6]][travis] |
 | 7.6.0-alpha5 | [![Tomcat 7.6.0-alpha5][status-tomcat-760-alpha5]][travis] | [![JBoss 7.6.0-alpha5][status-jboss-760-alpha5]][travis] | [![WildFly 7.6.0-alpha5][status-wildfly-760-alpha5]][travis] |
 | 7.6.0-alpha4 | [![Tomcat 7.6.0-alpha4][status-tomcat-760-alpha4]][travis] | [![JBoss 7.6.0-alpha4][status-jboss-760-alpha4]][travis] | [![WildFly 7.6.0-alpha4][status-wildfly-760-alpha4]][travis] |
@@ -36,7 +37,8 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 ## Supported Tags/Releases
 
 - `tomcat-7.6.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `7.6.0-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
-- `tomcat-7.6.0-alpha6`, `tomcat-latest`, `7.6.0-alpha6`, `latest` ([Dockerfile][dockerfile-tomcat-760-alpha6])
+- `tomcat-7.6.0`, `tomcat-latest`, `7.6.0`, `latest` ([Dockerfile][dockerfile-tomcat-760])
+- `tomcat-7.6.0-alpha6`, `7.6.0-alpha6` ([Dockerfile][dockerfile-tomcat-760-alpha6])
 - `tomcat-7.6.0-alpha5`, `7.6.0-alpha5` ([Dockerfile][dockerfile-tomcat-760-alpha5])
 - `tomcat-7.6.0-alpha4`, `7.6.0-alpha4` ([Dockerfile][dockerfile-tomcat-760-alpha4])
 - `tomcat-7.6.0-alpha3`, `7.6.0-alpha3` ([Dockerfile][dockerfile-tomcat-760-alpha3])
@@ -48,7 +50,8 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 - `tomcat-7.2.0`, `7.2.0` ([Dockerfile][dockerfile-tomcat-720])
 - `tomcat-7.1.0`, `7.1.0` ([Dockerfile][dockerfile-tomcat-710])
 - `jboss-7.6.0-SNAPSHOT`, `jboss-SNAPSHOT` ([Dockerfile][dockerfile-jboss-snapshot])
-- `jboss-7.6.0-alpha6`, `jboss-latest` ([Dockerfile][dockerfile-jboss-760-alpha6])
+- `jboss-7.6.0`, `jboss-latest` ([Dockerfile][dockerfile-jboss-760])
+- `jboss-7.6.0-alpha6` ([Dockerfile][dockerfile-jboss-760-alpha6])
 - `jboss-7.6.0-alpha5` ([Dockerfile][dockerfile-jboss-760-alpha5])
 - `jboss-7.6.0-alpha4` ([Dockerfile][dockerfile-jboss-760-alpha4])
 - `jboss-7.6.0-alpha3` ([Dockerfile][dockerfile-jboss-760-alpha3])
@@ -60,7 +63,8 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 - `jboss-7.2.0` ([Dockerfile][dockerfile-jboss-720])
 - `jboss-7.1.0` ([Dockerfile][dockerfile-jboss-710])
 - `wildfly-7.6.0-SNAPSHOT` `wildfly-SNAPSHOT` ([Dockerfile][dockerfile-wildfly-snapshot])
-- `wildfly-7.6.0-alpha6`, `wildfly-latest` ([Dockerfile][dockerfile-wildfly-760-alpha6])
+- `wildfly-7.6.0`, `wildfly-latest` ([Dockerfile][dockerfile-wildfly-760])
+- `wildfly-7.6.0-alpha6` ([Dockerfile][dockerfile-wildfly-760-alpha6])
 - `wildfly-7.6.0-alpha5` ([Dockerfile][dockerfile-wildfly-760-alpha5])
 - `wildfly-7.6.0-alpha4` ([Dockerfile][dockerfile-wildfly-760-alpha4])
 - `wildfly-7.6.0-alpha3` ([Dockerfile][dockerfile-wildfly-760-alpha3])
@@ -254,9 +258,12 @@ Apache License, Version 2.0
 [dockerfile-tomcat-760-alpha5]: https://github.com/camunda/docker-camunda-bpm-platform/blob/tomcat-7.6.0-alpha5/Dockerfile
 [dockerfile-jboss-760-alpha5]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.6.0-alpha5/Dockerfile
 [dockerfile-wildfly-760-alpha5]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.6.0-alpha5/Dockerfile
-[dockerfile-tomcat-760-alpha6]: https://github.com/camunda/docker-camunda-bpm-platform/blob/master/Dockerfile
+[dockerfile-tomcat-760-alpha6]: https://github.com/camunda/docker-camunda-bpm-platform/blob/tomcat-7.6.0-alpha6/Dockerfile
 [dockerfile-jboss-760-alpha6]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.6.0-alpha6/Dockerfile
 [dockerfile-wildfly-760-alpha6]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.6.0-alpha6/Dockerfile
+[dockerfile-tomcat-760]: https://github.com/camunda/docker-camunda-bpm-platform/blob/master/Dockerfile
+[dockerfile-jboss-760]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.6.0/Dockerfile
+[dockerfile-wildfly-760]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.6.0/Dockerfile
 
 [dockerfile-tomcat-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/tomcat-SNAPSHOT/Dockerfile
 [dockerfile-jboss-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-SNAPSHOT/Dockerfile
@@ -294,9 +301,12 @@ Apache License, Version 2.0
 [status-tomcat-760-alpha5]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.6.0-alpha5
 [status-jboss-760-alpha5]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.6.0-alpha5
 [status-wildfly-760-alpha5]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.6.0-alpha5
-[status-tomcat-760-alpha6]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=master
+[status-tomcat-760-alpha6]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.6.0-alpha6
 [status-jboss-760-alpha6]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.6.0-alpha6
 [status-wildfly-760-alpha6]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.6.0-alpha6
+[status-tomcat-760]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=master
+[status-jboss-760]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.6.0
+[status-wildfly-760]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.6.0
 
 
 [status-tomcat-snapshot]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-SNAPSHOT

@@ -1,5 +1,5 @@
 camunda:
-  image: camunda/camunda-bpm-platform:tomcat-7.6.0-alpha6
+  image: camunda/camunda-bpm-platform:tomcat-7.6.0
   environment:
     - JAVA_OPTS=-Djava.security.egd=file:/dev/./urandom
     - DB_DRIVER=org.postgresql.Driver
