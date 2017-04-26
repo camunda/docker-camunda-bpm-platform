@@ -37,6 +37,17 @@ The default credentials for admin access to the webapps is:
 - Username: `demo`
 - Password: `demo`
 
+### Rest-API
+
+The Camunda Rest-API is accessible through: http://localhost:8080/engine-rest
+
+See the [Rest-API](https://docs.camunda.org/manual/latest/reference/rest/)
+documentation for more details on how to use it.
+
+**Note**: The Rest-API does not require authentication by default. Please
+follow the instructions from the [documentation](https://docs.camunda.org/manual/latest/reference/rest/overview/authentication/)
+to enable authentication for the Rest-API.
+
 
 ## Supported Tags/Releases
 
