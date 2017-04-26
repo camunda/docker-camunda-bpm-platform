@@ -26,8 +26,17 @@ To start the latest release:
 ```
 docker pull camunda/camunda-bpm-platform:latest
 docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
-# open browser with url: http://localhost:8080/camunda-welcome/index.html
 ```
+
+### Tasklist, Cockpit, Admin Web Apps
+
+The three Camunda webapps are accessible through the landing page: http://localhost:8080/camunda-welcome/index.html
+
+The default credentials for admin access to the webapps is:
+
+- Username: `demo`
+- Password: `demo`
+
 
 ## Supported Tags/Releases
 
