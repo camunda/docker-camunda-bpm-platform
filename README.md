@@ -1,4 +1,4 @@
-# Camunda BPM Platform Docker Images
+s# Camunda BPM Platform Docker Images
 
 This Camunda BPM community project provides docker images of the latest Camunda
 BPM platform releases. The images can be used to demonstrate and test the
@@ -218,6 +218,16 @@ docker run -d --name camunda -p 8080:8080 \
            -e TZ=Europe/Berlin \
           camunda/camunda-bpm-platform:latest
 ```
+
+## Tasklist, Cockpit, Admin Web Apps
+
+The three Camunda webapps are accessible through the landing page: `http://localhost:8080/camunda-welcome/index.html`.
+
+The default credentials for admin access to the webapps is:
+
+Username: `demo`
+Password: `demo`
+
 
 ## Maintainer
 
