@@ -1,5 +1,5 @@
 camunda:
-    image: camunda/camunda-bpm-platform:tomcat-7.8.0-alpha3
+    image: camunda/camunda-bpm-platform:tomcat-7.8.0-alpha4
     environment:
       - JAVA_OPTS=-Djava.security.egd=file:/dev/./urandom
     ports:
