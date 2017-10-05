@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 ENV VERSION 7.8.0-alpha5
 ENV DISTRO tomcat
-ENV SERVER apache-tomcat-8.0.24
+ENV SERVER apache-tomcat-8.0.47
 ENV LIB_DIR /camunda/lib/
 ENV SERVER_CONFIG /camunda/conf/server.xml
 ENV NEXUS https://app.camunda.com/nexus/service/local/artifact/maven/redirect
