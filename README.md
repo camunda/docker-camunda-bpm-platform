@@ -11,6 +11,7 @@ release, which includes alpha releases.
 | Version      | Tomcat                                                     | JBoss                                                    | WildFly                                                      |
 | ------------ | ---------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------ |
 | SNAPSHOT     | [![Tomcat SNAPSHOT][status-tomcat-snapshot]][travis]       | [![JBoss SNAPSHOT][status-jboss-snapshot]][travis]       | [![WildFly SNAPSHOT][status-wildfly-snapshot]][travis]       |
+| 7.8.0        | [![Tomcat 7.8.0][status-tomcat-780]][travis]               | [![JBoss 7.8.0][status-jboss-780]][travis]               | [![WildFly 7.8.0][status-wildfly-780]][travis]               |
 | 7.8.0-alpha6 | [![Tomcat 7.8.0-alpha6][status-tomcat-780-alpha6]][travis] | [![JBoss 7.8.0-alpha6][status-jboss-780-alpha6]][travis] | [![WildFly 7.8.0-alpha6][status-wildfly-780-alpha6]][travis] |
 | 7.8.0-alpha5 | [![Tomcat 7.8.0-alpha5][status-tomcat-780-alpha5]][travis] | [![JBoss 7.8.0-alpha5][status-jboss-780-alpha5]][travis] | [![WildFly 7.8.0-alpha5][status-wildfly-780-alpha5]][travis] |
 | 7.8.0-alpha4 | [![Tomcat 7.8.0-alpha4][status-tomcat-780-alpha4]][travis] | [![JBoss 7.8.0-alpha4][status-jboss-780-alpha4]][travis] | [![WildFly 7.8.0-alpha4][status-wildfly-780-alpha4]][travis] |
@@ -57,8 +58,9 @@ to enable authentication for the Rest-API.
 
 ## Supported Tags/Releases
 
-- `tomcat-7.8.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `7.8.0-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
-- `tomcat-7.8.0-alpha6`, `7.8.0-alpha6`, `tomcat-latest`, `tomcat`, `latest` ([Dockerfile][dockerfile-tomcat-780-alpha6])
+- `tomcat-7.9.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `7.8.0-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
+- `tomcat-7.8.0`, `7.8.0`, `tomcat-latest`, `tomcat`, `latest` ([Dockerfile][dockerfile-tomcat-780])
+- `tomcat-7.8.0-alpha6`, `7.8.0-alpha6` ([Dockerfile][dockerfile-tomcat-780-alpha6])
 - `tomcat-7.8.0-alpha5`, `7.8.0-alpha5` ([Dockerfile][dockerfile-tomcat-780-alpha5])
 - `tomcat-7.8.0-alpha4`, `7.8.0-alpha4` ([Dockerfile][dockerfile-tomcat-780-alpha4])
 - `tomcat-7.8.0-alpha3`, `7.8.0-alpha3` ([Dockerfile][dockerfile-tomcat-780-alpha3])
@@ -71,8 +73,9 @@ to enable authentication for the Rest-API.
 - `tomcat-7.3.0`, `7.3.0` ([Dockerfile][dockerfile-tomcat-730])
 - `tomcat-7.2.0`, `7.2.0` ([Dockerfile][dockerfile-tomcat-720])
 - `tomcat-7.1.0`, `7.1.0` ([Dockerfile][dockerfile-tomcat-710])
-- `jboss-7.8.0-SNAPSHOT`, `jboss-SNAPSHOT` ([Dockerfile][dockerfile-jboss-snapshot])
-- `jboss-7.8.0-alpha6`, `jboss-latest`, `jboss` ([Dockerfile][dockerfile-jboss-780-alpha6])
+- `jboss-7.9.0-SNAPSHOT`, `jboss-SNAPSHOT` ([Dockerfile][dockerfile-jboss-snapshot])
+- `jboss-7.8.0`, `jboss-latest`, `jboss` ([Dockerfile][dockerfile-jboss-780])
+- `jboss-7.8.0-alpha6` ([Dockerfile][dockerfile-jboss-780-alpha6])
 - `jboss-7.8.0-alpha5` ([Dockerfile][dockerfile-jboss-780-alpha5])
 - `jboss-7.8.0-alpha4` ([Dockerfile][dockerfile-jboss-780-alpha4])
 - `jboss-7.8.0-alpha3` ([Dockerfile][dockerfile-jboss-780-alpha3])
@@ -85,8 +88,9 @@ to enable authentication for the Rest-API.
 - `jboss-7.3.0` ([Dockerfile][dockerfile-jboss-730])
 - `jboss-7.2.0` ([Dockerfile][dockerfile-jboss-720])
 - `jboss-7.1.0` ([Dockerfile][dockerfile-jboss-710])
-- `wildfly-7.8.0-SNAPSHOT` `wildfly-SNAPSHOT` ([Dockerfile][dockerfile-wildfly-snapshot])
-- `wildfly-7.8.0-alpha6`, `wildfly-latest`, `wildfly` ([Dockerfile][dockerfile-wildfly-780-alpha6])
+- `wildfly-7.9.0-SNAPSHOT` `wildfly-SNAPSHOT` ([Dockerfile][dockerfile-wildfly-snapshot])
+- `wildfly-7.8.0`, `wildfly-latest`, `wildfly` ([Dockerfile][dockerfile-wildfly-780])
+- `wildfly-7.8.0-alpha6` ([Dockerfile][dockerfile-wildfly-780-alpha6])
 - `wildfly-7.8.0-alpha5` ([Dockerfile][dockerfile-wildfly-780-alpha5])
 - `wildfly-7.8.0-alpha4` ([Dockerfile][dockerfile-wildfly-780-alpha4])
 - `wildfly-7.8.0-alpha3` ([Dockerfile][dockerfile-wildfly-780-alpha3])
@@ -288,9 +292,12 @@ Apache License, Version 2.0
 [dockerfile-tomcat-780-alpha5]: https://github.com/camunda/docker-camunda-bpm-platform/blob/tomcat-7.8.0-alpha5/Dockerfile
 [dockerfile-jboss-780-alpha5]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.8.0-alpha5/Dockerfile
 [dockerfile-wildfly-780-alpha5]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.8.0-alpha5/Dockerfile
-[dockerfile-tomcat-780-alpha6]: https://github.com/camunda/docker-camunda-bpm-platform/blob/master/Dockerfile
+[dockerfile-tomcat-780-alpha6]: https://github.com/camunda/docker-camunda-bpm-platform/blob/tomat-7.8.0-alpha6/Dockerfile
 [dockerfile-jboss-780-alpha6]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.8.0-alpha6/Dockerfile
 [dockerfile-wildfly-780-alpha6]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.8.0-alpha6/Dockerfile
+[dockerfile-tomcat-780]: https://github.com/camunda/docker-camunda-bpm-platform/blob/master/Dockerfile
+[dockerfile-jboss-780]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-7.8.0/Dockerfile
+[dockerfile-wildfly-780]: https://github.com/camunda/docker-camunda-bpm-platform/blob/wildfly-7.8.0/Dockerfile
 
 [dockerfile-tomcat-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/tomcat-SNAPSHOT/Dockerfile
 [dockerfile-jboss-snapshot]: https://github.com/camunda/docker-camunda-bpm-platform/blob/jboss-SNAPSHOT/Dockerfile
@@ -334,9 +341,12 @@ Apache License, Version 2.0
 [status-tomcat-780-alpha5]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.8.0-alpha5
 [status-jboss-780-alpha5]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.8.0-alpha5
 [status-wildfly-780-alpha5]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.8.0-alpha5
-[status-tomcat-780-alpha6]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=master
+[status-tomcat-780-alpha6]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-7.8.0-alpha6
 [status-jboss-780-alpha6]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.8.0-alpha6
 [status-wildfly-780-alpha6]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.8.0-alpha6
+[status-tomcat-780]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=master
+[status-jboss-780]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=jboss-7.8.0
+[status-wildfly-780]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=wildfly-7.8.0
 
 
 [status-tomcat-snapshot]: https://travis-ci.org/camunda/docker-camunda-bpm-platform.svg?branch=tomcat-SNAPSHOT
