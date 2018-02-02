@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-ENV VERSION 7.8.0
+ENV VERSION 7.9.0-alpha1
 ENV DISTRO tomcat
 ENV SERVER apache-tomcat-8.0.47
 ENV LIB_DIR /camunda/lib/
