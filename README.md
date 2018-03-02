@@ -11,8 +11,8 @@ release, which includes alpha releases.
 | Version      | Tomcat                                                     | JBoss                                                    | WildFly                                                      |
 | ------------ | ---------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------ |
 | SNAPSHOT     | [![Tomcat SNAPSHOT][status-tomcat-snapshot]][travis]       | [![JBoss SNAPSHOT][status-jboss-snapshot]][travis]       | [![WildFly SNAPSHOT][status-wildfly-snapshot]][travis]       |
-| 7.9.0-alpha2 | [![Tomcat 7.8.0][status-tomcat-790-alpha2]][travis]        | [![JBoss 7.8.0][status-jboss-790-alpha2]][travis]        | [![WildFly 7.8.0][status-wildfly-790-alpha2]][travis]        |
-| 7.9.0-alpha1 | [![Tomcat 7.8.0][status-tomcat-790-alpha1]][travis]        | [![JBoss 7.8.0][status-jboss-790-alpha1]][travis]        | [![WildFly 7.8.0][status-wildfly-790-alpha1]][travis]        |
+| 7.9.0-alpha2 | [![Tomcat 7.9.0][status-tomcat-790-alpha2]][travis]        | [![JBoss 7.9.0][status-jboss-790-alpha2]][travis]        | [![WildFly 7.9.0][status-wildfly-790-alpha2]][travis]        |
+| 7.9.0-alpha1 | [![Tomcat 7.9.0][status-tomcat-790-alpha1]][travis]        | [![JBoss 7.9.0][status-jboss-790-alpha1]][travis]        | [![WildFly 7.9.0][status-wildfly-790-alpha1]][travis]        |
 | 7.8.0        | [![Tomcat 7.8.0][status-tomcat-780]][travis]               | [![JBoss 7.8.0][status-jboss-780]][travis]               | [![WildFly 7.8.0][status-wildfly-780]][travis]               |
 | 7.7.0        | [![Tomcat 7.7.0][status-tomcat-770]][travis]               | [![JBoss 7.7.0][status-jboss-770]][travis]               | [![WildFly 7.7.0][status-wildfly-770]][travis]               |
 | 7.6.0        | [![Tomcat 7.6.0][status-tomcat-760]][travis]               | [![JBoss 7.6.0][status-jboss-760]][travis]               | [![WildFly 7.6.0][status-wildfly-760]][travis]               |
@@ -54,7 +54,7 @@ to enable authentication for the Rest-API.
 
 ## Supported Tags/Releases
 
-- `tomcat-7.9.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `7.8.0-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
+- `tomcat-7.9.0-SNAPSHOT`, `tomcat-SNAPSHOT`, `7.9.0-SNAPSHOT`, `SNAPSHOT` ([Dockerfile][dockerfile-tomcat-snapshot])
 - `tomcat-7.9.0-alpha2`, `7.9.0-alpha2`, `tomcat-latest`, `tomcat`, `latest` ([Dockerfile][dockerfile-tomcat-790-alpha2])
 - `tomcat-7.9.0-alpha1`, `7.9.0-alpha1` ([Dockerfile][dockerfile-tomcat-790-alpha1])
 - `tomcat-7.8.0`, `7.8.0` ([Dockerfile][dockerfile-tomcat-780])
