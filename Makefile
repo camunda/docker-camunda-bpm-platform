@@ -1,7 +1,7 @@
 # image settings for the docker image name, tags and
 # container name while running
 IMAGE_NAME=camunda/camunda-bpm-platform
-TAGS=tomcat-7.9.0-alpha1 7.9.0-alpha1 latest tomcat tomcat-latest
+TAGS=tomcat-7.9.0-alpha2 7.9.0-alpha2 latest tomcat tomcat-latest
 NAME=camunda
 
 # parent image name

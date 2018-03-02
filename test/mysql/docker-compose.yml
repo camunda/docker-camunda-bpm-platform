@@ -1,5 +1,5 @@
 camunda:
-  image: camunda/camunda-bpm-platform:tomcat-7.9.0-alpha1
+  image: camunda/camunda-bpm-platform:tomcat-7.9.0-alpha2
   environment:
     - JAVA_OPTS=-Djava.security.egd=file:/dev/./urandom
     - DB_DRIVER=com.mysql.jdbc.Driver
