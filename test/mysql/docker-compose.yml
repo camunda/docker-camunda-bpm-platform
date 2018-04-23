@@ -12,7 +12,7 @@ camunda:
     - "8080:8080"
 
 db:
-  image: mysql
+  image: mysql:5.7
   environment:
     - MYSQL_ROOT_PASSWORD=camunda
     - MYSQL_USER=camunda
