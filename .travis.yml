@@ -5,12 +5,6 @@ sudo: required
 services:
     - docker
 
-before_script:
-    - make pull-from pull build
-
 script:
-    - make test
-
-after_success:
-    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - make push
+    - docker build -t camunda/camunda-bpm-platform:ce .
+    - docker build -t camunda/camunda-bpm-platform:ee --build-arg EE=true --build-arg USER=${NEXUS_USER} --build-arg PASSWORD=${NEXUS_PASS} --build-arg DISTRO=wildfly10 .
