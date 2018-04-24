@@ -5,12 +5,21 @@ sudo: required
 services:
     - docker
 
-before_script:
-    - make pull-from pull build
+env:
+    - DISTRO=tomcat
+    - DISTRO=tomcat EE=true
+    - DISTRO=wildfly10
+    - DISTRO=wildfly10 EE=true
+    - DISTRO=wildfly11
+    - DISTRO=wildfly11 EE=true
 
-script:
-    - make test
-
-after_success:
-    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - make push
+script: |
+    docker build -t camunda/camunda-bpm-platform:${DISTRO} \
+        --build-arg DISTRO=${DISTRO} \
+        --build-arg EE=${EE} \
+        --build-arg USER=${NEXUS_USER} \
+        --build-arg PASSWORD=${NEXUS_PASS} \
+        . &&
+    ./test/test.sh &&
+    docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}" &&
+    ./release.sh
