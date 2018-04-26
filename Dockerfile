@@ -7,6 +7,10 @@ ENV LIB_DIR /camunda/lib/
 ENV SERVER_CONFIG /camunda/conf/server.xml
 ENV NEXUS https://app.camunda.com/nexus/service/local/artifact/maven/redirect
 
+# create user camunda and group camunda
+RUN groupadd --gid 1000 camunda \
+    && useradd --uid 1000 --gid camunda --shell /bin/bash --create-home camunda
+
 WORKDIR /camunda
 
 # install oracle java and generate locale
@@ -31,6 +35,11 @@ ADD bin/* /usr/local/bin/
 
 # add database drivers
 RUN /usr/local/bin/download-database-drivers.sh "${NEXUS}?r=public&g=org.camunda.bpm&a=camunda-database-settings&v=${VERSION}&p=pom"
+
+RUN chown -R camunda:camunda /camunda && chmod -R 775 /camunda
+
+# switch user from root to camunda
+USER camunda
 
 EXPOSE 8080
 
