@@ -42,3 +42,26 @@ cp /tmp/camunda-${GROUP}.sh /camunda/camunda.sh
 
 
 # TODO: download and register database drivers
+wget --progress=bar:force:noscroll -O /tmp/pom.xml "${NEXUS}?r=${REPO}&g=org.camunda.bpm&a=camunda-database-settings&v=${ARTIFACT_VERSION}&p=pom"
+MYSQL_VERSION=$(xmlstarlet sel -t -v //_:version.mysql /tmp/pom.xml)
+POSTGRESQL_VERSION=$(xmlstarlet sel -t -v //_:version.postgresql /tmp/pom.xml)
+
+wget -O /tmp/mysql-connector-java-${MYSQL_VERSION}.jar "${NEXUS}?r=public&g=mysql&a=mysql-connector-java&v=${MYSQL_VERSION}&p=jar"
+wget -O /tmp/postgresql-${POSTGRESQL_VERSION}.jar "${NEXUS}?r=public&g=org.postgresql&a=postgresql&v=${POSTGRESQL_VERSION}&p=jar"
+
+case ${DISTRO} in
+    wildfly*)
+        cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /tmp/mysql/mysql-connector-java/main/
+        sed -i "s/@version.mysql@/${MYSQL_VERSION}/g" /tmp/mysql/mysql-connector-java/main/module.xml
+        cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /tmp/org/postgresql/postgresql/main/
+        sed -i "s/@version.postgresql@/${POSTGRESQL_VERSION}/g" /tmp/org/postgresql/postgresql/main/module.xml
+
+        cp -R /tmp/mysql /camunda/modules/
+        cp -R /tmp/org/postgresql /camunda/modules/org/
+        ;;
+    *)
+        cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /camunda/lib
+        cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /camunda/lib
+        ;;
+esac
+

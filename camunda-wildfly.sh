@@ -1,29 +1,33 @@
-#!/bin/bash
+#!/bin/bash -ue
 
 NAMESPACES="-N d=urn:jboss:domain:datasources:4.0"
 
-DB_DRIVER=${DB_DRIVER:-h2}
+H2_NAME=org.h2.Driver
+H2_MODULE=com.h2database.h2
+H2_XA_CLASS=org.h2.jdbcx.JdbcDataSource
+
+MYSQL_NAME=com.mysql.jdbc.Driver
+MYSQL_MODULE=mysql.mysql-connector-java
+MYSQL_XA_CLASS=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource
+
+POSTGRESQL_NAME=org.postgresql.Driver
+POSTGRESQL_MODULE=org.postgresql.postgresql
+POSTGRESQL_XA_CLASS=org.postgresql.xa.PGXADataSource
+
+DB_DRIVER=${DB_DRIVER:-${H2_NAME}}
 DB_URL=${DB_URL:-jdbc:h2:./camunda-h2-dbs/process-engine;DB_CLOSE_DELAY=-1;MVCC=TRUE;DB_CLOSE_ON_EXIT=FALSE}
 DB_USERNAME=${DB_USERNAME:-sa}
 DB_PASSWORD=${DB_PASSWORD:-sa}
+
+SKIP_DB_CONFIG=${SKIP_DB_CONFIG:-}
+
+SERVER_CONFIG=/camunda/standalone/configuration/standalone.xml
 
 XML_CONFIG="//d:datasource[@jndi-name='java:jboss/datasources/ProcessEngine']"
 XML_DRIVER="${XML_CONFIG}/d:driver"
 XML_URL="${XML_CONFIG}/d:connection-url"
 XML_USERNAME="${XML_CONFIG}/d:security/d:user-name"
 XML_PASSWORD="${XML_CONFIG}/d:security/d:password"
-
-H2_NAME=h2
-H2_MODULE=com.h2database.h2
-H2_XA_CLASS=org.h2.jdbcx.JdbcDataSource
-
-MYSQL_NAME=mysql
-MYSQL_MODULE=mysql.mysql-connector-java
-MYSQL_XA_CLASS=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource
-
-POSTGRESQL_NAME=postgresql
-POSTGRESQL_MODULE=org.postgresql.postgresql
-POSTGRESQL_XA_CLASS=org.postgresql.xa.PGXADataSource
 
 function element_definied {
 	return $(test $(xmlstarlet sel $NAMESPACES -T -t -v "count($1)" $SERVER_CONFIG) -gt 0 )
@@ -80,7 +84,7 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
 fi
 
 # Ensure wildfly binds to public interface, preferes IPv4 and runs in the background
-export PREPEND_JAVA_OPTS="-Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0"
+export PREPEND_JAVA_OPTS="-Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 -Djava.net.preferIPv4Stack=true"
 export LAUNCH_JBOSS_IN_BACKGROUND=TRUE
 
 exec /camunda/bin/standalone.sh

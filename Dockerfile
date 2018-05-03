@@ -14,7 +14,7 @@ RUN apk add --no-cache \
         wget \
 		xmlstarlet
 
-COPY download.sh camunda-tomcat.sh camunda-wildfly.sh /tmp/
+COPY download.sh camunda-tomcat.sh camunda-wildfly.sh modules/ /tmp/
 
 RUN /tmp/download.sh
 

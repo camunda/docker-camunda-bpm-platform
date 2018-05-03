@@ -1,11 +1,9 @@
-#!/bin/bash -ue
+#!/bin/bash
 
 DB_DRIVER=${DB_DRIVER:-org.h2.Driver}
 DB_URL=${DB_URL:-jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE}
 DB_USERNAME=${DB_USERNAME:-sa}
 DB_PASSWORD=${DB_PASSWORD:-sa}
-
-SERVER_CONFIG=/camunda/conf/server.xml
 
 XML_JDBC="//Resource[@name='jdbc/ProcessEngine']"
 XML_DRIVER="${XML_JDBC}/@driverClassName"
