@@ -18,7 +18,12 @@ COPY download.sh camunda-tomcat.sh camunda-wildfly.sh modules/ /tmp/
 
 RUN /tmp/download.sh
 
+
+##### FINAL IMAGE #####
+
 FROM openjdk:8-jre-alpine
+
+ENV TZ=UTC
 
 EXPOSE 8080
 
@@ -28,6 +33,7 @@ COPY --from=builder /camunda .
 RUN apk add --no-cache \
         bash \
         ca-certificates \
-		xmlstarlet
+        tzdata \
+        xmlstarlet
 
 CMD ["./camunda.sh"]
