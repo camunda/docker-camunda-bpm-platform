@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
@@ -6,7 +6,7 @@ source ${DIR}/test_helper.sh
 
 start_container
 
-poll_log 'WildFly Full 10.1.0.Final (WildFly Core 2.2.0.Final) started in' 'WildFly Full 10.1.0.Final (WildFly Core 2.2.0.Final) started (with errors) in' || _exit 1 "Server not started"
+poll_log 'WildFly Full 11.0.0.Final (WildFly Core 3.0.8.Final) started in' 'WildFly Full 11.0.0.Final (WildFly Core 3.0.8.Final) started (with errors) in' || _exit 1 "Server not started"
 
 _log "Server started"
 
