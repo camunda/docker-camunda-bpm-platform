@@ -6,6 +6,7 @@ function _log {
 }
 
 function stop_container {
+  docker logs $(container_id)
   docker-compose kill
   docker-compose rm --force
 }
