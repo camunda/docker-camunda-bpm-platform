@@ -4,7 +4,7 @@ services:
     camunda:
         image: camunda/camunda-bpm-platform:${DISTRO:-latest}
         environment:
-            - DB_DRIVER=mysql.jdbc.Driver
+            - DB_DRIVER=com.mysql.jdbc.Driver
             - DB_URL=jdbc:mysql://db:3306/process-engine
             - DB_USERNAME=camunda
             - DB_PASSWORD=camunda
