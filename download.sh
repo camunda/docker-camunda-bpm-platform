@@ -51,7 +51,7 @@ wget -O /tmp/postgresql-${POSTGRESQL_VERSION}.jar "${NEXUS}?r=public&g=org.postg
 
 case ${DISTRO} in
     wildfly*)
-        tee batch.cli <<EOF
+        cat <<-EOF > batch.cli
 batch
 embed-server --std-out=echo
 

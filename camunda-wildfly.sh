@@ -3,16 +3,16 @@
 DB_DRIVER=${DB_DRIVER:-org.h2.Driver}
 
 function modify_datasource {
-	tee batch.cli <<-EOF
-	batch
-	embed-server
-	/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=user-name, value=\${env.DB_USERNAME})
-	/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=password, value=\${env.DB_PASSWORD})
-	/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=connection-url, value=\${env.DB_URL})
-	/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=driver-name, value=${DB_DRIVER})
-	run-batch
-	stop-embedded-server
-	EOF > /dev/null
+	cat <<-EOF > batch.cli
+batch
+embed-server
+/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=user-name, value=\${env.DB_USERNAME})
+/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=password, value=\${env.DB_PASSWORD})
+/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=connection-url, value=\${env.DB_URL})
+/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=driver-name, value=${DB_DRIVER})
+run-batch
+stop-embedded-server
+EOF
 	/camunda/bin/jboss-cli.sh --file=batch.cli
 	rm -rf /camunda/standalone/configuration/standalone_xml_history/current/* batch.cli
 }
