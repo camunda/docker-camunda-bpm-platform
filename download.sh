@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -ex
 
 NEXUS="https://app.camunda.com/nexus/service/local/artifact/maven/redirect"
 
@@ -12,7 +12,7 @@ if [ ${EE} = "true" ]; then
     ARTIFACT="camunda-bpm-ee-${DISTRO}"
 	ARTIFACT_VERSION="${VERSION}-ee"
 else
-    echo "Downloading Camunda ${VERSION} Comunity Edition"
+    echo "Downloading Camunda ${VERSION} Community Edition for ${DISTRO}"
     REPO="camunda-bpm"
     ARTIFACT="camunda-bpm-${DISTRO}"
     ARTIFACT_VERSION="${VERSION}"
@@ -41,7 +41,7 @@ tar xzf /tmp/camunda.tar.gz -C /camunda server --strip 2
 cp /tmp/camunda-${GROUP}.sh /camunda/camunda.sh
 
 
-# TODO: download and register database drivers
+# download and register database drivers
 wget --progress=bar:force:noscroll -O /tmp/pom.xml "${NEXUS}?r=${REPO}&g=org.camunda.bpm&a=camunda-database-settings&v=${ARTIFACT_VERSION}&p=pom"
 MYSQL_VERSION=$(xmlstarlet sel -t -v //_:version.mysql /tmp/pom.xml)
 POSTGRESQL_VERSION=$(xmlstarlet sel -t -v //_:version.postgresql /tmp/pom.xml)
@@ -51,13 +51,20 @@ wget -O /tmp/postgresql-${POSTGRESQL_VERSION}.jar "${NEXUS}?r=public&g=org.postg
 
 case ${DISTRO} in
     wildfly*)
-        cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /tmp/mysql/mysql-connector-java/main/
-        sed -i "s/@version.mysql@/${MYSQL_VERSION}/g" /tmp/mysql/mysql-connector-java/main/module.xml
-        cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /tmp/org/postgresql/postgresql/main/
-        sed -i "s/@version.postgresql@/${POSTGRESQL_VERSION}/g" /tmp/org/postgresql/postgresql/main/module.xml
+        tee batch.cli <<EOF
+batch
+embed-server --std-out=echo
 
-        cp -R /tmp/mysql /camunda/modules/
-        cp -R /tmp/org/postgresql /camunda/modules/org/
+module add --name=mysql.mysql-connector-java --slot=main --resources=/tmp/mysql-connector-java-${MYSQL_VERSION}.jar --dependencies=javax.api,javax.transaction.api
+/subsystem=datasources/jdbc-driver=mysql:add(driver-name="mysql",driver-module-name="mysql.mysql-connector-java",driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource)
+
+module add --name=org.postgresql.postgresql --slot=main --resources=/tmp/postgresql-${POSTGRESQL_VERSION}.jar --dependencies=javax.api,javax.transaction.api
+/subsystem=datasources/jdbc-driver=postgres:add(driver-name="postgresql",driver-module-name="org.postgresql.postgresql",driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+
+run-batch
+EOF
+        /camunda/bin/jboss-cli.sh --file=batch.cli
+        rm -rf /camunda/standalone/configuration/standalone_xml_history/current/*
         ;;
     *)
         cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /camunda/lib
