@@ -32,13 +32,18 @@ ENV TZ=UTC
 
 EXPOSE 8080
 
-WORKDIR /camunda
-COPY --from=builder /camunda .
-
 RUN apk add --no-cache \
         bash \
         ca-certificates \
         tzdata \
+        tini \
         xmlstarlet
 
+RUN adduser -h /camunda -s /bin/bash -D camunda
+WORKDIR /camunda
+USER camunda
+
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["./camunda.sh"]
+
+COPY --chown=camunda:camunda --from=builder /camunda .
