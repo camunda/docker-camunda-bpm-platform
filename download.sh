@@ -42,6 +42,9 @@ cp /tmp/camunda-${GROUP}.sh /camunda/camunda.sh
 
 
 # download and register database drivers
+if [ ${EE} = "true" -a ${SNAPSHOT} = "true" -a ${VERSION##*.} -eq 0 ]; then
+    REPO="camunda-bpm-snapshots"
+fi
 wget --progress=bar:force:noscroll -O /tmp/pom.xml "${NEXUS}?r=${REPO}&g=org.camunda.bpm&a=camunda-database-settings&v=${ARTIFACT_VERSION}&p=pom"
 MYSQL_VERSION=$(xmlstarlet sel -t -v //_:version.mysql /tmp/pom.xml)
 POSTGRESQL_VERSION=$(xmlstarlet sel -t -v //_:version.postgresql /tmp/pom.xml)

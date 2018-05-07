@@ -22,6 +22,8 @@ env:
     - DISTRO=tomcat VERSION=7.7.0 EE=true
     - DISTRO=tomcat VERSION=7.8.0
     - DISTRO=tomcat VERSION=7.8.0 EE=true
+    - DISTRO=tomcat VERSION=7.8.7 SNAPSHOT=true
+    - DISTRO=tomcat VERSION=7.8.7 SNAPSHOT=true EE=true
     - DISTRO=tomcat VERSION=7.9.0-alpha4
     - DISTRO=tomcat VERSION=7.9.0-alpha4 EE=true
     - DISTRO=tomcat VERSION=7.9.0 SNAPSHOT=true
@@ -42,6 +44,8 @@ env:
     - DISTRO=wildfly10 VERSION=7.7.0 EE=true
     - DISTRO=wildfly10 VERSION=7.8.0
     - DISTRO=wildfly10 VERSION=7.8.0 EE=true
+    - DISTRO=wildfly10 VERSION=7.8.7 SNAPSHOT=true
+    - DISTRO=wildfly10 VERSION=7.8.7 SNAPSHOT=true EE=true
     - DISTRO=wildfly10 VERSION=7.9.0-alpha4
     - DISTRO=wildfly10 VERSION=7.9.0-alpha4 EE=true
     - DISTRO=wildfly10 VERSION=7.9.0 SNAPSHOT=true
