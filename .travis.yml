@@ -13,8 +13,8 @@ env:
 script:
     - docker build -t camunda/camunda-bpm-platform:${DISTRO} --build-arg DISTRO=${DISTRO} .
     - cd test/h2
-    - bash ../test-${DISTRO}.sh
+    - ../test-${DISTRO}.sh
     - cd ../postgresql
-    - bash ../test-${DISTRO}.sh
+    - ../test-${DISTRO}.sh
     - cd ../mysql
-    - bash ../test-${DISTRO}.sh
+    - ../test-${DISTRO}.sh
