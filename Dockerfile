@@ -39,7 +39,8 @@ RUN apk add --no-cache \
         tini \
         xmlstarlet
 
-RUN adduser -h /camunda -s /bin/bash -D camunda
+RUN addgroup -g 1000 -S camunda && \
+    adduser -u 1000 -S camunda -G camunda -h /camunda -s /bin/bash -D camunda
 WORKDIR /camunda
 USER camunda
 
