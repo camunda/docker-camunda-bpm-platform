@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-IMAGE=camunda/camunda-bpm-platfrom
+IMAGE=camunda/camunda-bpm-platform
 
 function tag_and_push {
     local tag=${1}
