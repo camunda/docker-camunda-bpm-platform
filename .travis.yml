@@ -7,11 +7,21 @@ services:
 
 env:
     - DISTRO=tomcat VERSION=7.9.0 SNAPSHOT=true
+    - DISTRO=tomcat VERSION=7.9.0 SNAPSHOT=true EE=true
     - DISTRO=wildfly10 VERSION=7.9.0 SNAPSHOT=true
+    - DISTRO=wildfly10 VERSION=7.9.0 SNAPSHOT=true EE=true
     - DISTRO=wildfly11 VERSION=7.9.0 SNAPSHOT=true
+    - DISTRO=wildfly11 VERSION=7.9.0 SNAPSHOT=true EE=true
 
 before_script:
-    - docker build -t camunda/camunda-bpm-platform:${DISTRO} --build-arg DISTRO=${DISTRO} --build-arg VERSION=${VERSION} --build-arg SNAPSHOT=${SNAPSHOT} .
+    - docker build -t camunda/camunda-bpm-platform:${DISTRO}
+        --build-arg DISTRO=${DISTRO}
+        --build-arg VERSION=${VERSION}
+        --build-arg SNAPSHOT=${SNAPSHOT}
+        --build-arg EE=${EE}
+        --build-arg USER=${NEXUS_USER}
+        --build-arg PASSWORD=${NEXUS_PASS}
+        .
 
 script:
     - ./test.sh
