@@ -13,7 +13,7 @@ env:
     - DISTRO=wildfly11 VERSION=7.9.0 SNAPSHOT=true
     - DISTRO=wildfly11 VERSION=7.9.0 SNAPSHOT=true EE=true
 
-before_script:
+script:
     - docker build -t camunda/camunda-bpm-platform:${DISTRO}
         --build-arg DISTRO=${DISTRO}
         --build-arg VERSION=${VERSION}
@@ -22,8 +22,6 @@ before_script:
         --build-arg USER=${NEXUS_USER}
         --build-arg PASSWORD=${NEXUS_PASS}
         .
-
-script:
     - ./test.sh
     - docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}"
     - ./release.sh
