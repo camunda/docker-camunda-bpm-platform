@@ -1,7 +1,0 @@
-version: '3'
-
-services:
-    camunda:
-        image: camunda/camunda-bpm-platform:${DISTRO:-latest}
-        ports:
-            - "8080:8080"

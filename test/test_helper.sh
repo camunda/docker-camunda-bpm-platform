@@ -7,8 +7,8 @@ function _log {
 
 function stop_container {
   docker logs $(container_id)
-  docker-compose kill
-  docker-compose rm --force
+  docker-compose kill ${SERVICE}
+  docker-compose rm --force ${SERVICE}
 }
 
 function _exit {
@@ -18,13 +18,11 @@ function _exit {
 }
 
 function start_container {
-  docker-compose up -d db || echo "No database started"
-  sleep 10
-  docker-compose up -d --no-recreate camunda || _exit 1 "Unable to start compose"
+  docker-compose up -d --no-recreate ${SERVICE} || _exit 1 "Unable to start compose"
 }
 
 function container_id {
-  docker-compose ps -q camunda
+  docker-compose ps -q ${SERVICE}
 }
 
 function grep_log {
@@ -55,6 +53,6 @@ function test_login {
 }
 
 function test_encoding {
-  curl --fail -w "\n" http://localhost:8080/engine-rest/deployment/create -F deployment-name=testEncoding -F testEncoding.bpmn=@../resources/testEncoding.bpmn
+  curl --fail -w "\n" http://localhost:8080/engine-rest/deployment/create -F deployment-name=testEncoding -F testEncoding.bpmn=@testEncoding.bpmn
   curl --fail -w "\n" -H "Content-Type: application/json" -d '{}'  http://localhost:8080/engine-rest/process-definition/key/testEncoding/start
 }

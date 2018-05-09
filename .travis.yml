@@ -22,6 +22,6 @@ script:
         --build-arg USER=${NEXUS_USER}
         --build-arg PASSWORD=${NEXUS_PASS}
         .
-    - ./test.sh
+    - ./test/test.sh
     - docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}"
     - ./release.sh

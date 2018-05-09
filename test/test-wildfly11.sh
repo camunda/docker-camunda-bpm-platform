@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/bash -eu
 
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+SERVICE=${1}
 
-source ${DIR}/test_helper.sh
+source test_helper.sh
 
 start_container
 
