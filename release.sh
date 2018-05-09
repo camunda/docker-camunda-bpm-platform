@@ -24,4 +24,12 @@ else
     fi
 fi
 
-# TODO: how to detect latest
+git fetch origin/master
+if [ $(git rev-parse HEAD) = $(git rev-parse FETCH_HEAD) ]; then
+    # tagging image as latest
+    tag_and_push "${DISTRO}-latest"
+    tag_and_push "${DISTRO}"
+    if [ "${DISTRO}" = "tomcat" ]; then
+        tag_and_push "latest"
+    fi
+fi
