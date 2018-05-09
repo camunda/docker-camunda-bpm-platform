@@ -10,11 +10,12 @@ env:
     - DISTRO=wildfly10 VERSION=7.9.0 SNAPSHOT=true
     - DISTRO=wildfly11 VERSION=7.9.0 SNAPSHOT=true
 
-script:
+before_script:
     - docker build -t camunda/camunda-bpm-platform:${DISTRO} --build-arg DISTRO=${DISTRO} --build-arg VERSION=${VERSION} --build-arg SNAPSHOT=${SNAPSHOT} .
-    - cd test/h2
-    - ../test-${DISTRO}.sh
-    - cd ../postgresql
-    - ../test-${DISTRO}.sh
-    - cd ../mysql
-    - ../test-${DISTRO}.sh
+
+script:
+    - ./test.sh
+
+after_success:
+    - docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}"
+    - ./release.sh
