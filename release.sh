@@ -8,6 +8,10 @@ function tag_and_push {
     #docker push ${IMAGE}:${tag}
 }
 
+if [ "${EE}" = "true" ]; then
+    echo "Not pushing EE image to docker hub"
+    exit 0
+fi
 
 if [ "${SNAPSHOT}" = "true" ]; then
     tag_and_push "${DISTRO}-${VERSION}-SNAPSHOT"
