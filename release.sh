@@ -5,7 +5,7 @@ IMAGE=camunda/camunda-bpm-platform
 function tag_and_push {
     local tag=${1}
     docker tag ${IMAGE}:${DISTRO} ${IMAGE}:${tag}
-    docker push ${IMAGE}:${tag}
+    #docker push ${IMAGE}:${tag}
 }
 
 
