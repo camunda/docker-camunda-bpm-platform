@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine as builder
+FROM openjdk:8u151-jre-alpine3.7 as builder
 
 ARG VERSION=7.10.0
 ARG DISTRO=tomcat
@@ -21,7 +21,7 @@ RUN /tmp/download.sh
 
 ##### FINAL IMAGE #####
 
-FROM openjdk:8-jre-alpine
+FROM openjdk:8u151-jre-alpine3.7
 
 ENV DB_DRIVER=org.h2.Driver
 ENV DB_URL=jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE
