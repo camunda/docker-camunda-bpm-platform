@@ -1,6 +1,6 @@
 FROM openjdk:8-jre-alpine as builder
 
-ARG VERSION=7.9.0
+ARG VERSION=7.10.0
 ARG DISTRO=tomcat
 ARG SNAPSHOT=false
 
