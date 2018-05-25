@@ -1,6 +1,7 @@
 #!/bin/bash -eux
 
 EE=${EE:-false}
+VERSION=${VERSION:-$(grep VERSION= Dockerfile | cut -d = -f 2)}
 
 IMAGE=camunda/camunda-bpm-platform
 
