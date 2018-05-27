@@ -1,0 +1,18 @@
+camunda:
+  image: camunda/camunda-bpm-platform:tomcat-7.7.0
+  environment:
+    - JAVA_OPTS=-Djava.security.egd=file:/dev/./urandom
+    - DB_DRIVER=org.postgresql.Driver
+    - DB_URL=jdbc:postgresql://db:5432/camunda
+    - DB_USERNAME=camunda
+    - DB_PASSWORD=camunda
+  links:
+    - db
+  ports:
+    - "8080:8080"
+
+db:
+  image: postgres
+  environment:
+    - POSTGRES_USER=camunda
+    - POSTGRES_PASSWORD=camunda

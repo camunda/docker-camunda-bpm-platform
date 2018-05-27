@@ -1,0 +1,20 @@
+camunda:
+  image: camunda/camunda-bpm-platform:tomcat-7.7.0
+  environment:
+    - JAVA_OPTS=-Djava.security.egd=file:/dev/./urandom
+    - DB_DRIVER=com.mysql.jdbc.Driver
+    - DB_URL=jdbc:mysql://db:3306/process-engine
+    - DB_USERNAME=camunda
+    - DB_PASSWORD=camunda
+  links:
+    - db
+  ports:
+    - "8080:8080"
+
+db:
+  image: mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=camunda
+    - MYSQL_USER=camunda
+    - MYSQL_PASSWORD=camunda
+    - MYSQL_DATABASE=process-engine
