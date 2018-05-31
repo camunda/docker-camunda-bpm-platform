@@ -16,4 +16,9 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     /camunda/conf/server.xml
 fi
 
-exec /camunda/bin/catalina.sh run
+CMD="/camunda/bin/catalina.sh run"
+if [ -n "${WAIT_FOR}" ]; then
+    CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
+fi
+
+exec ${CMD}
