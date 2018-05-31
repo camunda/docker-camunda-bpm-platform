@@ -14,6 +14,7 @@ services:
             - DB_URL=jdbc:mysql://mysql:3306/process-engine
             - DB_USERNAME=camunda
             - DB_PASSWORD=camunda
+            - WAIT_FOR=mysql:3306
         links:
             - mysql
         ports:
@@ -27,6 +28,7 @@ services:
             - DB_URL=jdbc:postgresql://postgres:5432/camunda
             - DB_USERNAME=camunda
             - DB_PASSWORD=camunda
+            - WAIT_FOR=postgres:5432
         links:
             - postgres
         ports:
