@@ -72,6 +72,8 @@ variables:
 - `DB_PASSWORD` the database password
 - `SKIP_DB_CONFIG` skips the automated database configuration to use manual
   configuration
+- `WAIT_FOR` wait for a `host:port` to be available over TCP before starting
+- `WAIT_FOR_TIMEOUT` how long to wait for the service to be avaiable - defaults to 30 seconds
 
 For example to use a postgresql docker image as database you can start the
 platform as follows:
@@ -85,6 +87,7 @@ docker run -d --name camunda -p 8080:8080 --link postgresql:db \
            -e DB_URL=jdbc:postgresql://db:5432/process-engine \
            -e DB_USERNAME=camunda \
            -e DB_PASSWORD=camunda \
+           -e WAIT_FOR=db:5432 \
            camunda/camunda-bpm-platform:latest
 ```
 
@@ -96,6 +99,7 @@ DB_DRIVER=org.postgresql.Driver
 DB_URL=jdbc:postgresql://db:5432/process-engine
 DB_USERNAME=camunda
 DB_PASSWORD=camunda
+WAIT_FOR=db:5432
 ```
 
 and use this file to start the container:
@@ -119,6 +123,29 @@ docker run -d --name camunda -p 8080:8080 -e SKIP_DB_CONFIG=true \
            camunda/camunda-bpm-platform:latest
 ```
 
+## Waiting for database
+
+Starting the Camunda BPM Docker image requires the database to be already available.
+This is quite a challenge when the database and the Camunda BPM are both docker containers spawned simualtenously eg. by `docker-compose` or inside a Kubernetes Pod.
+To help with that, the Camunda BPM Docker image includes [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to allow the container to wait until a 'host:port' is ready.
+The mechanism can be configured by two environment variables:
+
+- `WAIT_FOR`: the service `host:port` to wait for
+- `WAIT_FOR_TIMEOUT`: how long to wait for the service to be available in seconds
+
+Example with a PostgreSQL container
+```
+docker run -d --name postgresql ...
+
+docker run -d --name camunda -p 8080:8080 --link postgresql:db \
+           -e DB_DRIVER=org.postgresql.Driver \
+           -e DB_URL=jdbc:postgresql://db:5432/process-engine \
+           -e DB_USERNAME=camunda \
+           -e DB_PASSWORD=camunda \
+           -e WAIT_FOR=db:5432 \
+           -e WAIT_FOR_TIMEOUT=60 \
+           camunda/camunda-bpm-platform:latest
+```
 
 ## Volumes
 
