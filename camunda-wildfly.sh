@@ -40,4 +40,9 @@ fi
 export PREPEND_JAVA_OPTS="-Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0"
 export LAUNCH_JBOSS_IN_BACKGROUND=TRUE
 
-exec /camunda/bin/standalone.sh
+CMD="/camunda/bin/standalone.sh"
+if [ -n "${WAIT_FOR}" ]; then
+    CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
+fi
+
+exec ${CMD}
