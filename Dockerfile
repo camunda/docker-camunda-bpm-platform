@@ -1,8 +1,8 @@
 FROM openjdk:8u181-jre-alpine3.8 as builder
 
-ARG VERSION=7.10.0
+ARG VERSION=7.10.0-alpha1
 ARG DISTRO=tomcat
-ARG SNAPSHOT=true
+ARG SNAPSHOT=false
 
 ARG EE=false
 ARG USER
