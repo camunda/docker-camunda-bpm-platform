@@ -39,7 +39,7 @@ to enable authentication for the Rest-API.
 ## Supported Tags/Releases
 
 The following tag schema is used. The user has the choice between different
-application server distributions of Camunda BPM platform. `${DISTRO} can either
+application server distributions of Camunda BPM platform. `${DISTRO}` can either
 be `tomcat`, `wildfly10` or `wildfly11`. If no `${DISTRO}` is specified the
 `tomcat` distribution is used.
 
