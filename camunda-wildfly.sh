@@ -41,6 +41,12 @@ export PREPEND_JAVA_OPTS="-Djboss.bind.address=0.0.0.0 -Djboss.bind.address.mana
 export LAUNCH_JBOSS_IN_BACKGROUND=TRUE
 
 CMD="/camunda/bin/standalone.sh"
+
+if [ "${DEBUG}" = "true" ]; then
+  echo "Enabling debug mode, JPDA accesible under port 8000"
+  CMD+=" --debug 8000"
+fi
+
 if [ -n "${WAIT_FOR}" ]; then
     CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
