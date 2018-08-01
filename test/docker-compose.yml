@@ -35,6 +35,15 @@ services:
             - "8080:8080"
         restart: unless-stopped
 
+    camunda-debug:
+        image: camunda/camunda-bpm-platform:${DISTRO:-latest}
+        environment:
+            - DEBUG=true
+        ports:
+            - "8080:8080"
+            - "8000:8000"
+        restart: unless-stopped
+
     mysql:
         image: mysql:5.7
         environment:

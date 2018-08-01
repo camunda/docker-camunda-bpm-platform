@@ -154,6 +154,12 @@ means the tomcat configuration files are inside the `/camunda/conf/` directory
 and the deployments on tomcat are in `/camunda/webapps/`. The directory
 structure depends on the application server.
 
+## Debug
+
+To enable JPDA inside the container you can set the environment variable
+`DEBUG=true` on startup of the container. This will allow you to connect to the
+container on port `8000` to debug your application.
+
 ## Build
 
 The image can be used to build a Docker image for a given Camunda BPM platform
