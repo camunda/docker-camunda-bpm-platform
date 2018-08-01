@@ -7,5 +7,6 @@ docker-compose up -d postgres mysql
 ./test-${DISTRO}.sh camunda
 ./test-${DISTRO}.sh camunda-mysql
 ./test-${DISTRO}.sh camunda-postgres
+./test-debug.sh camunda-debug
 docker-compose down -v
 cd -
