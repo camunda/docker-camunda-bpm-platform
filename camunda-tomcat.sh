@@ -16,7 +16,15 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     /camunda/conf/server.xml
 fi
 
-CMD="/camunda/bin/catalina.sh run"
+CMD="/camunda/bin/catalina.sh"
+if [ "${DEBUG}" = "true" ]; then
+  echo "Enabling debug mode, JPDA accesible under port 8000"
+  export JPDA_ADDRESS="0.0.0.0:8000"
+  CMD+=" jpda"
+fi
+
+CMD+=" run"
+
 if [ -n "${WAIT_FOR}" ]; then
     CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
