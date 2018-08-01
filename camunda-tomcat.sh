@@ -16,7 +16,13 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     /camunda/conf/server.xml
 fi
 
-CMD="/camunda/bin/catalina.sh run"
+JPDA_PARAM=
+if [ -n "$ENABLE_JPDA" ]; then 
+  echo Run with jpda
+  JPDA_PARAM=jpda
+fi
+
+CMD="/camunda/bin/catalina.sh ${JPDA_PARAM} run"
 if [ -n "${WAIT_FOR}" ]; then
     CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
