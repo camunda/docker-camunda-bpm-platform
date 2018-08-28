@@ -64,7 +64,8 @@ variables:
 
 - `DB_CONN_MAXACTIVE` the maximum number of active connections (default:
   `20`)
-- `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`)
+- `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`
+  - ignored when app server = `wildfly`)
 - `DB_CONN_MINIDLE` the minimum number of idle connections (default: `5`)
 - `DB_DRIVER` the database driver class name, supported are h2, mysql and
   postgresql:

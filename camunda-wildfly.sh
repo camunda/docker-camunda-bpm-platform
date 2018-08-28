@@ -10,6 +10,8 @@ embed-server
 /subsystem=datasources/data-source=ProcessEngine: write-attribute(name=password, value=\${env.DB_PASSWORD})
 /subsystem=datasources/data-source=ProcessEngine: write-attribute(name=connection-url, value=\${env.DB_URL})
 /subsystem=datasources/data-source=ProcessEngine: write-attribute(name=driver-name, value=${DB_DRIVER})
+/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=max-pool-size, value=\${env.DB_CONN_MAXACTIVE})
+/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=min-pool-size, value=\${env.DB_CONN_MINIDLE})
 run-batch
 stop-embedded-server
 EOF
