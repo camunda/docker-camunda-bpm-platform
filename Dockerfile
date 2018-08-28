@@ -23,7 +23,7 @@ RUN /tmp/download.sh
 
 FROM openjdk:8u181-jre-alpine3.8
 
-ARG VERSION=7.9.0
+ARG VERSION=7.10.0-alpha2
 
 ENV CAMUNDA_VERSION=${VERSION}
 ENV DB_DRIVER=org.h2.Driver
