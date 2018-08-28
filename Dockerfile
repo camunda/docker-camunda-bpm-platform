@@ -23,6 +23,9 @@ RUN /tmp/download.sh
 
 FROM openjdk:8u151-jre-alpine3.7
 
+ARG VERSION=7.9.0
+
+ENV CAMUNDA_VERSION=${VERSION}
 ENV DB_DRIVER=org.h2.Driver
 ENV DB_URL=jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE
 ENV DB_USERNAME=sa
