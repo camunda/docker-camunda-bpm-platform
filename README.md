@@ -62,6 +62,11 @@ All images use OpenJDK 8 in an alpine image.
 The used database can be configured by providing the following environment
 variables:
 
+- `DB_CONN_MAXACTIVE` the maximum number of active connections (default:
+  `20`)
+- `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`
+  - ignored when app server = `wildfly`)
+- `DB_CONN_MINIDLE` the minimum number of idle connections (default: `5`)
 - `DB_DRIVER` the database driver class name, supported are h2, mysql and
   postgresql:
   - h2: `DB_DRIVER=org.h2.Driver`
