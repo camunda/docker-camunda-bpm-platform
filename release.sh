@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 EE=${EE:-false}
-VERSION=${VERSION:-$(grep VERSION= Dockerfile | cut -d = -f 2)}
+VERSION=${VERSION:-$(grep VERSION= Dockerfile | head -n1 | cut -d = -f 2)}
 DISTRO=${DISTRO:-$(grep DISTRO= Dockerfile | cut -d = -f 2)}
 SNAPSHOT=${SNAPSHOT:-$(grep SNAPSHOT= Dockerfile | cut -d = -f 2)}
 
