@@ -8,6 +8,6 @@ start_container
 
 poll_log "Listening for transport dt_socket at address: 8000" "ERROR" || _exit 1 "JPDA not started"
 
-nc -z localhost 8000 || _exit 2 "JPDA port not open"
+timeout 1 bash -c 'cat < /dev/null > /dev/tcp/localhost/8000' || _exit 2 "JPDA port not open"
 
 _exit 0 "Test successfull"
