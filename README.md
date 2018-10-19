@@ -39,8 +39,8 @@ to enable authentication for the Rest-API.
 ## Supported Tags/Releases
 
 The following tag schema is used. The user has the choice between different
-application server distributions of Camunda BPM platform. `${DISTRO}` can either
-be `tomcat`, `wildfly10` or `wildfly11`. If no `${DISTRO}` is specified the
+application server distributions of Camunda BPM platform. `${DISTRO}` can
+either be `tomcat` or `wildfly`. If no `${DISTRO}` is specified the
 `tomcat` distribution is used.
 
 - `latest`, `${DISTRO}-latest`: Alywas the latest minor release of Camunda BPM
@@ -173,10 +173,9 @@ version and distribution.
 ### Build a released version
 
 To build a community image specify the `DISTRO` and `VERSION` build
-argument. Possible values for `DISTRO` are `tomcat`, `wildfly10` and
-`wildfly11` (if the Camunda BPM platform version already supported it).
-The `VERSION` is the Camunda BPM platform version you want to build, i.e.
-`7.8.0`.
+argument. Possible values for `DISTRO` are `tomcat` and `wildfly` (if the
+Camunda BPM platform version already supported it). The `VERSION` is the
+Camunda BPM platform version you want to build, i.e. `7.10.0`.
 
 ```
 docker build -t camunda-bpm-platform \

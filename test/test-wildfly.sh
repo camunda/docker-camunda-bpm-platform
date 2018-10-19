@@ -6,7 +6,7 @@ source test_helper.sh
 
 start_container
 
-poll_log 'WildFly Full 10.1.0.Final (WildFly Core 2.2.0.Final) started in' 'WildFly Full 10.1.0.Final (WildFly Core 2.2.0.Final) started (with errors) in' || _exit 1 "Server not started"
+poll_log 'started in' 'started (with errors) in' || _exit 1 "Server not started"
 
 _log "Server started"
 
