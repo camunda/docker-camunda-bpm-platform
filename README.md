@@ -75,6 +75,9 @@ variables:
 - `DB_URL` the database jdbc url
 - `DB_USERNAME` the database username
 - `DB_PASSWORD` the database password
+- `DB_PASSWORD_FILE` this supports [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/). 
+Put here the path of the secret, e.g. `/run/secrets/camunda_db_password`. 
+Make sure that `DB_PASSWORD` is not set!
 - `SKIP_DB_CONFIG` skips the automated database configuration to use manual
   configuration
 - `WAIT_FOR` wait for a `host:port` to be available over TCP before starting
