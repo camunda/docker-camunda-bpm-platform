@@ -8,10 +8,8 @@ services:
 env:
     - DISTRO=tomcat
     - DISTRO=tomcat EE=true
-    - DISTRO=wildfly10
-    - DISTRO=wildfly10 EE=true
-    - DISTRO=wildfly11
-    - DISTRO=wildfly11 EE=true
+    - DISTRO=wildfly
+    - DISTRO=wildfly EE=true
 
 script: |
     docker build -t camunda/camunda-bpm-platform:${DISTRO} \
