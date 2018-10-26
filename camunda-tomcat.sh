@@ -22,6 +22,10 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     /camunda/conf/server.xml
 fi
 
+if [ -n "$JAVA_OPTS" ]; then
+  echo "export CATALINA_OPTS=\"$JAVA_OPTS\"" > /camunda/bin/setenv.sh
+fi
+
 CMD="/camunda/bin/catalina.sh"
 if [ "${DEBUG}" = "true" ]; then
   echo "Enabling debug mode, JPDA accesible under port 8000"
