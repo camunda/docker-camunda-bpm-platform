@@ -1,4 +1,4 @@
-FROM openjdk:8u171-jre-alpine3.8 as builder
+FROM openjdk:8u181-jre-alpine3.8 as builder
 
 ARG VERSION=7.9.0
 ARG DISTRO=tomcat
