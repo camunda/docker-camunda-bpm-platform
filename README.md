@@ -57,6 +57,27 @@ For all available tags see the [docker hub tags][].
 
 All images use OpenJDK 8 in an alpine image.
 
+### Java Options
+
+To override the default Java options the environment variable `JAVA_OPTS` can
+be set. The default value is set to limit the heap size to 768 MB and the
+metaspace size to 256 MB.
+
+```
+JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
+```
+
+### Use docker memory limits
+
+Instead of specifying the Java memory settings it is also possible to instruct
+the JVM to respect the docker memory settings. As the image uses Java 8 it has
+to be enabled using the `JAVA_OPTS` environment variable. Using the following
+settings the JVM will respect docker memory limits specified during startup.
+
+```
+JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+```
+
 ## Database environment variables
 
 The used database can be configured by providing the following environment

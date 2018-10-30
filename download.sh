@@ -72,6 +72,8 @@ EOF
     *)
         cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /camunda/lib
         cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /camunda/lib
+        # remove default CATALINA_OPTS from environment settings
+        echo "" > /camunda/bin/setenv.sh
         ;;
 esac
 
