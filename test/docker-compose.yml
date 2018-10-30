@@ -44,6 +44,23 @@ services:
             - "8000:8000"
         restart: unless-stopped
 
+    camunda-password-file:
+        image: camunda/camunda-bpm-platform:${DISTRO:-latest}
+        environment:
+            - DB_DRIVER=com.mysql.jdbc.Driver
+            - DB_URL=jdbc:mysql://mysql:3306/process-engine
+            - DB_USERNAME=camunda
+            - DB_PASSWORD=
+            - DB_PASSWORD_FILE=/run/secrets/camunda_db_password
+            - WAIT_FOR=mysql:3306
+        volumes:
+            - $PWD/db-password.txt:/run/secrets/camunda_db_password
+        links:
+            - mysql
+        ports:
+            - "8080:8080"
+        restart: unless-stopped
+
     mysql:
         image: mysql:5.7
         environment:
