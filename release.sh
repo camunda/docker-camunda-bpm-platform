@@ -28,6 +28,8 @@ if [ "${EE}" = "true" ]; then
     exit 0
 fi
 
+docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}"
+
 if [ "${SNAPSHOT}" = "true" ]; then
     tag_and_push "${DISTRO}-${VERSION}-SNAPSHOT"
     tag_and_push "${DISTRO}-SNAPSHOT"
