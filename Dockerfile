@@ -1,4 +1,4 @@
-FROM openjdk:8u181-jre-alpine3.8 as builder
+FROM openjdk:8u181-jre-stretch as builder
 
 ARG VERSION=7.8.0
 ARG DISTRO=tomcat
@@ -8,11 +8,14 @@ ARG EE=false
 ARG USER
 ARG PASSWORD
 
-RUN apk add --no-cache \
-        ca-certificates \
-        tar \
-        wget \
-        xmlstarlet
+#RUN apk add --no-cache \
+#        ca-certificates \
+#        tar \
+#        wget \
+#        xmlstarlet
+
+RUN apt-get update \
+    && apt-get install -y xmlstarlet
 
 COPY download.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
 
@@ -21,7 +24,7 @@ RUN /tmp/download.sh
 
 ##### FINAL IMAGE #####
 
-FROM openjdk:8u181-jre-alpine3.8
+FROM openjdk:8u181-jre-stretch
 
 ARG VERSION=7.8.0
 
@@ -42,22 +45,36 @@ ENV JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
 
 EXPOSE 8080 8000
 
-RUN apk add --no-cache \
-        bash \
-        ca-certificates \
-        tzdata \
-        tini \
-        xmlstarlet \
+# ALPINE
+#RUN apk add --no-cache \
+#        bash \
+#        ca-certificates \
+#        tzdata \
+#        tini \
+#        xmlstarlet \
+#    && wget -O /usr/local/bin/wait-for-it.sh \
+#      "https://raw.githubusercontent.com/vishnubob/wait-for-it/db049716e42767d39961e95dd9696103dca813f1/wait-for-it.sh" \
+#    && chmod +x /usr/local/bin/wait-for-it.sh
+# RUN addgroup -g 1000 -S camunda && \
+#     adduser -u 1000 -S camunda -G camunda -h /camunda -s /bin/bash -D camunda
+
+# DEBIAN
+RUN apt-get update \
+    && apt-get install -y xmlstarlet \
+    && apt-get install -y libnetty-tcnative-java \
+    && wget -O /tmp/tini_0.18.0-amd64.deb https://github.com/krallin/tini/releases/download/v0.18.0/tini_0.18.0-amd64.deb \
+    && dpkg -i /tmp/tini_0.18.0-amd64.deb \
     && wget -O /usr/local/bin/wait-for-it.sh \
       "https://raw.githubusercontent.com/vishnubob/wait-for-it/db049716e42767d39961e95dd9696103dca813f1/wait-for-it.sh" \
     && chmod +x /usr/local/bin/wait-for-it.sh
 
-RUN addgroup -g 1000 -S camunda && \
-    adduser -u 1000 -S camunda -G camunda -h /camunda -s /bin/bash -D camunda
+RUN addgroup --system --gid 1000 camunda && \
+    adduser --system --uid 1000 --gid 1000 --home /camunda --shell /bin/bash camunda
+
 WORKDIR /camunda
 USER camunda
 
-ENTRYPOINT ["/sbin/tini", "--"]
+ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["./camunda.sh"]
 
 COPY --chown=camunda:camunda --from=builder /camunda .
