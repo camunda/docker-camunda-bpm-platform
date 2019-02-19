@@ -1,19 +1,16 @@
 #!/bin/sh -ex
 
-NEXUS="https://app.camunda.com/nexus/service/local/artifact/maven/redirect"
-
-# Configure username and password for EE download (ignored for CE)
-echo "machine app.camunda.com login ${USER} password ${PASSWORD}" >> ~/.netrc
-
 # Determine nexus URL parameters
 if [ ${EE} = "true" ]; then
     echo "Downloading Camunda ${VERSION} Enterprise Edition for ${DISTRO}"
     REPO="camunda-bpm-ee"
+    NEXUS_GROUP="private"
     ARTIFACT="camunda-bpm-ee-${DISTRO}"
     ARTIFACT_VERSION="${VERSION}-ee"
 else
     echo "Downloading Camunda ${VERSION} Community Edition for ${DISTRO}"
     REPO="camunda-bpm"
+    NEXUS_GROUP="public"
     ARTIFACT="camunda-bpm-${DISTRO}"
     ARTIFACT_VERSION="${VERSION}"
 fi
@@ -32,25 +29,34 @@ esac
 ARTIFACT_GROUP="org.camunda.bpm.${GROUP}"
 
 # Download distro from nexus
-wget --progress=bar:force:noscroll -O /tmp/camunda.tar.gz "${NEXUS}?r=${REPO}&g=${ARTIFACT_GROUP}&a=${ARTIFACT}&v=${ARTIFACT_VERSION}&p=tar.gz"
+mvn dependency:get -B --global-settings /tmp/settings.xml \
+    -DremoteRepositories="camunda-nexus::::https://app.camunda.com/nexus/content/repositories/${REPO}" \
+    -DgroupId="${ARTIFACT_GROUP}" -DartifactId="${ARTIFACT}" \
+    -Dversion="${ARTIFACT_VERSION}" -Dpackaging="tar.gz" -Dtransitive=false
+cambpm_distro_file=$(find /m2-repository -name "${ARTIFACT}-${ARTIFACT_VERSION}.tar.gz" -print | head -n 1)
 
 # Unpack distro to /camunda directory
 mkdir -p /camunda
-tar xzf /tmp/camunda.tar.gz -C /camunda server --strip 2
+tar xzf "$cambpm_distro_file" -C /camunda server --strip 2
 
 cp /tmp/camunda-${GROUP}.sh /camunda/camunda.sh
 
 
 # download and register database drivers
-if [ ${EE} = "true" -a ${SNAPSHOT} = "true" -a ${VERSION##*.} -eq 0 ]; then
-    REPO="camunda-bpm-snapshots"
-fi
-wget --progress=bar:force:noscroll -O /tmp/pom.xml "${NEXUS}?r=${REPO}&g=org.camunda.bpm&a=camunda-database-settings&v=${ARTIFACT_VERSION}&p=pom"
-MYSQL_VERSION=$(xmlstarlet sel -t -v //_:version.mysql /tmp/pom.xml)
-POSTGRESQL_VERSION=$(xmlstarlet sel -t -v //_:version.postgresql /tmp/pom.xml)
+mvn dependency:get -B --global-settings /tmp/settings.xml \
+    -DremoteRepositories="camunda-nexus::::https://app.camunda.com/nexus/content/groups/${NEXUS_GROUP}" \
+    -DgroupId="org.camunda.bpm" -DartifactId="camunda-database-settings" \
+    -Dversion="${ARTIFACT_VERSION}" -Dpackaging="pom" -Dtransitive=false
+cambpmdbsettings_pom_file=$(find /m2-repository -name "camunda-database-settings-${ARTIFACT_VERSION}.pom" -print | head -n 1)
+MYSQL_VERSION=$(xmlstarlet sel -t -v //_:version.mysql $cambpmdbsettings_pom_file)
+POSTGRESQL_VERSION=$(xmlstarlet sel -t -v //_:version.postgresql $cambpmdbsettings_pom_file)
 
-wget -O /tmp/mysql-connector-java-${MYSQL_VERSION}.jar "${NEXUS}?r=public&g=mysql&a=mysql-connector-java&v=${MYSQL_VERSION}&p=jar"
-wget -O /tmp/postgresql-${POSTGRESQL_VERSION}.jar "${NEXUS}?r=public&g=org.postgresql&a=postgresql&v=${POSTGRESQL_VERSION}&p=jar"
+mvn dependency:copy -B \
+    -Dartifact="mysql:mysql-connector-java:${MYSQL_VERSION}:jar" \
+    -DoutputDirectory=/tmp/
+mvn dependency:copy -B \
+    -Dartifact="org.postgresql:postgresql:${POSTGRESQL_VERSION}:jar" \
+    -DoutputDirectory=/tmp/
 
 case ${DISTRO} in
     wildfly*)
