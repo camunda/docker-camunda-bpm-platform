@@ -10,11 +10,12 @@ ARG PASSWORD
 
 RUN apk add --no-cache \
         ca-certificates \
+        maven \
         tar \
         wget \
         xmlstarlet
 
-COPY download.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
+COPY settings.xml download.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
 
 RUN /tmp/download.sh
 
