@@ -10,7 +10,7 @@ if [ ${EE} = "true" ]; then
     echo "Downloading Camunda ${VERSION} Enterprise Edition for ${DISTRO}"
     REPO="camunda-bpm-ee"
     ARTIFACT="camunda-bpm-ee-${DISTRO}"
-	ARTIFACT_VERSION="${VERSION}-ee"
+    ARTIFACT_VERSION="${VERSION}-ee"
 else
     echo "Downloading Camunda ${VERSION} Community Edition for ${DISTRO}"
     REPO="camunda-bpm"
@@ -20,8 +20,8 @@ fi
 
 # Determine if SNAPSHOT repo and version should be used
 if [ ${SNAPSHOT} = "true" ]; then
-	REPO="${REPO}-snapshots"
-	ARTIFACT_VERSION="${VERSION}-SNAPSHOT"
+    REPO="${REPO}-snapshots"
+    ARTIFACT_VERSION="${VERSION}-SNAPSHOT"
 fi
 
 # Determine artifact group, all wildfly version have the same group
@@ -76,4 +76,3 @@ EOF
         echo "" > /camunda/bin/setenv.sh
         ;;
 esac
-
