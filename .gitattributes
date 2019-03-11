@@ -1,0 +1,17 @@
+##
+# Handle line endings automatically for files detected as text
+##
+*               text=auto
+
+##
+# The above will handle all files NOT found below
+##
+
+# These files are text and should be normalized (Convert crlf => lf)
+.gitignore      text
+.gitattributes  text
+*.md		    text
+
+# Linux
+*.sh            text eol=lf
+*.bash          text eol=lf

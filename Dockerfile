@@ -1,64 +1,103 @@
-FROM openjdk:8u191-jre-alpine3.9 as builder
+############################################################
+# Arguments
+############################################################
+ARG BASE_IMAGE=openjdk:13-alpine
+ARG OS_FAMILY=alpine
+ARG APP_SERVER_DIST=tomcat
+ARG DB_DRIVERS=postgres
 
-ARG VERSION=7.10.0
-ARG DISTRO=tomcat
-ARG SNAPSHOT=false
+############################################################
+# Base Image
+############################################################
 
-ARG EE=false
-ARG USER
-ARG PASSWORD
+# OpenJDK
+# See Tags: https://hub.docker.com/_/openjdk?tab=tags
+FROM ${BASE_IMAGE}
 
-RUN apk add --no-cache \
-        ca-certificates \
-        maven \
-        tar \
-        wget \
-        xmlstarlet
+############################################################
+# Configuration
+############################################################
 
-COPY settings.xml download.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
+# Arguments (inject into ENV command)
+ARG BASE_IMAGE
+ARG OS_FAMILY
+ARG APP_SERVER_DIST
+ARG DB_DRIVERS
 
-RUN /tmp/download.sh
+# Environment
+ENV BASE_IMAGE=${BASE_IMAGE} \
+	OS_FAMILY=${OS_FAMILY} \
+	# App Server Dist
+	APP_SERVER_DIST=${APP_SERVER_DIST} \
+	# Db Connection
+	DB_DRIVERS=${DB_DRIVERS} \
+	DB_DRIVER=org.h2.Driver \
+	DB_URL=jdbc:h2:/data/camunda-h2-dbs/process-engine;SCHEMA=PUBLIC;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE \
+	# DB Username
+	DB_USERNAME=sa \
+	# DB Password
+	DB_PASSWORD=sa \
+	# DB Secret File Support
+	DB_PASSWORD_FILE= \
+	# Connection Pooling
+	DB_CONN_INITIAL=15 \
+	DB_CONN_MAXACTIVE=40 \
+	DB_CONN_MAXIDLE=5 \
+	DB_CONN_MINIDLE=5 \
+	# BPMN Platform Configuration
+	EXECUTOR_ACQUISITION_MAX_JOBS=10 \
+	EXECUTOR_ACQUISITION_WAIT_TIME_IN_MILLIS=8000 \
+	EXECUTOR_ACQUISITION_LOCK_TIME_IN_MILLIS=400000 \
+	EXECUTOR_QUEUE_SIZE=3 \
+	EXECUTOR_CORE_POOL_SIZE=15 \
+	EXECUTOR_MAX_POOL_SIZE=30 \
+	EXECUTOR_KEEP_ALIVE_TIME=10 \
+	ENGINE_HISTORY=audit \
+	ENGINE_HISTORY_CLEANUP_BATCH_WINDOW_START_TIME=00:01 \
+	ENGINE_JOB_EXECUTOR_DEPLOYMENT_AWARE=true \
+	# Engine Conf - Whitelists
+	ENGINE_GENERAL_RESOURCE_WHITELIST_PATTERN=.+ \
+	ENGINE_USER_RESOURCE_WHITELIST_PATTERN=.+ \
+	ENGINE_GROUP_RESOURCE_WHITELIST_PATTERN=.+ \
+	ENGINE_TENANT_RESOURCE_WHITELIST_PATTERN=.+ \
+	ENGINE_DEFAULT_SERIALIZATION_FORMAT=application/json \
+	# Deployment User (to upload webapps)
+	MANAGEMENT_USERNAME=tomcat \
+	MANAGEMENT_PASSWORD=tomcat \
+	MANAGEMENT_ROLES=manager-script,manager-gui \
+	# Automtic Db-Migrations
+	DB_MIGRATION=true \
+	# Timezone
+	TZ=UTC \
+	# Camunda Version
+	CAMUNDA_VERSION=7.10.0 \
+	# Directories
+	HOOKDIR_PRESTART=/app/hook.pre-start.d \
+	BUILD_PATH=/build
 
+############################################################
+# Installation
+############################################################
 
-##### FINAL IMAGE #####
+# use root for installation
+USER root
 
-FROM openjdk:8u191-jre-alpine3.9
+# copy files from rootfs to the container
+COPY global $BUILD_PATH
+COPY ${OS_FAMILY} $BUILD_PATH
 
-ARG VERSION=7.10.0
+# setup
+RUN	sh $BUILD_PATH/setup.sh
 
-ENV CAMUNDA_VERSION=${VERSION}
-ENV DB_DRIVER=org.h2.Driver
-ENV DB_URL=jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE
-ENV DB_USERNAME=sa
-ENV DB_PASSWORD=sa
-ENV DB_CONN_MAXACTIVE=20
-ENV DB_CONN_MINIDLE=5
-ENV DB_CONN_MAXIDLE=20
-ENV SKIP_DB_CONFIG=
-ENV WAIT_FOR=
-ENV WAIT_FOR_TIMEOUT=30
-ENV TZ=UTC
-ENV DEBUG=false
-ENV JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
+############################################################
+# Execution
+############################################################
 
-EXPOSE 8080 8000
+# Working Directory
+WORKDIR /app
 
-RUN apk add --no-cache \
-        bash \
-        ca-certificates \
-        tzdata \
-        tini \
-        xmlstarlet \
-    && wget -O /usr/local/bin/wait-for-it.sh \
-      "https://raw.githubusercontent.com/vishnubob/wait-for-it/db049716e42767d39961e95dd9696103dca813f1/wait-for-it.sh" \
-    && chmod +x /usr/local/bin/wait-for-it.sh
+# User
+USER app
 
-RUN addgroup -g 1000 -S camunda && \
-    adduser -u 1000 -S camunda -G camunda -h /camunda -s /bin/bash -D camunda
-WORKDIR /camunda
-USER camunda
-
-ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["./camunda.sh"]
-
-COPY --chown=camunda:camunda --from=builder /camunda .
+# Command (includes pre-start hook for modifications)
+CMD bash -c "run_scripts $HOOKDIR_PRESTART && /app/run.sh"

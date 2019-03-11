@@ -1,0 +1,60 @@
+####
+# GitLab CI
+####
+
+# Basis Image
+image: docker:latest
+
+services:
+- docker:stable-dind
+
+# Definition der Stages
+stages:
+- build
+- test
+
+variables:
+  REGISTRY_IMAGE: $CI_REGISTRY_IMAGE
+  VERSION: 7.10.0
+
+# Build Image Script
+.build: &build_template
+  stage: build
+  script:
+  # Build
+  - docker build --build-arg BASE_IMAGE=$BASE_IMAGE --build-arg OS_FAMILY=$OS_FAMILY --build-arg APP_SERVER_DIST=$APP_SERVER_DIST --build-arg DB_DRIVERS=$DB_DRIVERS --no-cache -t $REGISTRY_IMAGE:$VERSION-$APP_SERVER_DIST .
+  # Run Tests
+  only:
+  - master
+  - tags
+
+# Task: Alpine - Tomcat
+Build Docker Image - Alpine:
+  <<: *build_template
+  variables:
+    BASE_IMAGE: openjdk:13-alpine
+    OS_FAMILY: alpine
+    APP_SERVER_DIST: tomcat
+    DB_DRIVERS: postgres
+
+# Task: OracleLinux - Tomcat
+Build Docker Image - Oracle Linux:
+  <<: *build_template
+  variables:
+    BASE_IMAGE: openjdk:13-oracle
+    OS_FAMILY: centos
+    APP_SERVER_DIST: tomcat
+    DB_DRIVERS: postgres
+
+# Task: Test Image
+Test Docker Image:
+  stage: test
+  variables:
+    IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  script:
+  - echo "Coming soon"
+  # dgoss run -p 4567:4567 rajatvig/kinesalite:latest
+  only:
+  - develop
+  - master
+  - tags

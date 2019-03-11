@@ -1,0 +1,9 @@
+images:
+# Development
+# - Testing
+- name: Goss
+  description: Easy docker health checks, /healthz endpoints, and container delays 
+  provides:
+  - goss
+  - dgoss
+  image: docker.io/envcli/goss:latest

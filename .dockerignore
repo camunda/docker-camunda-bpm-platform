@@ -1,3 +1,4 @@
-*.md
+.git
+README.md
+VERSION
 LICENSE
-.gitignore

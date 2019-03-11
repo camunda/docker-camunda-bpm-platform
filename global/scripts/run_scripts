@@ -1,0 +1,11 @@
+#!/bin/bash
+set -o errexit
+
+# Hook Support
+for script in $1/*.sh; do
+    # make scripts executable
+    chmod +x $script
+
+    # execute $script in the context of the current shell
+    sh $script
+done

@@ -1,0 +1,6 @@
+#!/bin/bash
+set -o errexit
+
+# Run script
+chmod +x $1
+sh $1

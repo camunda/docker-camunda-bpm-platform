@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpm-platform xmlns="http://www.camunda.org/schema/1.0/BpmPlatform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.camunda.org/schema/1.0/BpmPlatform http://www.camunda.org/schema/1.0/BpmPlatform ">
+
+  <job-executor>
+	  <job-acquisition name="default">
+      <properties>
+        <property name="maxJobsPerAcquisition">$EXECUTOR_ACQUISITION_MAX_JOBS</property>
+        <property name="waitTimeInMillis">$EXECUTOR_ACQUISITION_WAIT_TIME_IN_MILLIS</property>
+        <property name="lockTimeInMillis">$EXECUTOR_ACQUISITION_LOCK_TIME_IN_MILLIS</property>
+      </properties>
+	  </job-acquisition>
+	  <properties>
+		<!-- Note: the following properties only take effect in a Tomcat environment -->
+		<property name="queueSize">$EXECUTOR_QUEUE_SIZE</property>
+		<property name="corePoolSize">$EXECUTOR_CORE_POOL_SIZE</property>
+		<property name="maxPoolSize">$EXECUTOR_MAX_POOL_SIZE</property>
+		<property name="keepAliveTime">$EXECUTOR_KEEP_ALIVE_TIME</property>
+	  </properties>
+	</job-executor>
+
+  <process-engine name="default">
+    <job-acquisition>default</job-acquisition>
+    <configuration>org.camunda.bpm.engine.impl.cfg.StandaloneProcessEngineConfiguration</configuration>
+    <datasource>java:jdbc/ProcessEngine</datasource>
+
+    <properties>
+      <property name="history">$ENGINE_HISTORY</property>
+      <property name="databaseSchemaUpdate">false</property>
+      <property name="authorizationEnabled">true</property>
+      <property name="jobExecutorDeploymentAware">$ENGINE_JOB_EXECUTOR_DEPLOYMENT_AWARE</property>
+      <property name="historyCleanupBatchWindowStartTime">$ENGINE_HISTORY_CLEANUP_BATCH_WINDOW_START_TIME</property>
+
+      <!-- Security -->
+			<property name="generalResourceWhitelistPattern">$ENGINE_GENERAL_RESOURCE_WHITELIST_PATTERN</property>
+			<property name="userResourceWhitelistPattern">$ENGINE_USER_RESOURCE_WHITELIST_PATTERN</property>
+			<property name="groupResourceWhitelistPattern">$ENGINE_GROUP_RESOURCE_WHITELIST_PATTERN</property>
+			<property name="tenantResourceWhitelistPattern">$ENGINE_TENANT_RESOURCE_WHITELIST_PATTERN</property>
+
+			<!-- Really important, or process variables (objects) can't be used in the forms -->
+			<property name="defaultSerializationFormat">$ENGINE_DEFAULT_SERIALIZATION_FORMAT</property>
+    </properties>
+
+    <plugins>
+      <!-- plugin enabling Process Application event listener support -->
+      <plugin>
+        <class>org.camunda.bpm.application.impl.event.ProcessApplicationEventListenerPlugin</class>
+      </plugin>
+
+      <!-- plugin enabling integration of camunda Spin -->
+      <plugin>
+        <class>org.camunda.spin.plugin.impl.SpinProcessEnginePlugin</class>
+      </plugin>
+
+      <!-- plugin enabling connect support -->
+      <plugin>
+        <class>org.camunda.connect.plugin.impl.ConnectProcessEnginePlugin</class>
+      </plugin>
+
+    <!-- LDAP CONFIGURATION -->
+    <!-- Uncomment this section in order to enable LDAP support for this process engine -->
+    <!-- Adjust configuration, see ( http://docs.camunda.org/latest/guides/user-guide/#process-engine-identity-service-the-ldap-identity-service ) -->
+    <!--
+      <plugin>
+        <class>org.camunda.bpm.identity.impl.ldap.plugin.LdapIdentityProviderPlugin</class>
+        <properties>
+
+          <property name="serverUrl">ldaps://localhost:4334/</property>
+          <property name="acceptUntrustedCertificates">false</property>
+          <property name="managerDn">uid=jonny,ou=office-berlin,o=camunda,c=org</property>
+          <property name="managerPassword">s3cr3t</property>
+
+          <property name="baseDn">o=camunda,c=org</property>
+
+          <property name="userSearchBase"></property>
+          <property name="userSearchFilter">(objectclass=person)</property>
+
+          <property name="userIdAttribute">uid</property>
+          <property name="userFirstnameAttribute">cn</property>
+          <property name="userLastnameAttribute">sn</property>
+          <property name="userEmailAttribute">mail</property>
+          <property name="userPasswordAttribute">userpassword</property>
+
+          <property name="groupSearchBase"></property>
+          <property name="groupSearchFilter">(objectclass=groupOfNames)</property>
+          <property name="groupIdAttribute">cn</property>
+          <property name="groupNameAttribute">cn</property>
+
+          <property name="groupMemberAttribute">member</property>
+          <property name="sortControlSupported">false</property>
+
+        </properties>
+      </plugin>
+      -->
+
+      <!-- LDAP CONFIGURATION -->
+      <!-- The following plugin allows you to grant administrator authorizations to an existing LDAP user -->
+      <!--
+      <plugin>
+        <class>org.camunda.bpm.engine.impl.plugin.AdministratorAuthorizationPlugin</class>
+        <properties>
+          <property name="administratorUserName">admin</property>
+        </properties>
+      </plugin>
+      -->
+
+    </plugins>
+
+
+  </process-engine>
+
+</bpm-platform>
