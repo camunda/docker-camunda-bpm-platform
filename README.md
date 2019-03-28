@@ -21,6 +21,8 @@ This Camunda BPM community project provides docker images of the latest Camunda 
 | OS_FAMILY | alpine | the os family of the base image, needed to pick the right commands |
 | APP_SERVER_DIST | tomcat | application server used to run camunda |
 | DB_DRIVERS | postgres | db drivers that should be installed |
+| EE_USERNAME | | enterprise edition username (optional for ee)|
+| EE_PASSWORD | | enterprise edition password (optional for ee)|
 
 ## Environment Variables
 

@@ -31,3 +31,4 @@ chown -R app:app /data
 
 echo "CleanUp Tasks"
 sh /usr/local/bin/run_script $BUILD_PATH/cleanup.sh
+rm -rf /build

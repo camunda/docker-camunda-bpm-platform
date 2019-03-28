@@ -5,6 +5,8 @@ ARG BASE_IMAGE=openjdk:13-alpine
 ARG OS_FAMILY=alpine
 ARG APP_SERVER_DIST=tomcat
 ARG DB_DRIVERS=postgres
+ARG EE_USERNAME=
+ARG EE_PASSWORD=
 
 ############################################################
 # Base Image
@@ -85,6 +87,10 @@ USER root
 # copy files from rootfs to the container
 COPY global $BUILD_PATH
 COPY ${OS_FAMILY} $BUILD_PATH
+
+# build time only arguments
+ARG EE_USERNAME
+ARG EE_PASSWORD
 
 # setup
 RUN	sh $BUILD_PATH/setup.sh

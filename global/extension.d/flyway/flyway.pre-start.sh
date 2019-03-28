@@ -2,7 +2,7 @@
 set -o errexit
 
 # Logging
-echo "[FlyWay Migration]"
+echo "[FlyWay Migration: $DB_MIGRATION]"
 
 # Run Db Migration
 if [ "$DB_MIGRATION" = true ] ; then
