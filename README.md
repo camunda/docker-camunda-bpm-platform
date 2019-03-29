@@ -10,6 +10,7 @@ This Camunda BPM community project provides docker images of the latest Camunda 
 - self-contained, does not load any db drivers from the internet on startup
 - non-privilgied execution to support kubernetes/openshift deployments
 - all persistent data in the `/data` directory
+- wait_for_it to wait for the db to be ready before starting
 
 ## Build Args
 
@@ -30,18 +31,17 @@ Configure your process engine using environment variables.
 
 ### Database
 
-| Env Variable | Default Value |
-| ------ | ------ |
-| DB_DRIVER | org.h2.Driver |
-| DB_URL | jdbc:h2:/data/camunda-h2-dbs/process-engine;SCHEMA=PUBLIC;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE |
-| DB_USERNAME | sa |
-| DB_PASSWORD | sa |
-| DB_PASSWORD_FILE | |
-| DB_CONN_INITIAL | 15 |
-| DB_CONN_MAXACTIVE | 40 |
-| DB_CONN_MAXIDLE | 5 |
-| DB_CONN_MINIDLE | 5 |
-| DB_MIGRATION | true |
+| Env Variable | Default Value | Description |
+| ------ | ------ | ------ |
+| DB_DRIVER | org.h2.Driver | db driver |
+| DB_URL | jdbc:h2:/data/camunda-h2-dbs/process-engine;SCHEMA=PUBLIC;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE | db jdbc url |
+| DB_USERNAME | sa | db username|
+| DB_PASSWORD | sa | db password |
+| DB_PASSWORD_FILE | | password file, takes precedence over DB_PASSWORD - useful for docker/kubernetes secrets |
+| DB_CONN_INITIAL | 15 | initial connection pool size|
+| DB_CONN_MAXACTIVE | 40 | connection pool max active |
+| DB_CONN_MAXIDLE | 5 | connection pool max idle |
+| DB_CONN_MINIDLE | 5 | connection pool min idle |
 
 ### Engine
 
@@ -65,3 +65,16 @@ Configure your process engine using environment variables.
 | MANAGEMENT_USERNAME | tomcat |
 | MANAGEMENT_PASSWORD | tomcat |
 | MANAGEMENT_ROLES | manager-script,manager-gui |
+
+### Extension: Db Migration (FlyWay)
+
+| Env Variable | Default Value | Description |
+| ------ | ------ | ------ |
+| DB_MIGRATION | true | run automatic db migrations for upgrades |
+
+### Extension: Wait
+
+| Env Variable | Default Value | Description |
+| ------ | ------ | ------ |
+| DB_WAIT | | wait for a host:port to be available over TCP before starting |
+| DB_WAIT_TIMEOUT | 60 | how long to wait for the service to be avaiable - defaults to 60 seconds |
