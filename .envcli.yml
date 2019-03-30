@@ -6,4 +6,9 @@ images:
   provides:
   - goss
   - dgoss
+  - egoss
   image: docker.io/envcli/goss:latest
+  containerRuntimeAccess: true
+  cache:
+  - name: tmp
+    directory: /cache/tmp

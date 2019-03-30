@@ -4,5 +4,28 @@ port:
     ip:
     - 0.0.0.0
 user:
-  camunda:
+  app:
     exists: true
+    uid: 1000
+group:
+  app:
+    exists: true
+    gid: 1000
+file:
+  /app:
+    filetype: directory
+    exists: true  
+    owner: app
+    group: app
+  /data:
+    filetype: directory
+    exists: true  
+    owner: app
+    group: app
+http:
+  http://localhost:8080/camunda/app/admin/default/setup/#/setup:
+    status: 200
+    timeout: 1000
+    body: [
+      "/Camunda Admin/"
+    ]

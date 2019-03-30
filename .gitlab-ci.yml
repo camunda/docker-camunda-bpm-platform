@@ -24,6 +24,7 @@ variables:
   # Build
   - docker build --build-arg BASE_IMAGE=$BASE_IMAGE --build-arg OS_FAMILY=$OS_FAMILY --build-arg APP_SERVER_DIST=$APP_SERVER_DIST --build-arg DB_DRIVERS=$DB_DRIVERS --no-cache -t $REGISTRY_IMAGE:$VERSION-$APP_SERVER_DIST .
   # Run Tests
+  - envcli run --env GOSS_SLEEP=20 egoss run $REGISTRY_IMAGE:$VERSION-$APP_SERVER_DIST
   only:
   - master
   - tags
