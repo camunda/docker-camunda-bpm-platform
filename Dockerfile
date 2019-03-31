@@ -90,6 +90,7 @@ USER root
 # copy files from rootfs to the container
 COPY global $BUILD_PATH
 COPY ${OS_FAMILY} $BUILD_PATH
+COPY *.yml $BUILD_PATH/
 
 # build time only arguments
 ARG EE_USERNAME

@@ -9,6 +9,9 @@ images:
   - egoss
   image: docker.io/envcli/goss:latest
   containerRuntimeAccess: true
+  before_script:
+  - apk add iptables
+  - (dockerd &)
   cache:
   - name: tmp
     directory: /cache/tmp

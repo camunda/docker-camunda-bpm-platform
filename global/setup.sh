@@ -1,10 +1,20 @@
 #!/bin/bash
 set -o errexit
 
+export ARCH=""
+if [ "$(uname -m)" = "x86_64" ]; then
+    export ARCH="amd64"
+elif [ "$(uname -m)" = "aarch64" ]; then
+    export ARCH="arm"
+else
+    export ARCH="386"
+fi
+
 echo "Build Configuration"
 echo "  Base Image: ${BASE_IMAGE}"
 echo "  AppServer Distribution: ${APP_SERVER_DIST}"
 echo "  Db Drivers: ${DB_DRIVERS}"
+echo "  Arch: ${ARCH}"
 
 echo "Global Scripts" &&\
 cp -R /build/scripts/* /usr/local/bin

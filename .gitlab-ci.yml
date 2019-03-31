@@ -26,9 +26,12 @@ variables:
   image: docker:latest
   stage: build
   script:
-  - docker build --build-arg BASE_IMAGE=$BASE_IMAGE --build-arg OS_FAMILY=$OS_FAMILY --build-arg APP_SERVER_DIST=$APP_SERVER_DIST --build-arg DB_DRIVERS=$DB_DRIVERS --no-cache -t $REGISTRY_IMAGE:$VERSION-$APP_SERVER_DIST .
+  - docker build --build-arg BASE_IMAGE=$BASE_IMAGE --build-arg OS_FAMILY=$OS_FAMILY --build-arg APP_SERVER_DIST=$APP_SERVER_DIST --build-arg DB_DRIVERS=$DB_DRIVERS --no-cache -t $REGISTRY_IMAGE:$VERSION-$IMAGE_NAME .
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker push $REGISTRY_IMAGE:$VERSION-$IMAGE_NAME
   only:
   - master
+  - ci_test
   - tags
 
 ###
@@ -37,16 +40,26 @@ variables:
 .test: &test_template
   image: docker.io/envcli/envcli:latest
   stage: test
+  before_script:
+  - echo "FAIL" > .job_status
   script:
-  - envcli run --env GOSS_SLEEP=20 egoss run $REGISTRY_IMAGE:$VERSION-$APP_SERVER_DIST
+  - docker run -d --name testcontainer $REGISTRY_IMAGE:$VERSION-$IMAGE_NAME
+  - sleep 40
+  - docker exec testcontainer goss --gossfile=/goss/goss.yml validate
+  - echo "SUCCESS" > .job_status
+  after_script:
+  - if [[ $(cat .job_status) = "FAIL" ]]; then docker logs testcontainer; fi
+  - docker rm -f testcontainer
   only:
   - master
+  - ci_test
   - tags
 
 # Task - Build: Alpine - Tomcat
 Build Docker Image - Alpine:
   <<: *build_template
   variables:
+    IMAGE_NAME: jdk13-tomcat-alpine
     BASE_IMAGE: openjdk:13-alpine
     OS_FAMILY: alpine
     APP_SERVER_DIST: tomcat
@@ -56,6 +69,7 @@ Build Docker Image - Alpine:
 Build Docker Image - Oracle Linux:
   <<: *build_template
   variables:
+    IMAGE_NAME: jdk13-tomcat-oracle
     BASE_IMAGE: openjdk:13-oracle
     OS_FAMILY: centos
     APP_SERVER_DIST: tomcat
@@ -65,16 +79,10 @@ Build Docker Image - Oracle Linux:
 Test Docker Image - Alpine:
   <<: *test_template
   variables:
-    BASE_IMAGE: openjdk:13-alpine
-    OS_FAMILY: alpine
-    APP_SERVER_DIST: tomcat
-    DB_DRIVERS: postgres
+    IMAGE_NAME: jdk13-tomcat-alpine
 
 # Task - Test: OracleLinux - Tomcat
 Test Docker Image - Oracle Linux:
   <<: *test_template
   variables:
-    BASE_IMAGE: openjdk:13-oracle
-    OS_FAMILY: centos
-    APP_SERVER_DIST: tomcat
-    DB_DRIVERS: postgres
+    IMAGE_NAME: jdk13-tomcat-oracle
