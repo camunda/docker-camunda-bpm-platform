@@ -1,6 +1,6 @@
 FROM openjdk:8u191-jre-alpine3.9 as builder
 
-ARG VERSION=7.11.0-alpha2
+ARG VERSION=7.11.0-alpha3
 ARG DISTRO=tomcat
 ARG SNAPSHOT=false
 
@@ -24,7 +24,7 @@ RUN /tmp/download.sh
 
 FROM openjdk:8u191-jre-alpine3.9
 
-ARG VERSION=7.11.0-alpha2
+ARG VERSION=7.11.0-alpha3
 
 ENV CAMUNDA_VERSION=${VERSION}
 ENV DB_DRIVER=org.h2.Driver
