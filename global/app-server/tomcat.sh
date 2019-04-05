@@ -32,6 +32,7 @@ ln -sf /app/webapps/manager /data/webapps/manager
 cp -r $BUILD_PATH/app-server/tomcat/pre-start.d/. /app/hook.pre-start.d
 ## Start Script
 cp -r $BUILD_PATH/app-server/tomcat/files/run.sh /app/run.sh
+cp -r $BUILD_PATH/app-server/tomcat/files/setenv.sh /app/bin/setenv.sh
 ## Configuration Files
 cp -rf $BUILD_PATH/app-server/tomcat/files/bpm-platform.xml /app/conf/bpm-platform.xml
 cp -rf $BUILD_PATH/app-server/tomcat/files/server.xml /app/conf/server.xml

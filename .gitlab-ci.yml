@@ -31,7 +31,6 @@ variables:
   - docker push $REGISTRY_IMAGE:$VERSION-$IMAGE_NAME
   only:
   - master
-  - ci_test
   - tags
 
 ###
@@ -52,7 +51,6 @@ variables:
   - docker rm -f testcontainer
   only:
   - master
-  - ci_test
   - tags
 
 # Task - Build: Alpine - Tomcat
