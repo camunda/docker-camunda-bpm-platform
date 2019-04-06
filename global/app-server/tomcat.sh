@@ -38,6 +38,13 @@ cp -rf $BUILD_PATH/app-server/tomcat/files/bpm-platform.xml /app/conf/bpm-platfo
 cp -rf $BUILD_PATH/app-server/tomcat/files/server.xml /app/conf/server.xml
 cp -rf $BUILD_PATH/app-server/tomcat/files/tomcat-users.xml /app/conf/tomcat-users.xml
 cp -rf $BUILD_PATH/app-server/tomcat/files/logging.properties /app/conf/logging.properties
+cp -rf $BUILD_PATH/app-server/tomcat/files/context.xml /app/conf/context.xml
+cp -rf $BUILD_PATH/app-server/tomcat/files/manager-context.xml /app/webapps/manager/META-INF/context.xml
+
+## Optimize
+## - remove unused websocket jars
+rm /app/lib/websocket-api.jar
+rm /app/lib/tomcat-websocket.jar
 
 # Post Install Hook
 echo '      Hooks `tomcat.post-install`'
