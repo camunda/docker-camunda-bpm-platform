@@ -38,6 +38,8 @@ sh /usr/local/bin/run_scripts $BUILD_PATH/extension.d
 echo "Permissions"
 chown -R app:app /app
 chown -R app:app /data
+mkdir -p /ext
+chown -R app:app /ext
 
 echo "CleanUp Tasks"
 sh /usr/local/bin/run_script $BUILD_PATH/cleanup.sh

@@ -27,7 +27,13 @@ This Camunda BPM community project provides docker images of the latest Camunda 
 
 ## Environment Variables
 
-Configure your process engine using environment variables.
+Configure your camunda instance and extensions witih the following environment variables, every value is optional - the image can be run without specifying anything with the default configuration.
+
+### Global
+
+| Env Variable | Default Value |
+| ------ | ------ |
+| TZ | UTC |
 
 ### Database
 
@@ -52,13 +58,7 @@ Configure your process engine using environment variables.
 | ENGINE_GROUP_RESOURCE_WHITELIST_PATTERN | .+ |
 | ENGINE_TENANT_RESOURCE_WHITELIST_PATTERN | .+ |
 
-### Global
-
-| Env Variable | Default Value |
-| ------ | ------ |
-| TZ | UTC |
-
-### Tomcat
+### Runtime: Tomcat
 
 | Env Variable | Default Value |
 | ------ | ------ |
@@ -78,3 +78,9 @@ Configure your process engine using environment variables.
 | ------ | ------ | ------ |
 | DB_WAIT | | wait for a host:port to be available over TCP before starting |
 | DB_WAIT_TIMEOUT | 60 | how long to wait for the service to be avaiable - defaults to 60 seconds |
+
+### Extension: Keycloak SSO
+
+| Env Variable | Default Value | Description |
+| ------ | ------ | ------ |
+| KEYCLOAK_SERVER | | keycloak sso server |

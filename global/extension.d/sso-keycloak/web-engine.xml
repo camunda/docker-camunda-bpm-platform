@@ -1,0 +1,112 @@
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee    http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+  <listener>
+    <listener-class>org.camunda.bpm.engine.rest.impl.FetchAndLockContextListener</listener-class>
+  </listener>
+
+  <!-- Cors Filter -->
+  <filter>
+    <filter-name>CorsFilter</filter-name>
+    <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+    <init-param>
+      <param-name>cors.allowed.origins</param-name>
+      <param-value>*</param-value>
+    </init-param>
+    <init-param>
+      <param-name>cors.allowed.methods</param-name>
+      <param-value>GET,POST,OPTIONS,HEAD,PUT,DELETE</param-value>
+    </init-param>
+    <init-param>    
+      <param-name>cors.allowed.headers</param-name>    
+      <param-value>Content-Type,X-Requested-With,accept,Referer,Origin,Content-Length,Authorization,Last-Modified,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>    
+    </init-param>
+    <init-param>
+      <param-name>cors.exposed.headers</param-name>    
+      <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials,Access-Control-Request-Method,Access-Control-Request-Headers</param-value>      
+    </init-param>
+	<init-param>
+	  <param-name>cors.support.credentials</param-name>
+	  <param-value>false</param-value>
+	</init-param>
+	<init-param>
+	  <param-name>cors.preflight.maxage</param-name>
+	  <param-value>120</param-value>
+	</init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CorsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>EmptyBodyFilter</filter-name>
+    <filter-class>org.camunda.bpm.engine.rest.filter.EmptyBodyFilter</filter-class>
+    <async-supported>true</async-supported>
+  </filter>
+  <filter-mapping>
+    <filter-name>EmptyBodyFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <filter>
+    <filter-name>CacheControlFilter</filter-name>
+    <filter-class>org.camunda.bpm.engine.rest.filter.CacheControlFilter</filter-class>
+    <async-supported>true</async-supported>
+  </filter>
+  <filter-mapping>
+    <filter-name>CacheControlFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- KeyCloak OpenID Connect Filter -->
+  <filter>
+    <filter-name>KeyCloak OpenID Connect Filter</filter-name>
+    <filter-class>org.keycloak.adapters.servlet.KeycloakOIDCFilter</filter-class>
+    <init-param>
+	    <param-name>keycloak.config.file</param-name>
+	    <param-value>/app/conf/keycloak.json</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>KeyCloak OpenID Connect Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+  <!-- Keycloak Authentication Filter -->
+  <filter>
+    <filter-name>camunda-auth</filter-name>
+    <filter-class>org.camunda.bpm.engine.rest.security.auth.ProcessEngineAuthenticationFilter</filter-class>
+    <init-param>
+      <param-name>authentication-provider</param-name>
+      <param-value>org.camunda.community.sso.keycloak.KeycloakAuthenticationProvider</param-value>
+    </init-param>
+    <init-param>
+		<param-name>rest-url-pattern-prefix</param-name>
+		<param-value></param-value>
+	</init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>camunda-auth</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- /End Keycloak Authentication Filter -->
+
+  <servlet>
+    <servlet-name>Resteasy</servlet-name>
+    <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServlet30Dispatcher</servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>org.camunda.bpm.engine.rest.impl.application.DefaultApplication</param-value>
+    </init-param>
+    <async-supported>true</async-supported>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Resteasy</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

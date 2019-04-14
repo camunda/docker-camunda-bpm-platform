@@ -1,0 +1,13 @@
+{
+    "realm": "$KEYCLOAK_REALM",
+    "resource": "$KEYCLOAK_CLIENT_ID",
+    "auth-server-url": "$KEYCLOAK_SERVER",
+    "ssl-required": "$KEYCLOAK_SSL_REQUIRED",
+    "use-resource-role-mappings": $KEYCLOAK_USE_RESOURCE_ROLE_MAPPING,
+    "public-client": $KEYCLOAK_PUBLIC_CLIENT,
+    "credentials": {
+      "secret": "$KEYCLOAK_CLIENT_SECRET"
+    },
+    "confidential-port": $KEYCLOAK_CONFIDENTIAL_PORT,
+    "disable-trust-manager": $KEYCLOAK_DISABLE_TRUST_MANAGER
+}

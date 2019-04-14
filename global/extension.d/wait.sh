@@ -5,4 +5,4 @@ set -o errexit
 echo "  Extension [Wait for Service]"
 
 # install pre-start script
-cp /build/extension.d/wait/wait.pre-start.sh $HOOKDIR_PRESTART
+cp $BUILD_PATH/extension.d/wait/wait.pre-start.sh $HOOKDIR_PRESTART
