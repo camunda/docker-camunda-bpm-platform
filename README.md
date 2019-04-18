@@ -49,14 +49,39 @@ Configure your camunda instance and extensions witih the following environment v
 | DB_CONN_MAXIDLE | 5 | connection pool max idle |
 | DB_CONN_MINIDLE | 5 | connection pool min idle |
 
+### Job Acquisition
+
+| Env Variable | Default Value | Description |
+| ------ | ------ | ------ |
+| EXECUTOR_ACQUISITION_MAX_JOBS | 10 | Sets the maximal number of jobs to be acquired at once. |
+| EXECUTOR_ACQUISITION_LOCK_TIME_IN_MILLIS | 300000 | Specifies the time in milliseconds an acquired job is locked for execution. During that time, no other job executor can acquire the job. |
+| EXECUTOR_ACQUISITION_WAIT_TIME_IN_MILLIS | 5000 | Specifies the wait time of the job acquisition thread in milliseconds in case there are less jobs available for execution than requested during acquisition. |
+| EXECUTOR_ACQUISITION_MAX_WAIT | 60000 | Specifies the maximum wait time of the job acquisition thread in milliseconds in case there are less jobs available for execution than requested during acquisition. |
+| EXECUTOR_ACQUISITION_BACK_OFF_TIME_IN_MILLIS | 0 | Specifies the wait time of the job acquisition thread in milliseconds in case jobs were acquired but could not be locked. |
+| EXECUTOR_ACQUISITION_MAX_BACK_OFF | 0 | Specifies the maximum wait time of the job acquisition thread in milliseconds in case jobs were acquired but could not be locked. |
+| EXECUTOR_ACQUISITION_BACK_OFF_DECREASE_THREADSHOLD | 100 | Specifies the number of successful job acquisition cycles without a job locking failure before the backoff time is decreased again. In that case, the backoff time is reduced by waitIncreaseFactor. |
+| EXECUTOR_ACQUISITION_WAIT_INCREASE_FACTOR | 2 | Specifies the factor by which wait and backoff time are increased in case their activation conditions are repeatedly met. |
+
+### Job Executor
+
+| Env Variable | Default Value | Description |
+| ------ | ------ | ------ |
+| EXECUTOR_QUEUE_SIZE | 3 | Sets the size of the queue which is used for holding tasks to be executed. |
+| EXECUTOR_CORE_POOL_SIZE | 15 | Sets the size of the core pool in the thread pool. This number of threads will always be present and wait to execute tasks. |
+| EXECUTOR_MAX_POOL_SIZE | 30 | Sets the maximum number of threads that can be present in the thread pool. |
+| EXECUTOR_KEEP_ALIVE_TIME | 10 | Specify the time in milliseconds threads will be kept alive when there are no tasks present before threads are terminated until the core pool size is reached. |
+
 ### Engine
 
-| Env Variable | Default Value |
-| ------ | ------ |
-| ENGINE_GENERAL_RESOURCE_WHITELIST_PATTERN | .+ |
-| ENGINE_USER_RESOURCE_WHITELIST_PATTERN | .+ |
-| ENGINE_GROUP_RESOURCE_WHITELIST_PATTERN | .+ |
-| ENGINE_TENANT_RESOURCE_WHITELIST_PATTERN | .+ |
+| Env Variable | Default Value | Description |
+| ------ | ------ | ------ |
+| ENGINE_HISTORY | audit | |
+| ENGINE_HISTORY_CLEANUP_BATCH_WINDOW_START_TIME | 00:01 | |
+| ENGINE_JOB_EXECUTOR_DEPLOYMENT_AWARE | true | |
+| ENGINE_GENERAL_RESOURCE_WHITELIST_PATTERN | .+ | |
+| ENGINE_USER_RESOURCE_WHITELIST_PATTERN | .+ | |
+| ENGINE_GROUP_RESOURCE_WHITELIST_PATTERN | .+ | |
+| ENGINE_TENANT_RESOURCE_WHITELIST_PATTERN | .+ | |
 
 ### Runtime: Tomcat
 

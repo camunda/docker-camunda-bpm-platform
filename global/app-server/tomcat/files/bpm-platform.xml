@@ -8,6 +8,11 @@
         <property name="maxJobsPerAcquisition">$EXECUTOR_ACQUISITION_MAX_JOBS</property>
         <property name="waitTimeInMillis">$EXECUTOR_ACQUISITION_WAIT_TIME_IN_MILLIS</property>
         <property name="lockTimeInMillis">$EXECUTOR_ACQUISITION_LOCK_TIME_IN_MILLIS</property>
+        <property name="maxWait">$EXECUTOR_ACQUISITION_MAX_WAIT</property>
+        <property name="backoffTimeInMillis">$EXECUTOR_ACQUISITION_BACK_OFF_TIME_IN_MILLIS</property>
+        <property name="maxBackoff">$EXECUTOR_ACQUISITION_MAX_BACK_OFF</property>
+        <property name="backoffDecreaseThreshold">$EXECUTOR_ACQUISITION_BACK_OFF_DECREASE_THREADSHOLD</property>
+        <property name="waitIncreaseFactor">$EXECUTOR_ACQUISITION_WAIT_INCREASE_FACTOR</property>
       </properties>
 	  </job-acquisition>
 	  <properties>
