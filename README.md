@@ -14,7 +14,7 @@ This Camunda BPM community project provides docker images of the latest Camunda 
 
 ## Build Args
 
-*Build a image specifically for your needs*
+Build a camunda image specifically for your needs:
 
 | Build Argument | Default Value | Description |
 | ------ | ------ | ------ |
@@ -81,6 +81,16 @@ Configure your camunda instance and extensions witih the following environment v
 
 ### Extension: Keycloak SSO
 
+The Keycloak SSO Module will be enabled on startup if `KEYCLOAK_SERVER` is set.
+
 | Env Variable | Default Value | Description |
 | ------ | ------ | ------ |
 | KEYCLOAK_SERVER | | keycloak sso server |
+| KEYCLOAK_REALM | master | keycloak realm |
+| KEYCLOAK_CLIENT_ID | app-camunda | client id |
+| KEYCLOAK_PUBLIC_CLIENT | true | public client? |
+| KEYCLOAK_CLIENT_SECRET | any | client secret (for confidential clients) |
+| KEYCLOAK_USE_RESOURCE_ROLE_MAPPING | true | should use resource roles |
+| KEYCLOAK_SSL_REQUIRED | none | require ssl (should prob. be always in most cases) |
+| KEYCLOAK_CONFIDENTIAL_PORT | 443 | port for confidential clients |
+| KEYCLOAK_DISABLE_TRUST_MANAGER | false | set to true to accept any ssl cert (don't do this) |

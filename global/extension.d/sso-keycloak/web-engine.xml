@@ -34,6 +34,7 @@
 	  <param-name>cors.preflight.maxage</param-name>
 	  <param-value>120</param-value>
 	</init-param>
+  <async-supported>true</async-supported>
   </filter>
   <filter-mapping>
     <filter-name>CorsFilter</filter-name>
@@ -68,6 +69,7 @@
 	    <param-name>keycloak.config.file</param-name>
 	    <param-value>/app/conf/keycloak.json</param-value>
     </init-param>
+    <async-supported>true</async-supported>
   </filter>
   <filter-mapping>
     <filter-name>KeyCloak OpenID Connect Filter</filter-name>
@@ -84,9 +86,10 @@
       <param-value>org.camunda.community.sso.keycloak.KeycloakAuthenticationProvider</param-value>
     </init-param>
     <init-param>
-		<param-name>rest-url-pattern-prefix</param-name>
-		<param-value></param-value>
-	</init-param>
+      <param-name>rest-url-pattern-prefix</param-name>
+      <param-value></param-value>
+    </init-param>
+    <async-supported>true</async-supported>
   </filter>
   <filter-mapping>
     <filter-name>camunda-auth</filter-name>
