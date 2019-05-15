@@ -1,4 +1,4 @@
-FROM openjdk:8u191-jre-alpine3.9 as builder
+FROM openjdk:8u212-jre-alpine3.9 as builder
 
 ARG VERSION=7.10.0
 ARG DISTRO=tomcat
@@ -22,7 +22,7 @@ RUN /tmp/download.sh
 
 ##### FINAL IMAGE #####
 
-FROM openjdk:8u191-jre-alpine3.9
+FROM openjdk:8u212-jre-alpine3.9
 
 ARG VERSION=7.10.0
 
