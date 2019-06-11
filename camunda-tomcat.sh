@@ -19,6 +19,8 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     -u "${XML_MAXACTIVE}" -v "${DB_CONN_MAXACTIVE}" \
     -u "${XML_MINIDLE}" -v "${DB_CONN_MINIDLE}" \
     -u "${XML_MAXIDLE}" -v "${DB_CONN_MAXIDLE}" \
+    -a "${XML_JDBC}" -t attr -n "testOnBorrow" -v "${DB_VALIDATE_ON_BORROW}" \
+    -a "${XML_JDBC}" -t attr -n "validationQuery" -v "${DB_VALIDATION_QUERY}" \
     /camunda/conf/server.xml
 fi
 
