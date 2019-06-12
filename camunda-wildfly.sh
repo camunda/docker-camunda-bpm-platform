@@ -12,7 +12,7 @@ embed-server
 /subsystem=datasources/data-source=ProcessEngine: write-attribute(name=driver-name, value=${DB_DRIVER})
 /subsystem=datasources/data-source=ProcessEngine: write-attribute(name=max-pool-size, value=\${env.DB_CONN_MAXACTIVE})
 /subsystem=datasources/data-source=ProcessEngine: write-attribute(name=min-pool-size, value=\${env.DB_CONN_MINIDLE})
-/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=validate-on-match, value=\@{env.DB_VALIDATE_ON_BORROW})
+/subsystem=datasources/data-source=ProcessEngine: write-attribute(name=validate-on-match, value=\${env.DB_VALIDATE_ON_BORROW})
 /subsystem=datasources/data-source=ProcessEngine: write-attribute(name=check-valid-connection-sql, value=\${env.DB_VALIDATION_QUERY})
 run-batch
 stop-embedded-server
