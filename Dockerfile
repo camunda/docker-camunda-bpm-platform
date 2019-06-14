@@ -1,5 +1,6 @@
 FROM openjdk:8u212-jre-alpine3.9 as builder
 
+# Overidable from command line
 ARG VERSION=7.10.0
 ARG DISTRO=tomcat
 ARG SNAPSHOT=false
@@ -16,6 +17,12 @@ RUN apk add --no-cache \
         xmlstarlet
 
 COPY settings.xml download.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
+
+# Re-export into env for the script
+ENV VERSION=${VERSION}
+ENV DISTRO=${DISTRO}
+ENV SNAPSHOT=${SNAPSHOT}
+ENV EE=${EE}
 
 RUN /tmp/download.sh
 
