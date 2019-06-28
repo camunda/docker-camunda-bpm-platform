@@ -10,6 +10,10 @@ if [[ "$DB_PASSWORD" == "" && "$DB_PASSWORD_FILE" != "" && -e $DB_PASSWORD_FILE 
    export DB_PASSWORD="$password"
 fi
 
+if [[ "$DB_PASSWORD" == "" ]]; then
+   export DB_PASSWORD="sa"
+fi
+
 XML_JDBC="//Resource[@name='jdbc/ProcessEngine']"
 XML_DRIVER="${XML_JDBC}/@driverClassName"
 XML_URL="${XML_JDBC}/@url"

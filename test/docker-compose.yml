@@ -50,7 +50,6 @@ services:
             - DB_DRIVER=com.mysql.jdbc.Driver
             - DB_URL=jdbc:mysql://mysql:3306/process-engine
             - DB_USERNAME=camunda
-            - DB_PASSWORD=
             - DB_PASSWORD_FILE=/run/secrets/camunda_db_password
             - WAIT_FOR=mysql:3306
         volumes:

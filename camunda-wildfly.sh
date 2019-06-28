@@ -10,6 +10,10 @@ if [[ "$DB_PASSWORD" == "" && "$DB_PASSWORD_FILE" != "" && -e $DB_PASSWORD_FILE 
    export DB_PASSWORD="$password"
 fi
 
+if [[ "$DB_PASSWORD" == "" ]]; then
+   export DB_PASSWORD="sa"
+fi
+
 DB_DRIVER=${DB_DRIVER:-org.h2.Driver}
 
 function modify_datasource {

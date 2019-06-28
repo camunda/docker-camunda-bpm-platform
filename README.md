@@ -100,7 +100,7 @@ variables:
 - `DB_VALIDATION_QUERY` the query to execute to validate database connections (default: `"SELECT 1"`)
 - `DB_PASSWORD_FILE` this supports [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/). 
   Put here the path of the secret, e.g. `/run/secrets/camunda_db_password`. 
-  Make sure that `DB_PASSWORD` is not set!
+  Make sure that `DB_PASSWORD` is not set when using this variable!
 - `SKIP_DB_CONFIG` skips the automated database configuration to use manual
   configuration
 - `WAIT_FOR` wait for a `host:port` to be available over TCP before starting
