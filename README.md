@@ -97,7 +97,7 @@ variables:
 - `DB_USERNAME` the database username
 - `DB_PASSWORD` the database password
 - `DB_VALIDATE_ON_BORROW` validate database connections before they are used (default: `false`)
-- `DB_VALIDATION_QUERY` the query to execute to validate database connections (default: `""`)
+- `DB_VALIDATION_QUERY` the query to execute to validate database connections (default: `"SELECT 1"`)
 - `SKIP_DB_CONFIG` skips the automated database configuration to use manual
   configuration
 - `WAIT_FOR` wait for a `host:port` to be available over TCP before starting
