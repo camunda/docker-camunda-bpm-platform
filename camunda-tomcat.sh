@@ -5,12 +5,12 @@ trap "Error on line $LINENO" ERR
 
 
 # Set Password as Docker Secrets for Swarm-Mode
-if [[ "$DB_PASSWORD" == "" && "$DB_PASSWORD_FILE" != "" && -e $DB_PASSWORD_FILE ]]; then
+if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
    password="$(< "${DB_PASSWORD_FILE}")"
    export DB_PASSWORD="$password"
 fi
 
-if [[ "$DB_PASSWORD" == "" ]]; then
+if [[ -z "${DB_PASSWORD}" ]]; then
    export DB_PASSWORD="sa"
 fi
 
