@@ -161,7 +161,8 @@ The mechanism can be configured by two environment variables:
 - `WAIT_FOR`: the service `host:port` to wait for
 - `WAIT_FOR_TIMEOUT`: how long to wait for the service to be available in seconds
 
-Example with a PostgreSQL container
+Example with a PostgreSQL container:
+
 ```
 docker run -d --name postgresql ...
 
@@ -278,7 +279,7 @@ To remove all webapps and examples from the distro and only deploy your
 own applications or your own configured cockpit also use volumes. You
 only have to overlay the deployment folder of the application server with
 a directory on your local machine. So in tomcat you would mount a directory
-to `/camunda/webapps/'
+to `/camunda/webapps/`:
 
 ```
 docker run -d --name camunda -p 8080:8080 \
@@ -317,7 +318,6 @@ docker run -d --name camunda -p 8080:8080 \
 Apache License, Version 2.0
 
 
-[Sebastian Menski]: https://github.com/menski
 [twitter demo]: https://github.com/camunda-consulting/code/tree/master/one-time-examples/twitter
-[docker registry]: https://registry.hub.docker.com/u/camunda/camunda-bpm-platform/
+[docker registry]: https://hub.docker.com/r/camunda/camunda-bpm-platform/
 [docker hub tags]: https://hub.docker.com/r/camunda/camunda-bpm-platform/tags/
