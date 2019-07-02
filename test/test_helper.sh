@@ -1,3 +1,4 @@
+#!/bin/bash -eu
 RETRIES=12
 WAIT=5
 

@@ -1,4 +1,18 @@
-#!/bin/bash -eu
+#!/bin/bash
+set -Eeu
+
+trap "Error on line $LINENO" ERR
+
+
+# Set Password as Docker Secrets for Swarm-Mode
+if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
+   password="$(< "${DB_PASSWORD_FILE}")"
+   export DB_PASSWORD="$password"
+fi
+
+if [[ -z "${DB_PASSWORD}" ]]; then
+   export DB_PASSWORD="sa"
+fi
 
 DB_DRIVER=${DB_DRIVER:-org.h2.Driver}
 
