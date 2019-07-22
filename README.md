@@ -316,7 +316,7 @@ docker run -d --name camunda -p 8080:8080 \
 ```
 
 
-## Branching Model
+## Branching Model (not applicable)
 
 Branches and their roles in this repository:
 
