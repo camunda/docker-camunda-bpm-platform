@@ -1,4 +1,4 @@
-FROM openjdk:8u212-jre-alpine3.9 as builder
+FROM alpine:3.10 as builder
 
 ARG VERSION=7.12.0
 ARG DISTRO=tomcat
@@ -22,7 +22,7 @@ RUN /tmp/download.sh
 
 ##### FINAL IMAGE #####
 
-FROM openjdk:8u212-jre-alpine3.9
+FROM alpine:3.10
 
 ARG VERSION=7.12.0
 
@@ -48,6 +48,7 @@ EXPOSE 8080 8000
 RUN apk add --no-cache \
         bash \
         ca-certificates \
+        openjdk11-jre-headless \
         tzdata \
         tini \
         xmlstarlet \
