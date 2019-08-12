@@ -53,9 +53,16 @@ either be `tomcat` or `wildfly`. If no `${DISTRO}` is specified the
 
 For all available tags see the [docker hub tags][].
 
-## Java Version
+## Java Versions
 
-All images use OpenJDK 8 in an alpine image.
+Our docker images are using the latest LTS OpenJDK version supported by
+Camunda BPM. This currently means:
+
+ - Camunda 7.12 will be based on OpenJDK 11
+ - All previous versions are based on OpenJDK 8
+
+While all the OpenJDK versions supported by Camunda will work, we will not
+provide a ready to use image for them.
 
 ### Java Options
 
