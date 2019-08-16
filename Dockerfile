@@ -1,4 +1,4 @@
-FROM openjdk:8u212-jre-alpine3.9 as builder
+FROM alpine:3.10 as builder
 
 ARG VERSION=7.12.0
 ARG DISTRO=tomcat
@@ -22,7 +22,7 @@ RUN /tmp/download.sh
 
 ##### FINAL IMAGE #####
 
-FROM openjdk:8u212-jre-alpine3.9
+FROM alpine:3.10
 
 ARG VERSION=7.12.0
 
@@ -45,14 +45,17 @@ ENV JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
 
 EXPOSE 8080 8000
 
+# Downgrading wait-for-it is necessary until this PR is merged
+# https://github.com/vishnubob/wait-for-it/pull/68
 RUN apk add --no-cache \
         bash \
         ca-certificates \
+        openjdk11-jre-headless \
         tzdata \
         tini \
         xmlstarlet \
     && wget -O /usr/local/bin/wait-for-it.sh \
-      "https://raw.githubusercontent.com/vishnubob/wait-for-it/db049716e42767d39961e95dd9696103dca813f1/wait-for-it.sh" \
+      "https://raw.githubusercontent.com/vishnubob/wait-for-it/a454892f3c2ebbc22bd15e446415b8fcb7c1cfa4/wait-for-it.sh" \
     && chmod +x /usr/local/bin/wait-for-it.sh
 
 RUN addgroup -g 1000 -S camunda && \
