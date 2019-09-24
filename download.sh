@@ -82,3 +82,12 @@ EOF
         echo "" > /camunda/bin/setenv.sh
         ;;
 esac
+
+# download Prometheus JMX Exporter. 
+# Details on https://blog.camunda.com/post/2019/06/camunda-bpm-on-kubernetes/
+mvn dependency:copy -B \
+    -Dartifact="io.prometheus.jmx:jmx_prometheus_javaagent:${JMX_PROMETHEUS_VERSION}:jar" \
+    -DoutputDirectory=/tmp/
+
+mkdir -p /camunda/javaagent
+cp /tmp/jmx_prometheus_javaagent-${JMX_PROMETHEUS_VERSION}.jar /camunda/javaagent/jmx_prometheus_javaagent.jar

@@ -6,12 +6,12 @@ trap "Error on line $LINENO" ERR
 
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
-   password="$(< "${DB_PASSWORD_FILE}")"
-   export DB_PASSWORD="$password"
+  password="$(< "${DB_PASSWORD_FILE}")"
+  export DB_PASSWORD="$password"
 fi
 
 if [[ -z "${DB_PASSWORD}" ]]; then
-   export DB_PASSWORD="sa"
+  export DB_PASSWORD="sa"
 fi
 
 XML_JDBC="//Resource[@name='jdbc/ProcessEngine']"
@@ -47,10 +47,16 @@ if [ "${DEBUG}" = "true" ]; then
   CMD+=" jpda"
 fi
 
+if [ "$JMX_PROMETHEUS" = "true" ] ; then
+  echo "Enabling Prometheus JMX Exporter on port ${JMX_PROMETHEUS_PORT}"
+  [ ! -f "$JMX_PROMETHEUS_CONF" ] && touch $JMX_PROMETHEUS_CONF
+  export CATALINA_OPTS="-javaagent:/camunda/javaagent/jmx_prometheus_javaagent.jar=${JMX_PROMETHEUS_PORT}:${JMX_PROMETHEUS_CONF}"
+fi
+
 CMD+=" run"
 
 if [ -n "${WAIT_FOR}" ]; then
-    CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
+  CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
 
 exec ${CMD}

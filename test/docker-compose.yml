@@ -44,6 +44,15 @@ services:
             - "8000:8000"
         restart: unless-stopped
 
+    camunda-prometheus-jmx:
+        image: camunda/camunda-bpm-platform:${DISTRO:-latest}
+        environment:
+            - JMX_PROMETHEUS=true
+        ports:
+            - "8080:8080"
+            - "9404:9404"
+        restart: unless-stopped
+
     camunda-password-file:
         image: camunda/camunda-bpm-platform:${DISTRO:-latest}
         environment:
