@@ -8,6 +8,8 @@ ARG EE=false
 ARG USER
 ARG PASSWORD
 
+ARG JMX_PROMETHEUS_VERSION=0.12.0
+
 RUN apk add --no-cache \
         ca-certificates \
         maven \
@@ -42,8 +44,11 @@ ENV WAIT_FOR_TIMEOUT=30
 ENV TZ=UTC
 ENV DEBUG=false
 ENV JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
+ENV JMX_PROMETHEUS=false
+ENV JMX_PROMETHEUS_CONF=/camunda/javaagent/prometheus-jmx.yml
+ENV JMX_PROMETHEUS_PORT=9404
 
-EXPOSE 8080 8000
+EXPOSE 8080 8000 9404
 
 # Downgrading wait-for-it is necessary until this PR is merged
 # https://github.com/vishnubob/wait-for-it/pull/68

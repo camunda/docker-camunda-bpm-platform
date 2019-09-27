@@ -6,18 +6,18 @@ trap "Error on line $LINENO" ERR
 
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
-   password="$(< "${DB_PASSWORD_FILE}")"
-   export DB_PASSWORD="$password"
+  password="$(< "${DB_PASSWORD_FILE}")"
+  export DB_PASSWORD="$password"
 fi
 
 if [[ -z "${DB_PASSWORD}" ]]; then
-   export DB_PASSWORD="sa"
+  export DB_PASSWORD="sa"
 fi
 
 DB_DRIVER=${DB_DRIVER:-org.h2.Driver}
 
 function modify_datasource {
-	cat <<-EOF > batch.cli
+  cat <<-EOF > batch.cli
 batch
 embed-server
 /subsystem=datasources/data-source=ProcessEngine: write-attribute(name=user-name, value=\${env.DB_USERNAME})
@@ -31,30 +31,35 @@ embed-server
 run-batch
 stop-embedded-server
 EOF
-	/camunda/bin/jboss-cli.sh --file=batch.cli
-	rm -rf /camunda/standalone/configuration/standalone_xml_history/current/* batch.cli
+  /camunda/bin/jboss-cli.sh --file=batch.cli
+  rm -rf /camunda/standalone/configuration/standalone_xml_history/current/* batch.cli
 }
 
 # support legacy DB_DRVIER short names
 case ${DB_DRIVER} in
-	*h2* )
-		DB_DRIVER=h2
-	;;
-	*mysql* )
-		DB_DRIVER=mysql
-	;;
-	*postgresql* )
-		DB_DRIVER=postgresql
-	;;
-	* ) echo "Unsupported DB_DRIVER ${DB_DRIVER}"; exit 1;
-	;;
+  *h2* )
+    DB_DRIVER=h2
+  ;;
+  *mysql* )
+    DB_DRIVER=mysql
+  ;;
+  *postgresql* )
+    DB_DRIVER=postgresql
+  ;;
+  * ) echo "Unsupported DB_DRIVER ${DB_DRIVER}"; exit 1;
+  ;;
 esac
 
 if [ -z "$SKIP_DB_CONFIG" ]; then
-	modify_datasource
+  modify_datasource
 fi
 
-export JBOSS_MODULES_SYSTEM_PKGS=${JBOSS_MODULES_SYSTEM_PKGS:-"org.jboss.byteman"}
+if [ "$JMX_PROMETHEUS" = "true" ] ; then
+  # See https://issues.jboss.org/browse/LOGMGR-218
+  export JBOSS_MODULES_SYSTEM_PKGS=${JBOSS_MODULES_SYSTEM_PKGS:-"org.jboss.byteman,org.jboss.logmanager"}
+else
+  export JBOSS_MODULES_SYSTEM_PKGS=${JBOSS_MODULES_SYSTEM_PKGS:-"org.jboss.byteman"}
+fi
 
 # Ensure wildfly binds to public interface, preferes IPv4 and runs in the background
 export PREPEND_JAVA_OPTS="-Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Djboss.modules.system.pkgs=${JBOSS_MODULES_SYSTEM_PKGS}"
@@ -67,8 +72,18 @@ if [ "${DEBUG}" = "true" ]; then
   CMD+=" --debug 8000"
 fi
 
+if [ "$JMX_PROMETHEUS" = "true" ] ; then
+  echo "Enabling Prometheus JMX Exporter on port ${JMX_PROMETHEUS_PORT}"
+  [ ! -f "$JMX_PROMETHEUS_CONF" ] && touch $JMX_PROMETHEUS_CONF
+  # See https://github.com/prometheus/jmx_exporter/issues/344
+  LOG_MANAGER_PATH=$(find /camunda/modules -name "jboss-logmanager*.jar")
+  COMMON_PATH=$(find /camunda/modules -name "wildfly-common*.jar")
+  export PREPEND_JAVA_OPTS="${PREPEND_JAVA_OPTS} -Dsun.util.logging.disableCallerCheck=true -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Xbootclasspath/a:$LOG_MANAGER_PATH:$COMMON_PATH"
+  export PREPEND_JAVA_OPTS="${PREPEND_JAVA_OPTS} -javaagent:/camunda/javaagent/jmx_prometheus_javaagent.jar=${JMX_PROMETHEUS_PORT}:${JMX_PROMETHEUS_CONF}"
+fi
+
 if [ -n "${WAIT_FOR}" ]; then
-    CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
+  CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
 
 exec ${CMD}

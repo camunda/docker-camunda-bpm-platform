@@ -27,7 +27,7 @@ function container_id {
 }
 
 function grep_log {
-  (docker logs $(container_id) 2>&1 | grep "$1")
+  (docker logs $(container_id) 2>&1 | grep -q "$1")
 }
 
 function poll_log {

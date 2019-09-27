@@ -199,6 +199,14 @@ To enable JPDA inside the container you can set the environment variable
 `DEBUG=true` on startup of the container. This will allow you to connect to the
 container on port `8000` to debug your application.
 
+## Prometheus JMX Exporter
+
+To enable Prometheus JMX Exporter inside the container you can set the environment 
+variable `JMX_PROMETHEUS=true` on startup of the container. 
+This will allow you to get metrics in Prometheus format at `<host>:9404/metrics`. 
+For configuring exporter you need attach your configuration as a container volume 
+at `/camunda/javaagent/prometheus-jmx.yml`.
+
 ## Build
 
 The image can be used to build a Docker image for a given Camunda BPM platform
