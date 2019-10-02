@@ -3,6 +3,8 @@ set -Eeu
 
 trap "Error on line $LINENO" ERR
 
+# Use exising tomcat ditribution if present..
+CATALINA_HOME="${CATALINA_HOME:-/camunda}"
 
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
@@ -37,10 +39,10 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     -i "${XML_JDBC}[not(@testOnBorrow)]" -t attr -n "testOnBorrow" -v "${DB_VALIDATE_ON_BORROW}" \
     -u "${XML_JDBC}/@validationQuery" -v "${DB_VALIDATION_QUERY}" \
     -i "${XML_JDBC}[not(@validationQuery)]" -t attr -n "validationQuery" -v "${DB_VALIDATION_QUERY}" \
-    /camunda/conf/server.xml
+    ${CATALINA_HOME}/conf/server.xml
 fi
 
-CMD="/camunda/bin/catalina.sh"
+CMD="${CATALINA_HOME}/bin/catalina.sh"
 if [ "${DEBUG}" = "true" ]; then
   echo "Enabling debug mode, JPDA accesible under port 8000"
   export JPDA_ADDRESS="0.0.0.0:8000"
