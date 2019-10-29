@@ -50,7 +50,10 @@ function poll_log {
 }
 
 function test_login {
-  curl -H "Accept: application/json" --fail -s --data 'username=demo&password=demo' -D- -o/dev/null http://localhost:8080/camunda/api/admin/auth/user/default/login/${1}
+  rm -f dumped-headers.txt
+  curl --dump-header dumped-headers.txt --fail -s -o/dev/null http://localhost:8080/camunda/app/${1}/default/
+  # dumped-headers.txt uses windows line endings, drop them
+  curl --cookie dumped-headers.txt -H "$(cat dumped-headers.txt | grep X-XSRF-TOKEN | tr -d '\r\n')" -H "Accept: application/json" --fail -s --data 'username=demo&password=demo' -D- -o/dev/null http://localhost:8080/camunda/api/admin/auth/user/default/login/${1}
 }
 
 function test_encoding {
