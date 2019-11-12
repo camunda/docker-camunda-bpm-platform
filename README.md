@@ -99,7 +99,7 @@ variables:
   - h2: `DB_DRIVER=org.h2.Driver`
   - mysql: `DB_DRIVER=com.mysql.jdbc.Driver`
   - postgresql: `DB_DRIVER=org.postgresql.Driver`
-  - oracle: `DB_DRIVER=oracle.jdbc.OracleDriver`
+  - oracle: `DB_DRIVER=oracle.jdbc.OracleDriver` (only Wildfly)
 - `DB_URL` the database jdbc url
 - `DB_USERNAME` the database username
 - `DB_PASSWORD` the database password
