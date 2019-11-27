@@ -45,7 +45,7 @@ else
     fi
 fi
 
-git fetch origin master
+git fetch origin next 
 if [ $(git rev-parse HEAD) = $(git rev-parse FETCH_HEAD) ]; then
     # tagging image as latest
     tag_and_push "${DISTRO}-latest"
