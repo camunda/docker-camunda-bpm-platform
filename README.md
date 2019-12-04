@@ -91,7 +91,9 @@ JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
 The used database can be configured by providing the following environment
 variables:
 
-- `DB_CONN_MAXTOTAL` the maximum number of active connections (default:
+- `DB_CONN_MAXACTIVE` (wildfly) the maximum number of active connections (default:
+  `20`)
+- `DB_CONN_MAXTOTAL` (tomcat) the maximum number of active connections (default:
   `20`)
 - `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`
   - ignored when app server = `wildfly`)
