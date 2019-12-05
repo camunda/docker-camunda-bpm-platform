@@ -91,12 +91,10 @@ JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
 The used database can be configured by providing the following environment
 variables:
 
-- `DB_CONN_MAXACTIVE` (wildfly) the maximum number of active connections (default:
-  `20`)
-- `DB_CONN_MAXTOTAL` (tomcat) the maximum number of active connections (default:
-  `20`)
-- `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`
-  - ignored when app server = `wildfly`)
+- `DB_CONN_MAXACTIVE` the maximum number of active connections (default: `20`)
+  - for `tomcat`, this is internally mapped to the `maxTotal` configuration property.
+- `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`)
+  - ignored when app server = `wildfly`
 - `DB_CONN_MINIDLE` the minimum number of idle connections (default: `5`)
 - `DB_DRIVER` the database driver class name, supported are h2, mysql, postgresql and oracle:
   - h2: `DB_DRIVER=org.h2.Driver`
