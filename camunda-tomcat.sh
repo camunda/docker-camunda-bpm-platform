@@ -42,6 +42,36 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     ${CATALINA_HOME}/conf/server.xml
 fi
 
+# engine-rest enable auth
+if [ x"$ENGINE_REST_AUTH_ENABLE" == x1 ] ; then
+	echo "Enabling engine-rest auth"	
+	cat > /tmp/engine-rest-enable-auth.xml << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+   <!-- copy all -->
+   <xsl:template match="@*|node()">
+       <xsl:copy>
+           <xsl:apply-templates select="@*|node()"/>
+       </xsl:copy>
+   </xsl:template>
+   <!-- uncomment if comment -->
+   <xsl:template match="comment()">
+    <xsl:choose>
+       <xsl:when test='starts-with(., " &lt;filter&gt;")' >
+           <xsl:value-of  select="." disable-output-escaping="yes" />
+       </xsl:when>
+       <xsl:otherwise>
+           <xsl:copy-of select="." />
+       </xsl:otherwise>
+     </xsl:choose>
+   </xsl:template>
+</xsl:stylesheet>
+EOF
+	file=/camunda/webapps/engine-rest/WEB-INF/web.xml
+	cp $file ${file}.orig
+	xsltproc /tmp/engine-rest-enable-auth.xml ${file}.orig > $file
+fi
+
 CMD="${CATALINA_HOME}/bin/catalina.sh"
 if [ "${DEBUG}" = "true" ]; then
   echo "Enabling debug mode, JPDA accesible under port 8000"
