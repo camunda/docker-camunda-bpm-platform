@@ -263,6 +263,23 @@ docker build -t camunda-bpm-platform \
   .
 ```
 
+### Build when behind a proxy
+
+The following arguments can be passed to set proxy settings to Maven: `MAVEN_PROXY_HOST`, `MAVEN_PROXY_PORT`, `MAVEN_PROXY_USER`, `MAVEN_PROXY_PASSWORD`
+
+Example for a released version of a community edition:
+
+```
+docker build -t camunda-bpm-platform \
+  --build-arg DISTRO=${DISTRO} \
+  --build-arg VERSION=${VERSION} \
+  --build-arg MAVEN_PROXY_HOST=${PROXY_HOST} \
+  --build-arg MAVEN_PROXY_PORT=${PROXY_PORT} \
+  --build-arg MAVEN_PROXY_USER=${PROXY_USER} \
+  --build-arg MAVEN_PROXY_PASSWORD=${PROXY_PASSWORD} \
+  .
+```
+
 ## Use Cases
 
 ### Change Configuration Files
