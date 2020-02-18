@@ -20,3 +20,4 @@ script: |
         . &&
     ./test/test.sh &&
     ./release.sh
+if: env(NEXUS_USER) IS present AND env(NEXUS_PASS) IS present
