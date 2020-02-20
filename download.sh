@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
 # Determine nexus URL parameters
-if [ ${EE} = "true" ]; then
+if [ "${EE}" = "true" ]; then
     echo "Downloading Camunda ${VERSION} Enterprise Edition for ${DISTRO}"
     REPO="camunda-bpm-ee"
     NEXUS_GROUP="private"
