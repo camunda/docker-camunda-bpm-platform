@@ -334,13 +334,12 @@ docker run -d --name camunda -p 8080:8080 \
 ```
 
 
-## Branching Model (not applicable)
+## Branching Model
 
 Branches and their roles in this repository:
 
-- `next` is the branch where new features go into (default branch)
-- `master` should get only changes needed to support the current `master` of [https://github.com/camunda/camunda-bpm-platform](camunda-bpm-platform) repositories
-- `7.x` branches get created from `master` when a Camunda BPM minor release happened and only then `next` is merged into `master` once
+- `next` (default branch) is the branch where new features and bugfixes needed to support the current `master` of [camunda-bpm-platform repo](https://github.com/camunda/camunda-bpm-platform) go into
+- `7.x` branches get created from `next` when a Camunda BPM minor release happened and only receive backports of bugfixes when absolutely necessary
 
 
 ## License
