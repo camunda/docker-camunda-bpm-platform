@@ -10,6 +10,8 @@ env:
   - DISTRO=tomcat EE=true
   - DISTRO=wildfly
   - DISTRO=wildfly EE=true
+  - DISTRO=run
+  - DISTRO=run EE=true
 
 script:
   - |

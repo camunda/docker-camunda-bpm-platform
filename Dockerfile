@@ -16,13 +16,14 @@ ARG MAVEN_PROXY_PASSWORD
 ARG JMX_PROMETHEUS_VERSION=0.12.0
 
 RUN apk add --no-cache \
+        bash \
         ca-certificates \
         maven \
         tar \
         wget \
         xmlstarlet
 
-COPY settings.xml download.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
+COPY settings.xml download.sh camunda-run.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
 
 RUN /tmp/download.sh
 

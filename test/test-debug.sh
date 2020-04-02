@@ -4,6 +4,8 @@ SERVICE=${1}
 
 source test_helper.sh
 
+test "${DISTRO}" = "run" && _log "skipping test of DEBUG socket: not supported for camunda-run" && exit 0
+
 start_container
 
 poll_log "Listening for transport dt_socket at address: 8000" "ERROR" || _exit 1 "JPDA not started"

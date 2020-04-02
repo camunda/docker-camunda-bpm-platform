@@ -41,7 +41,7 @@ to enable authentication for the Rest-API.
 
 The following tag schema is used. The user has the choice between different
 application server distributions of Camunda BPM platform. `${DISTRO}` can
-either be `tomcat` or `wildfly`. If no `${DISTRO}` is specified the
+either be `tomcat`, `wildfly` or `run`. If no `${DISTRO}` is specified the
 `tomcat` distribution is used.
 
 - `latest`, `${DISTRO}-latest`: Alywas the latest minor release of Camunda BPM
@@ -217,9 +217,9 @@ version and distribution.
 ### Build a released version
 
 To build a community image specify the `DISTRO` and `VERSION` build
-argument. Possible values for `DISTRO` are `tomcat` and `wildfly` (if the
+argument. Possible values for `DISTRO` are `tomcat`, `wildfly` and `run` (if the
 Camunda BPM platform version already supported it). The `VERSION` is the
-Camunda BPM platform version you want to build, i.e. `7.10.0`.
+Camunda BPM platform version you want to build, i.e. `7.12.0`.
 
 ```
 docker build -t camunda-bpm-platform \
@@ -291,7 +291,6 @@ container.  For example if you want to change the `bpm-platform.xml` on tomcat:
 docker run -d --name camunda -p 8080:8080 \
            -v $PWD/bpm-platform.xml:/camunda/conf/bpm-platform.xml \
            camunda/camunda-bpm-platform:latest
-
 ```
 
 

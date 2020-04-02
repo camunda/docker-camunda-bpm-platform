@@ -6,6 +6,9 @@ if [ "${EE}" = "true" ]; then
     REPO="camunda-bpm-ee"
     NEXUS_GROUP="private"
     ARTIFACT="camunda-bpm-ee-${DISTRO}"
+    if [ "${DISTRO}" = "run" ]; then
+      ARTIFACT="camunda-bpm-run-ee"
+    fi
     ARTIFACT_VERSION="${VERSION}-ee"
 else
     echo "Downloading Camunda ${VERSION} Community Edition for ${DISTRO}"
@@ -60,13 +63,13 @@ mvn dependency:get -B --global-settings /tmp/settings.xml \
     -DgroupId="${ARTIFACT_GROUP}" -DartifactId="${ARTIFACT}" \
     -Dversion="${ARTIFACT_VERSION}" -Dpackaging="tar.gz" -Dtransitive=false
 cambpm_distro_file=$(find /m2-repository -name "${ARTIFACT}-${ARTIFACT_VERSION}.tar.gz" -print | head -n 1)
-
 # Unpack distro to /camunda directory
 mkdir -p /camunda
-tar xzf "$cambpm_distro_file" -C /camunda server --strip 2
-
+case ${DISTRO} in
+    run*) tar xzf "$cambpm_distro_file" -C /camunda;;
+    *)    tar xzf "$cambpm_distro_file" -C /camunda server --strip 2;;
+esac
 cp /tmp/camunda-${GROUP}.sh /camunda/camunda.sh
-
 
 # download and register database drivers
 mvn dependency:get -B --global-settings /tmp/settings.xml \
@@ -112,7 +115,12 @@ EOF
         /camunda/bin/jboss-cli.sh --file=batch.cli
         rm -rf /camunda/standalone/configuration/standalone_xml_history/current/*
         ;;
-    *)
+    run*)
+        cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /camunda/configuration/userlib
+        cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /camunda/configuration/userlib
+        cp /tmp/ojdbc10-${ORACLE_VERSION}.jar /camunda/configuration/userlib
+        ;;
+    tomcat*)
         cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /camunda/lib
         cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /camunda/lib
         cp /tmp/ojdbc10-${ORACLE_VERSION}.jar /camunda/lib
