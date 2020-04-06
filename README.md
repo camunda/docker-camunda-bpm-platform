@@ -309,6 +309,14 @@ This also allows you to modify the app outside of the container and it will
 be redeployed inside the platform.
 
 
+### Enforce AUTH in API REST
+
+```
+docker run -d --name camunda -p 8080:8080 \
+           --env ENGINE_REST_AUTH_ENABLE=1 \
+           camunda/camunda-bpm-platform:latest
+```
+
 ### Clean Distro Without Webapps and Examples
 
 To remove all webapps and examples from the distro and only deploy your
