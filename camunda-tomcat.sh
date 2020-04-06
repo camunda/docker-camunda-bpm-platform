@@ -42,6 +42,16 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     ${CATALINA_HOME}/conf/server.xml
 fi
 
+
+/camunda/scripts/camunda-engine-rest-enable-auth.sh \
+    /camunda/webapps/engine-rest/WEB-INF/web.xml \
+    /camunda/data/camunda-engine-rest-enable-auth.xsl \
+    /camunda/data/camunda-engine-rest-enable-auth.xml
+if [ $? -ne 0 ] ; then
+    echo "ERROR: /camunda/scripts/camunda-engine-rest-enable-auth.sh"
+    exit 1
+fi
+
 CMD="${CATALINA_HOME}/bin/catalina.sh"
 if [ "${DEBUG}" = "true" ]; then
   echo "Enabling debug mode, JPDA accesible under port 8000"
