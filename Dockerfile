@@ -79,3 +79,13 @@ ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["./camunda.sh"]
 
 COPY --chown=camunda:camunda --from=builder /camunda .
+
+RUN mkdir /camunda/data
+RUN mkdir /camunda/scripts
+
+COPY --chown=camunda:camunda camunda-engine-rest-enable-auth.xml \
+     camunda-engine-rest-enable-auth.xsl \
+     /camunda/data/
+COPY --chown=camunda:camunda camunda-engine-rest-enable-auth.sh \
+     /camunda/scripts/
+RUN chmod +x /camunda/scripts/camunda-engine-rest-enable-auth.sh
