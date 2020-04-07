@@ -94,7 +94,7 @@ variables:
 - `DB_CONN_MAXACTIVE` the maximum number of active connections (default: `20`)
   - for `tomcat`, this is internally mapped to the `maxTotal` configuration property.
 - `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`)
-  - ignored when app server = `wildfly`
+  - ignored when app server = `wildfly` or `run`
 - `DB_CONN_MINIDLE` the minimum number of idle connections (default: `5`)
 - `DB_DRIVER` the database driver class name, supported are h2, mysql, postgresql and oracle:
   - h2: `DB_DRIVER=org.h2.Driver`
@@ -200,6 +200,7 @@ structure depends on the application server.
 To enable JPDA inside the container you can set the environment variable
 `DEBUG=true` on startup of the container. This will allow you to connect to the
 container on port `8000` to debug your application.
+This is only supported for `wildfly` and `tomcat` distributions.
 
 ## Prometheus JMX Exporter
 
@@ -208,6 +209,7 @@ variable `JMX_PROMETHEUS=true` on startup of the container.
 This will allow you to get metrics in Prometheus format at `<host>:9404/metrics`. 
 For configuring exporter you need attach your configuration as a container volume 
 at `/camunda/javaagent/prometheus-jmx.yml`.
+This is only supported for `wildfly` and `tomcat` distributions.
 
 ## Build
 
