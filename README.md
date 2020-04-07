@@ -54,6 +54,24 @@ either be `tomcat`, `wildfly` or `run`. If no `${DISTRO}` is specified the
 
 For all available tags see the [docker hub tags][].
 
+## Configuration of the `run` distribution
+
+
+Because `run` is a Spring Boot distribution, it can be configured through the respective environment variables. For example:
+- `SPRING_DATASOURCE_DRIVER_CLASS_NAME` corresponds to `DB_DRIVER`
+- `SPRING_DATASOURCE_PASSWORD` corresponds to `DB_PASSWORD`
+- `SPRING_DATASOURCE_USERNAME` corresponds to `DB_USERNAME`.
+When not set, the integrated H2 database is used.
+
+Any other `SPRING_*` variables can be used to further configure the app. Alternatively, an `application.yml` file can be mounted to `/camunda/configuration/application.yml`.
+More information on configuring Spring Boot applications can be found at 
+
+The environment variables `DB_DRIVER`, `DB_USERNAME`, `DB_PASSWORD`, `DB_URL`, `DB_PASSWORD_FILE` are supported
+for convenience and compatibility and are internally mapped to `SPRING_DATASOURCE_*` variables.
+
+The `JMX_PROMETHEUS` configuration is not supported, and while `DEBUG` can be used to enable debug output, it doesn't
+start a debug socket.
+
 ## Java Versions
 
 Our docker images are using the latest LTS OpenJDK version supported by
@@ -94,7 +112,7 @@ variables:
 - `DB_CONN_MAXACTIVE` the maximum number of active connections (default: `20`)
   - for `tomcat`, this is internally mapped to the `maxTotal` configuration property.
 - `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`)
-  - ignored when app server = `wildfly`
+  - ignored when app server = `wildfly` or `run`
 - `DB_CONN_MINIDLE` the minimum number of idle connections (default: `5`)
 - `DB_DRIVER` the database driver class name, supported are h2, mysql, postgresql and oracle:
   - h2: `DB_DRIVER=org.h2.Driver`
@@ -200,6 +218,7 @@ structure depends on the application server.
 To enable JPDA inside the container you can set the environment variable
 `DEBUG=true` on startup of the container. This will allow you to connect to the
 container on port `8000` to debug your application.
+This is only supported for `wildfly` and `tomcat` distributions.
 
 ## Prometheus JMX Exporter
 
@@ -208,6 +227,7 @@ variable `JMX_PROMETHEUS=true` on startup of the container.
 This will allow you to get metrics in Prometheus format at `<host>:9404/metrics`. 
 For configuring exporter you need attach your configuration as a container volume 
 at `/camunda/javaagent/prometheus-jmx.yml`.
+This is only supported for `wildfly` and `tomcat` distributions.
 
 ## Build
 
