@@ -32,4 +32,4 @@ if [ -n "${WAIT_FOR}" ]; then
   CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
 
-exec ${CMD}
+exec ${CMD} "$@"

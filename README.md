@@ -72,6 +72,15 @@ for convenience and compatibility and are internally mapped to `SPRING_DATASOURC
 The `JMX_PROMETHEUS` configuration is not supported, and while `DEBUG` can be used to enable debug output, it doesn't
 start a debug socket.
 
+`run` supports different startup options to choose whether or not to enable the WebApps or the REST API.
+
+Passing startup parameters to enable either one or the other can be done as in the following example:
+
+```bash
+docker run camunda/camunda-bpm-platform:run ./camunda.sh --webapps
+docker run camunda/camunda-bpm-platform:run ./camunda.sh --rest
+```
+
 ## Java Versions
 
 Our docker images are using the latest LTS OpenJDK version supported by
