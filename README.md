@@ -56,18 +56,24 @@ For all available tags see the [docker hub tags][].
 
 ## Configuration of the `run` distribution
 
-
 Because `run` is a Spring Boot distribution, it can be configured through the respective environment variables. For example:
-- `SPRING_DATASOURCE_DRIVER_CLASS_NAME` corresponds to `DB_DRIVER`
-- `SPRING_DATASOURCE_PASSWORD` corresponds to `DB_PASSWORD`
-- `SPRING_DATASOURCE_USERNAME` corresponds to `DB_USERNAME`.
-When not set, the integrated H2 database is used.
+- `SPRING_DATASOURCE_DRIVER_CLASS_NAME` the database driver class name, supported are h2 (default), mysql, postgresql and oracle:
+  - h2: `DB_DRIVER=org.h2.Driver`
+  - mysql: `DB_DRIVER=com.mysql.jdbc.Driver`
+  - postgresql: `DB_DRIVER=org.postgresql.Driver`
+  - oracle: `DB_DRIVER=oracle.jdbc.OracleDriver`
+- `SPRING_DATASOURCE_URL` the database jdbc url
+- `SPRING_DATASOURCE_USERNAME` the database username
+- `SPRING_DATASOURCE_PASSWORD` the database password
 
-Any other `SPRING_*` variables can be used to further configure the app. Alternatively, an `application.yml` file can be mounted to `/camunda/configuration/application.yml`.
-More information on configuring Spring Boot applications can be found at 
+When not set or otherwise specified, the integrated H2 database is used.
+
+Any other `SPRING_*` variables can be used to further configure the app. 
+Alternatively, an `default.yml` file can be mounted to `/camunda/configuration/default.yml`.
+More information on configuring Spring Boot applications can be found in the [Spring Boot Docs](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config).
 
 The environment variables `DB_DRIVER`, `DB_USERNAME`, `DB_PASSWORD`, `DB_URL`, `DB_PASSWORD_FILE` are supported
-for convenience and compatibility and are internally mapped to `SPRING_DATASOURCE_*` variables.
+for convenience and compatibility and are internally mapped to `SPRING_DATASOURCE_*` variables when provided.
 
 The `JMX_PROMETHEUS` configuration is not supported, and while `DEBUG` can be used to enable debug output, it doesn't
 start a debug socket.
@@ -80,6 +86,8 @@ Passing startup parameters to enable either one or the other can be done as in t
 docker run camunda/camunda-bpm-platform:run ./camunda.sh --webapps
 docker run camunda/camunda-bpm-platform:run ./camunda.sh --rest
 ```
+
+Additionally, a `--production` parameter is supported to switch the configuration to `/camunda/configuration/production.yml`.
 
 ## Java Versions
 
