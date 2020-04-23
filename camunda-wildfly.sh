@@ -1,8 +1,7 @@
 #!/bin/bash
 set -Eeu
 
-trap "Error on line $LINENO" ERR
-
+trap 'Error on line $LINENO' ERR
 
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
@@ -77,7 +76,7 @@ fi
 
 if [ "$JMX_PROMETHEUS" = "true" ] ; then
   echo "Enabling Prometheus JMX Exporter on port ${JMX_PROMETHEUS_PORT}"
-  [ ! -f "$JMX_PROMETHEUS_CONF" ] && touch $JMX_PROMETHEUS_CONF
+  [ ! -f "$JMX_PROMETHEUS_CONF" ] && touch "$JMX_PROMETHEUS_CONF"
   # See https://github.com/prometheus/jmx_exporter/issues/344
   LOG_MANAGER_PATH=$(find /camunda/modules -name "jboss-logmanager*.jar")
   COMMON_PATH=$(find /camunda/modules -name "wildfly-common*.jar")
@@ -89,4 +88,5 @@ if [ -n "${WAIT_FOR}" ]; then
   CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
 
+# shellcheck disable=SC2086
 exec ${CMD}

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -Eeu
 
-trap "Error on line $LINENO" ERR
+trap 'Error on line $LINENO' ERR
 
 # Use exising tomcat ditribution if present..
 CATALINA_HOME="${CATALINA_HOME:-/camunda}"
@@ -39,7 +39,7 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     -i "${XML_JDBC}[not(@testOnBorrow)]" -t attr -n "testOnBorrow" -v "${DB_VALIDATE_ON_BORROW}" \
     -u "${XML_JDBC}/@validationQuery" -v "${DB_VALIDATION_QUERY}" \
     -i "${XML_JDBC}[not(@validationQuery)]" -t attr -n "validationQuery" -v "${DB_VALIDATION_QUERY}" \
-    ${CATALINA_HOME}/conf/server.xml
+    "${CATALINA_HOME}/conf/server.xml"
 fi
 
 CMD="${CATALINA_HOME}/bin/catalina.sh"
@@ -51,7 +51,7 @@ fi
 
 if [ "$JMX_PROMETHEUS" = "true" ] ; then
   echo "Enabling Prometheus JMX Exporter on port ${JMX_PROMETHEUS_PORT}"
-  [ ! -f "$JMX_PROMETHEUS_CONF" ] && touch $JMX_PROMETHEUS_CONF
+  [ ! -f "$JMX_PROMETHEUS_CONF" ] && touch "$JMX_PROMETHEUS_CONF"
   export CATALINA_OPTS="-javaagent:/camunda/javaagent/jmx_prometheus_javaagent.jar=${JMX_PROMETHEUS_PORT}:${JMX_PROMETHEUS_CONF}"
 fi
 
@@ -61,4 +61,5 @@ if [ -n "${WAIT_FOR}" ]; then
   CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
 
+# shellcheck disable=SC2086
 exec ${CMD}
