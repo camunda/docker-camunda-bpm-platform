@@ -69,7 +69,7 @@ Because `run` is a Spring Boot distribution, it can be configured through the re
 When not set or otherwise specified, the integrated H2 database is used.
 
 Any other `SPRING_*` variables can be used to further configure the app. 
-Alternatively, an `default.yml` file can be mounted to `/camunda/configuration/default.yml`.
+Alternatively, a `default.yml` file can be mounted to `/camunda/configuration/default.yml`.
 More information on configuring Spring Boot applications can be found in the [Spring Boot Docs](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config).
 
 The environment variables `DB_DRIVER`, `DB_USERNAME`, `DB_PASSWORD`, `DB_URL`, `DB_PASSWORD_FILE` are supported

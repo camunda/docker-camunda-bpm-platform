@@ -1,30 +1,32 @@
 #!/bin/bash
-# Set Password as Docker Secrets for Swarm-Mode
-if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
-  password="$(< "${DB_PASSWORD_FILE}")"
-  DB_PASSWORD="$password"
-fi
+set -Eeu
 
-if [[ -z "${DB_PASSWORD}" ]]; then
-  DB_PASSWORD="sa"
-fi
+trap 'Error on line $LINENO' ERR
 
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
-  password="$(< "${DB_PASSWORD_FILE}")"
-  DB_PASSWORD="$password"
+  export DB_PASSWORD="$(< "${DB_PASSWORD_FILE}")"
 fi
 
-if [[ -z "${DB_PASSWORD}" ]]; then
-  DB_PASSWORD="sa"
+# For compatibility: when DB_ variables are set, translate them to SPRING_ variables.
+# Otherwise [defaults](https://github.com/camunda/camunda-bpm-platform/blob/master/distro/run/assembly/resources/default.yml)
+# will be used.
+
+if [[ -z "${SPRING_DATASOURCE_DRIVER_CLASS_NAME:-}" && -n "${DB_DRIVER:-}" ]]; then
+  export SPRING_DATASOURCE_DRIVER_CLASS_NAME="${DB_DRIVER}"
 fi
 
-export SPRING_DATASOURCE_DRIVER_CLASS_NAME=${SPRING_DATASOURCE_DRIVER_CLASS_NAME:-${DB_DRIVER:-org.h2.Driver}}
-export SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD:-${DB_PASSWORD:-}}
-export SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME:-${DB_USERNAME:-}}
+if [[ -z "${SPRING_DATASOURCE_PASSWORD:-}" && -n "${DB_PASSWORD:-}" ]]; then
+  export SPRING_DATASOURCE_PASSWORD="${DB_PASSWORD}"
+fi
 
-# remove MVCC=TRUE which is set through the Dockerfile but incompatible with this distro
-export SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL:-${DB_URL/MVCC=TRUE;/}}
+if [[ -z "${SPRING_DATASOURCE_USERNAME:-}" && -n "${DB_USERNAME:-}" ]]; then
+  export SPRING_DATASOURCE_USERNAME="${DB_USERNAME}"
+fi
+
+if [[ -z "${SPRING_DATASOURCE_URL:-}" && -n "${DB_URL:-}" ]]; then
+  export SPRING_DATASOURCE_URL="${DB_URL}"
+fi
 
 CMD="/camunda/start.sh"
 

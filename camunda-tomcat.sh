@@ -6,15 +6,16 @@ trap 'Error on line $LINENO' ERR
 # Use exising tomcat ditribution if present..
 CATALINA_HOME="${CATALINA_HOME:-/camunda}"
 
+# Set default values for DB_ variables
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
-  password="$(< "${DB_PASSWORD_FILE}")"
-  export DB_PASSWORD="$password"
+  export DB_PASSWORD="$(< "${DB_PASSWORD_FILE}")"
 fi
 
-if [[ -z "${DB_PASSWORD}" ]]; then
-  export DB_PASSWORD="sa"
-fi
+DB_DRIVER=${DB_DRIVER:-org.h2.Driver}
+DB_PASSWORD=${DB_PASSWORD:-sa}
+DB_URL=${DB_URL:-jdbc:h2:./camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE}
+DB_USERNAME=${DB_USERNAME:-sa}
 
 XML_JDBC="//Resource[@name='jdbc/ProcessEngine']"
 XML_DRIVER="${XML_JDBC}/@driverClassName"
