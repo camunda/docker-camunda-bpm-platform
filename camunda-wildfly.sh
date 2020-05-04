@@ -44,9 +44,6 @@ case ${DB_DRIVER} in
   *postgresql* )
     DB_DRIVER=postgresql
   ;;
-  *oracle* )
-    DB_DRIVER=oracle
-  ;;
   * ) echo "Unsupported DB_DRIVER ${DB_DRIVER}"; exit 1;
   ;;
 esac
