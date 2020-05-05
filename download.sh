@@ -80,7 +80,6 @@ mvn dependency:get -B --global-settings /tmp/settings.xml \
 cambpmdbsettings_pom_file=$(find /m2-repository -name "camunda-database-settings-${ARTIFACT_VERSION}.pom" -print | head -n 1)
 MYSQL_VERSION=$(xmlstarlet sel -t -v //_:version.mysql $cambpmdbsettings_pom_file)
 POSTGRESQL_VERSION=$(xmlstarlet sel -t -v //_:version.postgresql $cambpmdbsettings_pom_file)
-ORACLE_VERSION=19.3.0.0
 
 mvn dependency:copy -B \
     $PROXY \
@@ -89,10 +88,6 @@ mvn dependency:copy -B \
 mvn dependency:copy -B \
     $PROXY \
     -Dartifact="org.postgresql:postgresql:${POSTGRESQL_VERSION}:jar" \
-    -DoutputDirectory=/tmp/
-mvn dependency:copy -B \
-    $PROXY \
-    -Dartifact="com.oracle.ojdbc:ojdbc10:${ORACLE_VERSION}:jar" \
     -DoutputDirectory=/tmp/
 
 case ${DISTRO} in
@@ -107,9 +102,6 @@ module add --name=mysql.mysql-connector-java --slot=main --resources=/tmp/mysql-
 module add --name=org.postgresql.postgresql --slot=main --resources=/tmp/postgresql-${POSTGRESQL_VERSION}.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=postgresql:add(driver-name="postgresql",driver-module-name="org.postgresql.postgresql",driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
 
-module add --name=com.oracle.ojdbc --slot=main --resources=/tmp/ojdbc10-${ORACLE_VERSION}.jar --dependencies=javax.api,javax.transaction.api
-/subsystem=datasources/jdbc-driver=oracle:add(driver-name="oracle",driver-module-name="com.oracle.ojdbc",driver-xa-datasource-class-name="oracle.jdbc.xa.client.OracleXADataSource")
-
 run-batch
 EOF
         /camunda/bin/jboss-cli.sh --file=batch.cli
@@ -118,12 +110,10 @@ EOF
     run*)
         cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /camunda/configuration/userlib
         cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /camunda/configuration/userlib
-        cp /tmp/ojdbc10-${ORACLE_VERSION}.jar /camunda/configuration/userlib
         ;;
     tomcat*)
         cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /camunda/lib
         cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /camunda/lib
-        cp /tmp/ojdbc10-${ORACLE_VERSION}.jar /camunda/lib
         # remove default CATALINA_OPTS from environment settings
         echo "" > /camunda/bin/setenv.sh
         ;;

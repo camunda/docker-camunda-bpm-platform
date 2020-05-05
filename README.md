@@ -57,11 +57,10 @@ For all available tags see the [docker hub tags][].
 ## Configuration of the `run` distribution
 
 Because `run` is a Spring Boot distribution, it can be configured through the respective environment variables. For example:
-- `SPRING_DATASOURCE_DRIVER_CLASS_NAME` the database driver class name, supported are h2 (default), mysql, postgresql and oracle:
+- `SPRING_DATASOURCE_DRIVER_CLASS_NAME` the database driver class name, supported are h2 (default), mysql, and postgresql:
   - h2: `DB_DRIVER=org.h2.Driver`
   - mysql: `DB_DRIVER=com.mysql.jdbc.Driver`
   - postgresql: `DB_DRIVER=org.postgresql.Driver`
-  - oracle: `DB_DRIVER=oracle.jdbc.OracleDriver`
 - `SPRING_DATASOURCE_URL` the database jdbc url
 - `SPRING_DATASOURCE_USERNAME` the database username
 - `SPRING_DATASOURCE_PASSWORD` the database password
@@ -131,17 +130,15 @@ variables:
 - `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`)
   - ignored when app server = `wildfly` or `run`
 - `DB_CONN_MINIDLE` the minimum number of idle connections (default: `5`)
-- `DB_DRIVER` the database driver class name, supported are h2, mysql, postgresql and oracle:
+- `DB_DRIVER` the database driver class name, supported are h2, mysql, and postgresql:
   - h2: `DB_DRIVER=org.h2.Driver`
   - mysql: `DB_DRIVER=com.mysql.jdbc.Driver`
   - postgresql: `DB_DRIVER=org.postgresql.Driver`
-  - oracle: `DB_DRIVER=oracle.jdbc.OracleDriver`
 - `DB_URL` the database jdbc url
 - `DB_USERNAME` the database username
 - `DB_PASSWORD` the database password
 - `DB_VALIDATE_ON_BORROW` validate database connections before they are used (default: `false`)
 - `DB_VALIDATION_QUERY` the query to execute to validate database connections (default: `"SELECT 1"`)
-  - oracle: `DB_VALIDATION_QUERY="select 1 from dual"`
 - `DB_PASSWORD_FILE` this supports [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/). 
   Put here the path of the secret, e.g. `/run/secrets/camunda_db_password`. 
   Make sure that `DB_PASSWORD` is not set when using this variable!
