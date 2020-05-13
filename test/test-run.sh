@@ -4,9 +4,6 @@ SERVICE=${1}
 
 source test_helper.sh
 
-# Override the default camunda/ prefix
-URL_PREFIX=""
-
 start_container
 
 WAIT=10 poll_log "starting to acquire jobs" "Application run failed" || _exit 1 "Server not started"
