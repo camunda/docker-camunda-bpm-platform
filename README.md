@@ -112,12 +112,13 @@ JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
 ### Use docker memory limits
 
 Instead of specifying the Java memory settings it is also possible to instruct
-the JVM to respect the docker memory settings. As the image uses Java 8 it has
-to be enabled using the `JAVA_OPTS` environment variable. Using the following
-settings the JVM will respect docker memory limits specified during startup.
+the JVM to respect the docker memory settings. As the image uses Java 11 it does
+not have to be enabled explicitly using the `JAVA_OPTS` environment variable. 
+If you want to set the memory limits manually you can restore the pre-Java-11-behavior
+by setting the following environment variable.
 
 ```
-JAVA_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+JAVA_OPTS="-XX:-UseContainerSupport"
 ```
 
 ## Database environment variables
