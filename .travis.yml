@@ -7,27 +7,20 @@ services:
 
 env:
   - DISTRO=tomcat
-#   - DISTRO=tomcat EE=true
-#   - DISTRO=wildfly
-#   - DISTRO=wildfly EE=true
-#   - DISTRO=run
-#   - DISTRO=run EE=true
+  # - DISTRO=tomcat EE=true
+  - DISTRO=wildfly
+  # - DISTRO=wildfly EE=true
+  - DISTRO=run
+  # - DISTRO=run EE=true
 
 jobs:
-  include:
-    - if: repo IN ("camunda/docker-camunda-bpm-platform")
-      env: DISTRO=tomkitty1
-    - if: head_repo IN ("camunda/docker-camunda-bpm-platform")
-      env: DISTRO=tomkitty2
-    - if: repo IN ("maxdanilov-test/docker-camunda-bpm-platform")
-      env: DISTRO=tomkitty3
-    - if: head_repo IN ("maxdanilov-test/docker-camunda-bpm-platform")
-      env: DISTRO=tomkitty4
-    - if: head_repo != repo
-      env: DISTRO=tomkitty5
-    - if: head_repo != repo
-      env: DISTRO=tomkitty6
-      
+  include:  # do not run EE builds for forks (they don't have access to EE credentials)
+    - if: head_repo = repo
+      env: DISTRO=tomcat EE=true
+    - if: head_repo = repo
+      env: DISTRO=wildfly EE=true
+    - if: head_repo = repo
+      env: DISTRO=run EE=true
+
 script:
   - ./pipeline.sh
-
