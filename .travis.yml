@@ -12,6 +12,8 @@ env:
 
 jobs:
   include:  # do not build EE for PRs from forks (Nexus EE credentials are not available)
+    - if: TRAVIS_PULL_REQUEST_SLUG IS blank TRAVIS_PULL_REQUEST_SLUG = "camunda/docker-camunda-bpm-platform"
+      env: DISTRO=tomkitty EE=true
     - if: env(TRAVIS_PULL_REQUEST_SLUG) IS blank #OR env(TRAVIS_PULL_REQUEST_SLUG) = "camunda/docker-camunda-bpm-platform"
       env: DISTRO=tomcat EE=true
     - if: env(TRAVIS_PULL_REQUEST_SLUG) IS blank #OR env(TRAVIS_PULL_REQUEST_SLUG) = "camunda/docker-camunda-bpm-platform"
