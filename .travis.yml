@@ -13,5 +13,10 @@ env:
   - DISTRO=run
   - DISTRO=run EE=true
 
+jobs:
+  include:
+    - if: env(NEXUS_USER) == ""
+      env: DISTRO=tomkitty
+
 script:
   - ./pipeline.sh
