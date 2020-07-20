@@ -15,10 +15,14 @@ env:
 
 jobs:
   include:
-    - if: repo IN ("maxdanilov-test/docker-camunda-bpm-platform")
-      env: DISTRO=tomkitty
-    - if: head_repo IN ("maxdanilov-test/docker-camunda-bpm-platform")
+    - if: repo IN ("camunda/docker-camunda-bpm-platform")
+      env: DISTRO=tomkitty1
+    - if: head_repo IN ("camunda/docker-camunda-bpm-platform")
       env: DISTRO=tomkitty2
+    - if: repo IN ("maxdanilov-test/docker-camunda-bpm-platform")
+      env: DISTRO=tomkitty3
+    - if: head_repo IN ("maxdanilov-test/docker-camunda-bpm-platform")
+      env: DISTRO=tomkitty4
       
 script:
   - ./pipeline.sh
