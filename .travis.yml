@@ -26,4 +26,4 @@ script:
   - ./release.sh
 
 # Only build EE if Nexus credentials are provided (i.e. when CI is triggered by project maintainers not PRs).
-if: env(NEXUS_USER) IS present AND env(NEXUS_PASS) IS present
+if: env(NEXUS_USER) IS NOT blank AND env(NEXUS_PASS) IS NOT blank
