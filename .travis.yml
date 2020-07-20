@@ -7,15 +7,15 @@ services:
 
 env:
   - DISTRO=tomcat
-  - DISTRO=tomcat EE=true
-  - DISTRO=wildfly
-  - DISTRO=wildfly EE=true
-  - DISTRO=run
-  - DISTRO=run EE=true
+#   - DISTRO=tomcat EE=true
+#   - DISTRO=wildfly
+#   - DISTRO=wildfly EE=true
+#   - DISTRO=run
+#   - DISTRO=run EE=true
 
 jobs:
   include:
-    - if: env(NEXUS_USER) == ""
+    - if: repo == head_repo
       env: DISTRO=tomkitty
 
 script:
