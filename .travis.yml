@@ -13,6 +13,11 @@ env:
   - DISTRO=run
   - DISTRO=run EE=true
 
+jobs:
+  exclude:
+    - if: env(TRAVIS_PULL_REQUEST_SLUG) != "camunda/docker-camunda-bpm-platform"
+      env: DISTRO=run EE=true
+
 script:
   - echo y"${TRAVIS_PULL_REQUEST_SLUG}"
   - echo z"${TRAVIS_REPO_SLUG}"
