@@ -13,11 +13,13 @@ env:
 #   - DISTRO=run
 #   - DISTRO=run EE=true
 
-# jobs:
-#   include:
-#     - if: repo = "maxdanilov-test/docker-camunda-bpm-platform"
-#         env: DISTRO=tomkitty
-
+jobs:
+  include:
+    - if: repo IN ("maxdanilov-test/docker-camunda-bpm-platform")
+      env: DISTRO=tomkitty
+    - if: head_repo IN ("maxdanilov-test/docker-camunda-bpm-platform")
+      env: DISTRO=tomkitty2
+      
 script:
   - ./pipeline.sh
 
