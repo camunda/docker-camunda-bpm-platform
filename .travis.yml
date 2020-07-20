@@ -14,6 +14,7 @@ env:
   - DISTRO=run EE=true
 
 script:
+  - echo z"${TRAVIS_REPO_SLUG}"
   - echo u1"${NEXUS_USER}" p1"${NEXUS_PASS}"
   - |
     docker build .                              \
@@ -26,4 +27,4 @@ script:
   - ./release.sh
 
 # Only build EE if Nexus credentials are provided (i.e. when CI is triggered by project maintainers not PRs).
-if: env(NEXUS_USER) == "aaa" AND env(NEXUS_PASS) != ""
+if: env(NEXUS_USER) != "" AND env(NEXUS_PASS) != ""
