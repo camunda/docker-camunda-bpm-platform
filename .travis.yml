@@ -1,21 +1,17 @@
-#!/bin/bash
+language: generic
 
-# do not build EE for PRs from forks (Nexus EE credentials are not available)
-if [[ "${EE}" == "true" && "${NEXUS_USER}" == "" ]]; then
-    echo "Skipping EE build in a fork PR"
-    exit 0
-fi
+os: linux
 
-echo y2"${TRAVIS_PULL_REQUEST_SLUG}"
-echo z2"${TRAVIS_REPO_SLUG}"
-echo u1"${NEXUS_USER}" p1"${NEXUS_PASS}"
-  
-docker build .                                \
-    -t camunda/camunda-bpm-platform:${DISTRO} \
-    --build-arg DISTRO=${DISTRO}              \
-    --build-arg EE=${EE}                      \
-    --build-arg USER=${NEXUS_USER}            \
-    --build-arg PASSWORD=${NEXUS_PASS}
- 
- ./test/test.sh
- ./release.sh
+services:
+  - docker
+
+env:
+  - DISTRO=tomcat
+  - DISTRO=tomcat EE=true
+  - DISTRO=wildfly
+  - DISTRO=wildfly EE=true
+  - DISTRO=run
+  - DISTRO=run EE=true
+
+script:
+  - ./pipeline.sh
