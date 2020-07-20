@@ -7,15 +7,16 @@ services:
 
 env:
   - DISTRO=tomcat
-  - DISTRO=tomcat EE=true
   - DISTRO=wildfly
-  - DISTRO=wildfly EE=true
   - DISTRO=run
-  - DISTRO=run EE=true
 
 jobs:
-  exclude:
-    - if: env(TRAVIS_PULL_REQUEST_SLUG) != "camunda/docker-camunda-bpm-platform"
+  include:
+    - if: env(TRAVIS_PULL_REQUEST_SLUG) == "camunda/docker-camunda-bpm-platform"
+      env: DISTRO=tomcat EE=true
+    - if: env(TRAVIS_PULL_REQUEST_SLUG) == "camunda/docker-camunda-bpm-platform"
+      env: DISTRO=wildfly EE=true
+    - if: env(TRAVIS_PULL_REQUEST_SLUG) == "camunda/docker-camunda-bpm-platform"
       env: DISTRO=run EE=true
 
 script:
@@ -33,4 +34,4 @@ script:
   - ./release.sh
 
 # Only build EE if Nexus credentials are provided (i.e. when CI is triggered by project maintainers not PRs).
-if: env(NEXUS_USER) != "" AND env(NEXUS_PASS) != ""
+# if: env(NEXUS_USER) != "" AND env(NEXUS_PASS) != ""
