@@ -23,6 +23,8 @@ jobs:
       env: DISTRO=tomkitty3
     - if: head_repo IN ("maxdanilov-test/docker-camunda-bpm-platform")
       env: DISTRO=tomkitty4
+    - if: head_repo != repo
+      env: DISTRO=tomkitty5
       
 script:
   - ./pipeline.sh
