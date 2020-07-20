@@ -25,6 +25,8 @@ jobs:
       env: DISTRO=tomkitty4
     - if: head_repo != repo
       env: DISTRO=tomkitty5
+    - if: head_repo != repo
+      env: DISTRO=tomkitty6
       
 script:
   - ./pipeline.sh
