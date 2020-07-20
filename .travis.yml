@@ -14,6 +14,7 @@ env:
   - DISTRO=run EE=true
 
 script:
+  - echo y"${TRAVIS_PULL_REQUEST_SLUG}"
   - echo z"${TRAVIS_REPO_SLUG}"
   - echo u1"${NEXUS_USER}" p1"${NEXUS_PASS}"
   - |
