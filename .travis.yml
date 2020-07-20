@@ -15,7 +15,7 @@ env:
 
 jobs:
   include:
-    - if: repo = head_repo
+    - if: repo = "maxdanilov-test/docker-camunda-bpm-platform"
       env: DISTRO=tomkitty
 
 script:
