@@ -7,22 +7,17 @@ services:
 
 env:
   - DISTRO=tomcat
-  - DISTRO=tomcat EE=true
   - DISTRO=wildfly
-  - DISTRO=wildfly EE=true
   - DISTRO=run
-  - DISTRO=run EE=true
+
+jobs:
+  include:  # do not run EE builds for forks (they don't have access to EE credentials)
+    - if: head_repo = repo
+      env: DISTRO=tomcat EE=true
+    - if: head_repo = repo
+      env: DISTRO=wildfly EE=true
+    - if: head_repo = repo
+      env: DISTRO=run EE=true
 
 script:
-  - |
-    docker build .                              \
-      -t camunda/camunda-bpm-platform:${DISTRO} \
-      --build-arg DISTRO=${DISTRO}              \
-      --build-arg EE=${EE}                      \
-      --build-arg USER=${NEXUS_USER}            \
-      --build-arg PASSWORD=${NEXUS_PASS}
-  - ./test/test.sh
-  - ./release.sh
-
-# Only build EE if Nexus credentials are provided (i.e. when CI is triggered by project maintainers not PRs).
-if: env(NEXUS_USER) IS present AND env(NEXUS_PASS) IS present
+  - ./pipeline.sh
