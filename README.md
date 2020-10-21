@@ -45,7 +45,7 @@ either be `tomcat`, `wildfly` or `run`. If no `${DISTRO}` is specified the
 `tomcat` distribution is used.
 
 - `latest`, `${DISTRO}-latest`: Alywas the latest minor release of Camunda BPM
-  platform. Without
+  platform.
 - `SNAPSHOT`, `${VERSION}-SNAPSHOT`, `${DISTRO}-SNAPSHOT`,
   `${DISTRO}-${VERSION}-SNAPSHOT`: The latest SNAPSHOT version of Camunda BPM
   platform, which is not released yet.
