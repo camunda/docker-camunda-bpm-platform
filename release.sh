@@ -50,7 +50,7 @@ fi
 # https://github.com/camunda/docker-camunda-bpm-platform/blob/next/README.md#supported-tagsreleases
 # The 1st condition matches only when the version branch is the same as the main branch. 
 git fetch origin next
-if [ $(git rev-parse HEAD) = $(git rev-parse FETCH_HEAD) && "${SNAPSHOT}" = "false" ]; then
+if [ $(git rev-parse HEAD) = $(git rev-parse FETCH_HEAD) ] && [ "${SNAPSHOT}" = "false" ]; then
     # tagging image as latest
     tag_and_push "${DISTRO}-latest"
     tag_and_push "${DISTRO}"
