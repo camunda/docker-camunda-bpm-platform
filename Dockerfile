@@ -54,7 +54,7 @@ ENV JMX_PROMETHEUS=false
 ENV JMX_PROMETHEUS_CONF=/camunda/javaagent/prometheus-jmx.yml
 ENV JMX_PROMETHEUS_PORT=9404
 
-EXPOSE 8080 8000 9404
+EXPOSE 8080 8081 8000 9404
 
 # Downgrading wait-for-it is necessary until this PR is merged
 # https://github.com/vishnubob/wait-for-it/pull/68
@@ -65,17 +65,24 @@ RUN apk add --no-cache \
         openjdk11-jre-headless \
         tzdata \
         tini \
+        npm \
+        git \
         xmlstarlet \
     && curl -o /usr/local/bin/wait-for-it.sh \
       "https://raw.githubusercontent.com/vishnubob/wait-for-it/a454892f3c2ebbc22bd15e446415b8fcb7c1cfa4/wait-for-it.sh" \
-    && chmod +x /usr/local/bin/wait-for-it.sh
+    && chmod +x /usr/local/bin/wait-for-it.sh \
+    && mkdir /usr/local/swagger \
+    && cd /usr/local/swagger \
+    && git clone https://github.com/davidgs/camunda-swagger
+
 
 RUN addgroup -g 1000 -S camunda && \
-    adduser -u 1000 -S camunda -G camunda -h /camunda -s /bin/bash -D camunda
+    adduser -u 1000 -S camunda -G camunda -h /camunda -s /bin/bash -D camunda && \
+    chown -R camunda:camunda /usr/local/swagger
 WORKDIR /camunda
 USER camunda
 
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["./camunda.sh"]
+CMD ["/usr/local/swagger/camunda-swagger/start.sh"]
 
 COPY --chown=camunda:camunda --from=builder /camunda .

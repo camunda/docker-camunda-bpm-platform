@@ -13,7 +13,7 @@ To start the latest release:
 
 ```
 docker pull camunda/camunda-bpm-platform:latest
-docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
+docker run -d --name camunda -p 8080:8080 -p 8081:8081 camunda/camunda-bpm-platform:latest
 ```
 
 ### Tasklist, Cockpit, Admin Web Apps
@@ -28,6 +28,9 @@ The default credentials for admin access to the webapps is:
 ### Rest-API
 
 The Camunda Rest-API is accessible through: http://localhost:8080/engine-rest
+
+In addition, the Rest-API documentation is available in interactive form at http://localhost:8081/docs
+where you can make live calls to the REST API to the running instance of Camunda BPM.
 
 See the [Rest-API](https://docs.camunda.org/manual/latest/reference/rest/)
 documentation for more details on how to use it.
@@ -67,7 +70,7 @@ Because `run` is a Spring Boot distribution, it can be configured through the re
 
 When not set or otherwise specified, the integrated H2 database is used.
 
-Any other `SPRING_*` variables can be used to further configure the app. 
+Any other `SPRING_*` variables can be used to further configure the app.
 Alternatively, a `default.yml` file can be mounted to `/camunda/configuration/default.yml`.
 More information on configuring Spring Boot applications can be found in the [Spring Boot Docs](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config).
 
@@ -113,7 +116,7 @@ JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
 
 Instead of specifying the Java memory settings it is also possible to instruct
 the JVM to respect the docker memory settings. As the image uses Java 11 it does
-not have to be enabled explicitly using the `JAVA_OPTS` environment variable. 
+not have to be enabled explicitly using the `JAVA_OPTS` environment variable.
 If you want to set the memory limits manually you can restore the pre-Java-11-behavior
 by setting the following environment variable.
 
@@ -140,8 +143,8 @@ variables:
 - `DB_PASSWORD` the database password
 - `DB_VALIDATE_ON_BORROW` validate database connections before they are used (default: `false`)
 - `DB_VALIDATION_QUERY` the query to execute to validate database connections (default: `"SELECT 1"`)
-- `DB_PASSWORD_FILE` this supports [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/). 
-  Put here the path of the secret, e.g. `/run/secrets/camunda_db_password`. 
+- `DB_PASSWORD_FILE` this supports [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/).
+  Put here the path of the secret, e.g. `/run/secrets/camunda_db_password`.
   Make sure that `DB_PASSWORD` is not set when using this variable!
 - `SKIP_DB_CONFIG` skips the automated database configuration to use manual
   configuration
@@ -237,10 +240,10 @@ This is only supported for `wildfly` and `tomcat` distributions.
 
 ## Prometheus JMX Exporter
 
-To enable Prometheus JMX Exporter inside the container you can set the environment 
-variable `JMX_PROMETHEUS=true` on startup of the container. 
-This will allow you to get metrics in Prometheus format at `<host>:9404/metrics`. 
-For configuring exporter you need attach your configuration as a container volume 
+To enable Prometheus JMX Exporter inside the container you can set the environment
+variable `JMX_PROMETHEUS=true` on startup of the container.
+This will allow you to get metrics in Prometheus format at `<host>:9404/metrics`.
+For configuring exporter you need attach your configuration as a container volume
 at `/camunda/javaagent/prometheus-jmx.yml`.
 This is only supported for `wildfly` and `tomcat` distributions.
 
