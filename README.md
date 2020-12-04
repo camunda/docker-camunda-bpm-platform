@@ -13,23 +13,25 @@ To start the latest release:
 
 ```
 docker pull camunda/camunda-bpm-platform:latest
-docker run -d --name camunda -p 8080:8080 -p 8081:8081 camunda/camunda-bpm-platform:latest
+docker run -d --name camunda -p 8000:8000 camunda/camunda-bpm-platform:latest
 ```
 
 ### Tasklist, Cockpit, Admin Web Apps
 
-The three Camunda webapps are accessible through the landing page: http://localhost:8080/camunda-welcome/index.html
+The three Camunda webapps are accessible through the landing page: http://localhost:8000/camunda/
 
 The default credentials for admin access to the webapps is:
 
 - Username: `demo`
 - Password: `demo`
 
+**Note**: The CamundaBPM server and the API server, as well as the live swagger documentation are all served on the same port 8000 via an nginx reverse-proxy. 
+
 ### Rest-API
 
-The Camunda Rest-API is accessible through: http://localhost:8080/engine-rest
+The Camunda Rest-API is accessible through: http://localhost:8000/engine-rest
 
-In addition, the Rest-API documentation is available in interactive form at http://localhost:8081/docs
+In addition, the Rest-API documentation is available in interactive form at http://localhost:8000/docs
 where you can make live calls to the REST API to the running instance of Camunda BPM.
 
 See the [Rest-API](https://docs.camunda.org/manual/latest/reference/rest/)
