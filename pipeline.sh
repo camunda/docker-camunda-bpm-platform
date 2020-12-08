@@ -1,5 +1,5 @@
 #!/bin/bash
- 
+
 docker build .                                \
     -t camunda/camunda-bpm-platform:${DISTRO} \
     --build-arg DISTRO=${DISTRO}              \
