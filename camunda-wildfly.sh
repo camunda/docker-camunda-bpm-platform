@@ -3,6 +3,9 @@ set -Eeu
 
 trap 'Error on line $LINENO' ERR
 
+# Swagger-UI startup
+SWAGGER_CMD="/camunda/swagger/start.sh"
+
 # Set default values for DB_ variables
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
@@ -66,8 +69,8 @@ export LAUNCH_JBOSS_IN_BACKGROUND=TRUE
 CMD="/camunda/bin/standalone.sh"
 
 if [ "${DEBUG}" = "true" ]; then
-  echo "Enabling debug mode, JPDA accesible under port 8000"
-  CMD+=" --debug 8000"
+  echo "Enabling debug mode, JPDA accesible under port 8001"
+  CMD+=" --debug 8001"
 fi
 
 if [ "$JMX_PROMETHEUS" = "true" ] ; then
@@ -85,4 +88,5 @@ if [ -n "${WAIT_FOR}" ]; then
 fi
 
 # shellcheck disable=SC2086
+${SWAGGER_CMD}
 exec ${CMD}

@@ -54,7 +54,7 @@ ENV JMX_PROMETHEUS=false
 ENV JMX_PROMETHEUS_CONF=/camunda/javaagent/prometheus-jmx.yml
 ENV JMX_PROMETHEUS_PORT=9404
 
-EXPOSE 8000 9404
+EXPOSE 8001 8000 9404
 
 # Downgrading wait-for-it is necessary until this PR is merged
 # https://github.com/vishnubob/wait-for-it/pull/68
@@ -74,23 +74,25 @@ RUN apk add --no-cache \
         && cp /tmp/nginx.conf /etc/nginx/nginx.conf \
         && curl -o /usr/local/bin/wait-for-it.sh \
       "https://raw.githubusercontent.com/vishnubob/wait-for-it/a454892f3c2ebbc22bd15e446415b8fcb7c1cfa4/wait-for-it.sh" \
-        && chmod +x /usr/local/bin/wait-for-it.sh \
-        && mkdir /usr/local/swagger \
-        && cd /usr/local/swagger \
-        && git clone https://github.com/davidgs/camunda-swagger
+        && chmod +x /usr/local/bin/wait-for-it.sh
 
 
 RUN addgroup -g 1000 -S camunda && \
     adduser -u 1000 -S camunda -G camunda -h /camunda -s /bin/bash -D camunda && \
-    chown -R camunda:camunda /usr/local/swagger \
-    && chown -R camunda:camunda /var/lib/nginx/ \
-    && chown -R camunda:camunda /var/log/nginx/ \
-    && chown -R camunda:camunda /var/tmp/nginx
+    cp /tmp/nginx.conf /etc/nginx/nginx.conf && \
+    chown -R camunda:camunda /var/lib/nginx/ && \
+    chown -R camunda:camunda /var/log/nginx/ && \
+    chown -R camunda:camunda /var/tmp/nginx
+
+COPY swagger.sh /tmp/
+ADD swagger /tmp/swagger
+RUN /tmp/swagger.sh && \
+    chown -R camunda:camunda /camunda/swagger
 
 WORKDIR /camunda
 USER camunda
 
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/usr/local/swagger/camunda-swagger/start.sh"]
+CMD ["/camunda/camunda.sh"]
 
 COPY --chown=camunda:camunda --from=builder /camunda .

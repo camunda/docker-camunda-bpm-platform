@@ -3,6 +3,9 @@ set -Eeu
 
 trap 'Error on line $LINENO' ERR
 
+# Swagger-UI startup
+SWAGGER_CMD="/camunda/swagger/start.sh"
+
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
   export DB_PASSWORD="$(< "${DB_PASSWORD_FILE}")"
@@ -33,6 +36,6 @@ CMD="/camunda/start.sh"
 if [ -n "${WAIT_FOR}" ]; then
   CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
-
+${SWAGGER_CMD}
 # shellcheck disable=SC2086
 exec ${CMD} "$@"

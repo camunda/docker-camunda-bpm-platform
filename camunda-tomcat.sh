@@ -3,6 +3,10 @@ set -Eeu
 
 trap 'Error on line $LINENO' ERR
 
+
+# Swagger-UI startup
+SWAGGER_CMD="/camunda/swagger/start.sh"
+
 # Use exising tomcat ditribution if present..
 CATALINA_HOME="${CATALINA_HOME:-/camunda}"
 
@@ -11,6 +15,7 @@ CATALINA_HOME="${CATALINA_HOME:-/camunda}"
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
   export DB_PASSWORD="$(< "${DB_PASSWORD_FILE}")"
 fi
+
 
 DB_DRIVER=${DB_DRIVER:-org.h2.Driver}
 DB_PASSWORD=${DB_PASSWORD:-sa}
@@ -61,6 +66,7 @@ CMD+=" run"
 if [ -n "${WAIT_FOR}" ]; then
   CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
 fi
-
+${SWAGGER_CMD}
 # shellcheck disable=SC2086
 exec ${CMD}
+
