@@ -97,7 +97,7 @@ batch
 embed-server --std-out=echo
 
 module add --name=mysql.mysql-connector-java --slot=main --resources=/tmp/mysql-connector-java-${MYSQL_VERSION}.jar --dependencies=javax.api,javax.transaction.api
-/subsystem=datasources/jdbc-driver=mysql:add(driver-name="mysql",driver-module-name="mysql.mysql-connector-java",driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource)
+/subsystem=datasources/jdbc-driver=mysql:add(driver-name="mysql",driver-module-name="mysql.mysql-connector-java",driver-xa-datasource-class-name=com.mysql.cj.jdbc.MysqlXADataSource)
 
 module add --name=org.postgresql.postgresql --slot=main --resources=/tmp/postgresql-${POSTGRESQL_VERSION}.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=postgresql:add(driver-name="postgresql",driver-module-name="org.postgresql.postgresql",driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
