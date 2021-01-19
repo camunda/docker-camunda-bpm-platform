@@ -10,8 +10,8 @@ services:
     camunda-mysql:
         image: camunda/camunda-bpm-platform:${DISTRO:-latest}
         environment:
-            - DB_DRIVER=com.mysql.jdbc.Driver
-            - DB_URL=jdbc:mysql://mysql:3306/process-engine
+            - DB_DRIVER=com.mysql.cj.jdbc.Driver
+            - DB_URL=jdbc:mysql://mysql:3306/process-engine?sendFractionalSeconds=false
             - DB_USERNAME=camunda
             - DB_PASSWORD=camunda
             - WAIT_FOR=mysql:3306
@@ -56,8 +56,8 @@ services:
     camunda-password-file:
         image: camunda/camunda-bpm-platform:${DISTRO:-latest}
         environment:
-            - DB_DRIVER=com.mysql.jdbc.Driver
-            - DB_URL=jdbc:mysql://mysql:3306/process-engine
+            - DB_DRIVER=com.mysql.cj.jdbc.Driver
+            - DB_URL=jdbc:mysql://mysql:3306/process-engine?sendFractionalSeconds=false
             - DB_USERNAME=camunda
             - DB_PASSWORD_FILE=/run/secrets/camunda_db_password
             - WAIT_FOR=mysql:3306
