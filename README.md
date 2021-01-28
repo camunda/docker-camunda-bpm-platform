@@ -1,9 +1,9 @@
-# Camunda BPM Platform Docker Images
+# Camunda Platform Docker Images
 [![Build Status](https://travis-ci.com/camunda/docker-camunda-bpm-platform.svg?branch=next)](https://travis-ci.com/camunda/docker-camunda-bpm-platform)
 
-This Camunda project provides docker images of the latest Camunda
-BPM platform releases. The images can be used to demonstrate and test the
-Camunda BPM platform or can be extended with own process applications. It is
+This Camunda project provides docker images of the latest 
+Camunda Platform releases. The images can be used to demonstrate and test the
+Camunda Platform or can be extended with own process applications. It is
 planned to provide images on the official [docker registry][] for every upcoming
 release, which includes alpha releases.
 
@@ -40,17 +40,14 @@ to enable authentication for the Rest-API.
 ## Supported Tags/Releases
 
 The following tag schema is used. The user has the choice between different
-application server distributions of Camunda BPM platform. `${DISTRO}` can
+application server distributions of Camunda Platform. `${DISTRO}` can
 either be `tomcat`, `wildfly` or `run`. If no `${DISTRO}` is specified the
 `tomcat` distribution is used.
 
-- `latest`, `${DISTRO}-latest`: Alywas the latest minor release of Camunda BPM
-  platform.
+- `latest`, `${DISTRO}-latest`: Alywas the latest minor release of Camunda Platform.
 - `SNAPSHOT`, `${VERSION}-SNAPSHOT`, `${DISTRO}-SNAPSHOT`,
-  `${DISTRO}-${VERSION}-SNAPSHOT`: The latest SNAPSHOT version of Camunda BPM
-  platform, which is not released yet.
-- `${VERSION}`, `${DISTRO}-${VERSION}`: A specific version of Camunda BPM
-  platform.
+  `${DISTRO}-${VERSION}-SNAPSHOT`: The latest SNAPSHOT version of Camunda Platform, which is not released yet.
+- `${VERSION}`, `${DISTRO}-${VERSION}`: A specific version of Camunda Platform.
 
 For all available tags see the [docker hub tags][].
 
@@ -91,7 +88,7 @@ Additionally, a `--production` parameter is supported to switch the configuratio
 ## Java Versions
 
 Our docker images are using the latest LTS OpenJDK version supported by
-Camunda BPM. This currently means:
+Camunda Platform. This currently means:
 
  - Camunda 7.12 will be based on OpenJDK 11
  - All previous versions are based on OpenJDK 8
@@ -198,9 +195,9 @@ docker run -d --name camunda -p 8080:8080 -e SKIP_DB_CONFIG=true \
 
 ## Waiting for database
 
-Starting the Camunda BPM Docker image requires the database to be already available.
-This is quite a challenge when the database and the Camunda BPM are both docker containers spawned simualtenously eg. by `docker-compose` or inside a Kubernetes Pod.
-To help with that, the Camunda BPM Docker image includes [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to allow the container to wait until a 'host:port' is ready.
+Starting the Camunda Platform Docker image requires the database to be already available.
+This is quite a challenge when the database and the Camunda Platform are both docker containers spawned simualtenously eg. by `docker-compose` or inside a Kubernetes Pod.
+To help with that, the Camunda Platform Docker image includes [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to allow the container to wait until a 'host:port' is ready.
 The mechanism can be configured by two environment variables:
 
 - `WAIT_FOR`: the service `host:port` to wait for
@@ -223,7 +220,7 @@ docker run -d --name camunda -p 8080:8080 --link postgresql:db \
 
 ## Volumes
 
-The Camunda BPM Platform is installed inside the `/camunda` directory. Which
+The Camunda Platform is installed inside the `/camunda` directory. Which
 means the tomcat configuration files are inside the `/camunda/conf/` directory
 and the deployments on tomcat are in `/camunda/webapps/`. The directory
 structure depends on the application server.
@@ -246,15 +243,15 @@ This is only supported for `wildfly` and `tomcat` distributions.
 
 ## Build
 
-The image can be used to build a Docker image for a given Camunda BPM platform
+The image can be used to build a Docker image for a given Camunda Platform
 version and distribution.
 
 ### Build a released version
 
 To build a community image specify the `DISTRO` and `VERSION` build
 argument. Possible values for `DISTRO` are `tomcat`, `wildfly` and `run` (if the
-Camunda BPM platform version already supported it). The `VERSION` is the
-Camunda BPM platform version you want to build, i.e. `7.12.0`.
+Camunda Platform version already supported it). The `VERSION` is the
+Camunda Platform version you want to build, i.e. `7.12.0`.
 
 ```
 docker build -t camunda-bpm-platform \
@@ -389,7 +386,7 @@ docker run -d --name camunda -p 8080:8080 \
 Branches and their roles in this repository:
 
 - `next` (default branch) is the branch where new features and bugfixes needed to support the current `master` of [camunda-bpm-platform repo](https://github.com/camunda/camunda-bpm-platform) go into
-- `7.x` branches get created from `next` when a Camunda BPM minor release happened and only receive backports of bugfixes when absolutely necessary
+- `7.x` branches get created from `next` when a Camunda Platform minor release happened and only receive backports of bugfixes when absolutely necessary
 
 
 ## License
