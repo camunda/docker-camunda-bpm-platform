@@ -56,7 +56,7 @@ For all available tags see the [docker hub tags][].
 Because `run` is a Spring Boot distribution, it can be configured through the respective environment variables. For example:
 - `SPRING_DATASOURCE_DRIVER_CLASS_NAME` the database driver class name, supported are h2 (default), mysql, and postgresql:
   - h2: `DB_DRIVER=org.h2.Driver`
-  - mysql: `DB_DRIVER=com.mysql.jdbc.Driver`
+  - mysql: `DB_DRIVER=com.mysql.cj.jdbc.Driver`
   - postgresql: `DB_DRIVER=org.postgresql.Driver`
 - `SPRING_DATASOURCE_URL` the database jdbc url
 - `SPRING_DATASOURCE_USERNAME` the database username
