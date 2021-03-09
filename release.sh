@@ -46,7 +46,7 @@ else
 fi
 
 # Latest Docker image is created and pushed just once when a new version is relased.
-# Latest tag refers to the latest minor release of Camunda BPM platform.
+# Latest tag refers to the latest minor release of Camunda Platform.
 # https://github.com/camunda/docker-camunda-bpm-platform/blob/next/README.md#supported-tagsreleases
 # The 1st condition matches only when the version branch is the same as the main branch. 
 git fetch origin next
