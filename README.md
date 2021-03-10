@@ -82,7 +82,7 @@ Passing startup parameters to enable them selectively can be done by passing any
 
 Enable only WebApps: 
 ```bash
-docker run camunda/camunda-bpm-platform:run ./camunda.sh --webapps --rest
+docker run camunda/camunda-bpm-platform:run ./camunda.sh --webapps
 ``` 
 Enable only REST API and Swagger UI:
 ```bash
