@@ -44,7 +44,7 @@ application server distributions of Camunda Platform. `${DISTRO}` can
 either be `tomcat`, `wildfly` or `run`. If no `${DISTRO}` is specified the
 `tomcat` distribution is used.
 
-- `latest`, `${DISTRO}-latest`: Alywas the latest minor release of Camunda Platform.
+- `latest`, `${DISTRO}-latest`: Always the latest minor release of Camunda Platform.
 - `SNAPSHOT`, `${VERSION}-SNAPSHOT`, `${DISTRO}-SNAPSHOT`,
   `${DISTRO}-${VERSION}-SNAPSHOT`: The latest SNAPSHOT version of Camunda Platform, which is not released yet.
 - `${VERSION}`, `${DISTRO}-${VERSION}`: A specific version of Camunda Platform.
@@ -74,16 +74,23 @@ for convenience and compatibility and are internally mapped to `SPRING_DATASOURC
 The `JMX_PROMETHEUS` configuration is not supported, and while `DEBUG` can be used to enable debug output, it doesn't
 start a debug socket.
 
-`run` supports different startup options to choose whether or not to enable the WebApps or the REST API.
+`run` supports different startup options to choose whether or not to enable the WebApps, the REST API or Swagger UI.
+By default, all three are enabled.
 
-Passing startup parameters to enable either one or the other can be done as in the following example:
+Passing startup parameters to enable them selectively can be done by passing any combination of `--webapps`, `--rest` or 
+`--swaggerui` like in the following example:
 
+Enable only WebApps: 
 ```bash
 docker run camunda/camunda-bpm-platform:run ./camunda.sh --webapps
-docker run camunda/camunda-bpm-platform:run ./camunda.sh --rest
+``` 
+Enable only REST API and Swagger UI:
+```bash
+docker run camunda/camunda-bpm-platform:run ./camunda.sh --rest --swaggerui
 ```
 
-Additionally, a `--production` parameter is supported to switch the configuration to `/camunda/configuration/production.yml`.
+Additionally, a `--production` parameter is supported to switch the configuration to `/camunda/configuration/production.yml`. 
+This parameter also disables Swagger UI by default.
 
 ## Java Versions
 
