@@ -2,7 +2,7 @@ FROM alpine:3.12 as builder
 
 ARG VERSION=7.15.0
 ARG DISTRO=tomcat
-ARG SNAPSHOT=true
+ARG SNAPSHOT=false
 
 ARG EE=false
 ARG USER
