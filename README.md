@@ -18,7 +18,7 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 
 ### Tasklist, Cockpit, Admin Web Apps
 
-The three Camunda webapps are accessible through the landing page: http://localhost:8080/camunda-welcome/index.html
+The three Camunda webapps are accessible through the landing page: http://localhost:8080/camunda/app/welcome/
 
 The default credentials for admin access to the webapps is:
 
