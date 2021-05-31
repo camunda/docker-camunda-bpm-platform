@@ -1,4 +1,4 @@
-FROM alpine:3.12 as builder
+FROM alpine:3.13 as builder
 
 ARG VERSION=7.16.0
 ARG DISTRO=tomcat
@@ -30,7 +30,7 @@ RUN /tmp/download.sh
 
 ##### FINAL IMAGE #####
 
-FROM alpine:3.12
+FROM alpine:3.13
 
 ARG VERSION=7.16.0
 
