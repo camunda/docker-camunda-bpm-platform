@@ -3,7 +3,7 @@
 # Determine nexus URL parameters
 if [ "${EE}" = "true" ]; then
     echo "Downloading Camunda ${VERSION} Enterprise Edition for ${DISTRO}"
-    REPO="camunda-bpm-ee"
+    REPO="private"
     NEXUS_GROUP="private"
     ARTIFACT="camunda-bpm-ee-${DISTRO}"
     if [ "${DISTRO}" = "run" ]; then
@@ -20,7 +20,11 @@ fi
 
 # Determine if SNAPSHOT repo and version should be used
 if [ ${SNAPSHOT} = "true" ]; then
-    REPO="${REPO}-snapshots"
+    # CE artefacts are public, EE require forced authentication via virtual repository (private)
+    # preemptively sending them in settings.xml would fail CE builds
+    if [ "${EE}" = "false" ]; then
+        REPO="${REPO}-snapshots"
+    fi
     ARTIFACT_VERSION="${VERSION}-SNAPSHOT"
 fi
 
