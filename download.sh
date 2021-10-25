@@ -61,7 +61,7 @@ if [ -n "$MAVEN_PROXY_HOST" ] ; then
 	fi
 fi
 
-mvn dependency:get -B --global-settings /tmp/settings.xml \
+mvn dependency:get -U -B --global-settings /tmp/settings.xml \
     $PROXY \
     -DremoteRepositories="camunda-nexus::::https://app.camunda.com/nexus/content/repositories/${REPO}" \
     -DgroupId="${ARTIFACT_GROUP}" -DartifactId="${ARTIFACT}" \
@@ -76,7 +76,7 @@ esac
 cp /tmp/camunda-${GROUP}.sh /camunda/camunda.sh
 
 # download and register database drivers
-mvn dependency:get -B --global-settings /tmp/settings.xml \
+mvn dependency:get -U -B --global-settings /tmp/settings.xml \
     $PROXY \
     -DremoteRepositories="camunda-nexus::::https://app.camunda.com/nexus/content/groups/${NEXUS_GROUP}" \
     -DgroupId="org.camunda.bpm" -DartifactId="camunda-database-settings" \
