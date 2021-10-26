@@ -6,9 +6,9 @@ services:
   - docker
 
 env:
-  - DISTRO=tomcat
-  - DISTRO=wildfly
-  - DISTRO=run
+  - DISTRO=tomcat EE=false
+  - DISTRO=wildfly EE=false
+  - DISTRO=run EE=false
 
 jobs:
   include:  # do not run EE builds for forks (they don't have access to EE credentials)
