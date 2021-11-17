@@ -8,4 +8,3 @@ docker build .                                \
     --build-arg PASSWORD=${NEXUS_PASS}
 
 ./test/test.sh
-./release.sh
