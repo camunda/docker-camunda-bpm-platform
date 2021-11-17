@@ -13,16 +13,6 @@ function tag_and_push {
     docker push ${IMAGE}:${tag}
 }
 
-if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then
-    echo "Not pushing pull request to docker hub"
-    exit 0
-fi
-
-if ! [[ "${TRAVIS_BRANCH}" =~ master|7.[0-9]+|next ]]; then
-    echo "Not pushing development branch to docker hub"
-    exit 0
-fi
-
 if [ "${EE}" = "true" ]; then
     echo "Not pushing EE image to docker hub"
     exit 0
