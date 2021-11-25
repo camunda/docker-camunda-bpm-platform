@@ -6,19 +6,13 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        include:
-          - DISTRO: "tomcat"
-            EE: "true"
-          - DISTRO: "wildfly"
-            EE: "true"
-          - DISTRO: "run"
-            EE: "true"
+        DISTRO: [tomcat, wildfly, run]
     steps:
       - uses: actions/checkout@v2
       - name: Execute pipeline
         run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
-          EE: ${{ matrix.EE }}
+          EE: true
           NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
