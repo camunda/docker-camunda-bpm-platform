@@ -1,0 +1,23 @@
+name: Build, test, and release CE
+on: [pull_request, push]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        DISTRO: [tomcat, wildfly, run]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Execute pipeline
+        run: ./pipeline.sh
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
+          EE: false
+      - name: Publish image
+        if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
+        run: ./release.sh
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
+          EE: false
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          DOCKER_HUB_USERNAME:  ${{ secrets.DOCKER_HUB_USERNAME }}
