@@ -1,5 +1,4 @@
 # Camunda Platform Docker Images
-[![Build Status](https://travis-ci.com/camunda/docker-camunda-bpm-platform.svg?branch=next)](https://travis-ci.com/camunda/docker-camunda-bpm-platform)
 
 This Camunda project provides docker images of the latest 
 Camunda Platform releases. The images can be used to demonstrate and test the
