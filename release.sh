@@ -18,6 +18,12 @@ if [ "${EE}" = "true" ]; then
     exit 0
 fi
 
+# check whether the CE image for distro was already released and exit in that case
+if [ $(docker manifest inspect $IMAGE:${DISTRO}-${VERSION} > /dev/null ; echo $?) == '0' ]; then
+    echo "Not pushing already released CE image"
+    exit 0
+fi
+
 docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}"
 
 if [ "${SNAPSHOT}" = "true" ]; then
