@@ -1,4 +1,4 @@
-name: Build, test, and release CE
+name: Build, test, and publish CE
 on: [pull_request, push]
 jobs:
   build-and-test:
