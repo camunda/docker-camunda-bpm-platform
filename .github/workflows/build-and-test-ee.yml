@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        DISTRO: [tomcat, wildfly, run]
+        DISTRO: [tomcat, wildfly10, wildfly11]
     steps:
       - uses: actions/checkout@v2
       - name: Execute pipeline
