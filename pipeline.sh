@@ -5,6 +5,7 @@ docker build .                                \
     --build-arg DISTRO=${DISTRO}              \
     --build-arg EE=${EE}                      \
     --build-arg USER=${NEXUS_USER}            \
-    --build-arg PASSWORD=${NEXUS_PASS}
+    --build-arg PASSWORD=${NEXUS_PASS}        \
+    --build-arg VERSION=${VERSION}
 
 ./test/test.sh
