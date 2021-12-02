@@ -1,8 +1,7 @@
 name: Build and Test EE
-on: [pull_request]
+on: [pull_request, push]
 jobs:
   build-and-test-ee:
-    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-18.04
     strategy:
       matrix:
@@ -16,3 +15,4 @@ jobs:
           EE: true
           NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          VERSION: 7.13.18
