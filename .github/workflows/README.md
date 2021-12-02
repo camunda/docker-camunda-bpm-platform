@@ -1,6 +1,7 @@
 # GitHub Actions
 
-There are two separate workflows, which are as follows:
+7.12 is a special exception as only the ee workflow exists.
+See the following ticket: [INFRA-2878](https://jira.camunda.com/browse/INFRA-2878)
+Essentially the mysql driver was updated but it's only compatible with >=7.12.17 and as CE versions are not patched, the builds would never work.
 
-1. [Build, test, and publish CE](./build-test-and-publish-ce.yml) - run on every push and PR to check CE image (public) for all 3 environments (tomcat, wildfly, run). Additionally, it publishes the image on new commits to next and 7.x branches to Docker Hub.
-2. [Build and test EE](./build-and-test-ee.yml) - only run on PRs coming from within the repository as it requires secrets, which are not part of forks. It builds and tests the EE image for the same 3 environments but does not publish it. For publishing the `ci-cambpm` Jenkins instance is used.
+[Build and test EE](./build-and-test-ee.yml) - will fail on public PRs. It builds and tests the EE image for 2 environments but does not publish it. For publishing the `ci-cambpm` Jenkins instance is used.
