@@ -1,12 +1,11 @@
 name: Build and Test EE
-on: [pull_request]
+on: [pull_request, push]
 jobs:
   build-and-test-ee:
-    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        DISTRO: [tomcat, wildfly, run]
+        DISTRO: [tomcat, wildfly]
     steps:
       - uses: actions/checkout@v2
       - name: Execute pipeline
@@ -16,3 +15,4 @@ jobs:
           EE: true
           NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          VERSION: 7.12.21
