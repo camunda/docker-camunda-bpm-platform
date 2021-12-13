@@ -283,7 +283,7 @@ docker build -t camunda-bpm-platform \
 
 If you are a Camunda enterprise customer you can use this image to build
 an enterprise version of the Docker image. Therefore set the `VERSION`
-build argument to the Camunda version with out the ee suffix, i.e. `7.8.1`,
+build argument to the Camunda version with out the ee suffix, i.e. `7.15.8`,
 set the `EE` build argument to `true` and
 the `USER` and `PASSWORD` build argument to your enterprise credentials.
 
@@ -294,6 +294,7 @@ aware that you should not distribute this image outside of your company.
 ```
 docker build -t camunda-bpm-platform \
   --build-arg EE=true \
+  --build-arg SNAPSHOT=false \
   --build-arg DISTRO=${DISTRO} \
   --build-arg VERSION=${VERSION} \
   --build-arg USER=${USER} \
