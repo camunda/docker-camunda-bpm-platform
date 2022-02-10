@@ -28,7 +28,7 @@ if [[ -z "${SPRING_DATASOURCE_URL:-}" && -n "${DB_URL:-}" ]]; then
   export SPRING_DATASOURCE_URL="${DB_URL}"
 fi
 
-CMD="/camunda/start.sh"
+CMD="/camunda/internal/run.sh start"
 
 if [ -n "${WAIT_FOR}" ]; then
   CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
