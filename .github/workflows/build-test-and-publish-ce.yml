@@ -7,17 +7,27 @@ jobs:
       matrix:
         DISTRO: [tomcat, wildfly, run]
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout 
+        uses: actions/checkout@v2
       - name: Execute pipeline
         run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: arm64,amd64
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        id: buildx
       - name: Publish image
         if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
         run: ./release.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
+          PLATFORMS: linux/arm64,linux/amd64
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           DOCKER_HUB_USERNAME:  ${{ secrets.DOCKER_HUB_USERNAME }}
