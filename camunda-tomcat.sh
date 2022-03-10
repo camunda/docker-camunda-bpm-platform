@@ -3,7 +3,7 @@ set -Eeu
 
 trap 'Error on line $LINENO' ERR
 
-# Use exising tomcat ditribution if present..
+# Use existing tomcat distribution if present..
 CATALINA_HOME="${CATALINA_HOME:-/camunda}"
 
 # Set default values for DB_ variables
