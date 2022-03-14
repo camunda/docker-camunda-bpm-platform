@@ -126,7 +126,6 @@ The used database can be configured by providing the following environment
 variables:
 
 - `DB_CONN_MAXACTIVE` the maximum number of active connections (default: `20`)
-  - for `tomcat`, this is internally mapped to the `maxTotal` configuration property.
 - `DB_CONN_MAXIDLE` the maximum number of idle connections (default: `20`)
   - ignored when app server = `wildfly` or `run`
 - `DB_CONN_MINIDLE` the minimum number of idle connections (default: `5`)
