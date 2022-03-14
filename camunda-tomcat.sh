@@ -22,7 +22,7 @@ XML_DRIVER="${XML_JDBC}/@driverClassName"
 XML_URL="${XML_JDBC}/@url"
 XML_USERNAME="${XML_JDBC}/@username"
 XML_PASSWORD="${XML_JDBC}/@password"
-XML_MAXTOTAL="${XML_JDBC}/@maxTotal"
+XML_MAXACTIVE="${XML_JDBC}/@maxActive"
 XML_MINIDLE="${XML_JDBC}/@minIdle"
 XML_MAXIDLE="${XML_JDBC}/@maxIdle"
 
@@ -33,7 +33,7 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
     -u "${XML_URL}" -v "${DB_URL}" \
     -u "${XML_USERNAME}" -v "${DB_USERNAME}" \
     -u "${XML_PASSWORD}" -v "${DB_PASSWORD}" \
-    -u "${XML_MAXTOTAL}" -v "${DB_CONN_MAXACTIVE}" \
+    -u "${XML_MAXACTIVE}" -v "${DB_CONN_MAXACTIVE}" \
     -u "${XML_MINIDLE}" -v "${DB_CONN_MINIDLE}" \
     -u "${XML_MAXIDLE}" -v "${DB_CONN_MAXIDLE}" \
     -u "${XML_JDBC}/@testOnBorrow" -v "${DB_VALIDATE_ON_BORROW}" \
