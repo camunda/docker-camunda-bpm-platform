@@ -17,7 +17,8 @@ docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 
 ### Tasklist, Cockpit, Admin Web Apps
 
-The three Camunda webapps are accessible through the landing page: http://localhost:8080/camunda-welcome/index.html
+The three Camunda webapps are accessible through the landing page: 
+http://localhost:8080/camunda-welcome/index.html
 
 The default credentials for admin access to the webapps is:
 
@@ -39,21 +40,28 @@ to enable authentication for the Rest-API.
 ## Supported Tags/Releases
 
 The following tag schema is used. The user has the choice between different
-application server distributions of Camunda Platform. `${DISTRO}` can
-either be `tomcat`, `wildfly` or `run`. If no `${DISTRO}` is specified the
-`tomcat` distribution is used.
+application server distributions of Camunda Platform.
 
 - `latest`, `${DISTRO}-latest`: Always the latest minor release of Camunda Platform.
 - `SNAPSHOT`, `${VERSION}-SNAPSHOT`, `${DISTRO}-SNAPSHOT`,
-  `${DISTRO}-${VERSION}-SNAPSHOT`: The latest SNAPSHOT version of Camunda Platform, which is not released yet.
+  `${DISTRO}-${VERSION}-SNAPSHOT`: The latest SNAPSHOT version of Camunda 
+  Platform, which is not released yet.
 - `${VERSION}`, `${DISTRO}-${VERSION}`: A specific version of Camunda Platform.
 
-For all available tags see the [docker hub tags][].
+`${DISTRO}` can be one of the following: 
+* `tomcat`
+* `wildfly`
+* `run`
+
+If no `${DISTRO}` is specified the `tomcat` distribution is used. For all 
+available tags see the [docker hub tags][].
 
 ## Configuration of the `run` distribution
 
-Because `run` is a Spring Boot distribution, it can be configured through the respective environment variables. For example:
-- `SPRING_DATASOURCE_DRIVER_CLASS_NAME` the database driver class name, supported are h2 (default), mysql, and postgresql:
+Because `run` is a Spring Boot-based distribution, it can be configured through 
+the respective environment variables. For example:
+- `SPRING_DATASOURCE_DRIVER_CLASS_NAME` the database driver class name, 
+  supported are h2 (default), mysql, and postgresql:
   - h2: `DB_DRIVER=org.h2.Driver`
   - mysql: `DB_DRIVER=com.mysql.cj.jdbc.Driver`
   - postgresql: `DB_DRIVER=org.postgresql.Driver`
@@ -65,19 +73,28 @@ When not set or otherwise specified, the integrated H2 database is used.
 
 Any other `SPRING_*` variables can be used to further configure the app. 
 Alternatively, a `default.yml` file can be mounted to `/camunda/configuration/default.yml`.
-More information on configuring Spring Boot applications can be found in the [Spring Boot Docs](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config).
+More information on configuring Spring Boot applications can be found in the 
+[Spring Boot Docs](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config).
 
-The environment variables `DB_DRIVER`, `DB_USERNAME`, `DB_PASSWORD`, `DB_URL`, `DB_PASSWORD_FILE` are supported
-for convenience and compatibility and are internally mapped to `SPRING_DATASOURCE_*` variables when provided.
+The following environment variables are supported for convenience and 
+compatibility and are internally mapped to `SPRING_DATASOURCE_*` variables 
+when provided:
 
-The `JMX_PROMETHEUS` configuration is not supported, and while `DEBUG` can be used to enable debug output, it doesn't
-start a debug socket.
+* `DB_DRIVER`
+* `DB_USERNAME`
+* `DB_PASSWORD`
+* `DB_URL`
+* `DB_PASSWORD_FILE`
 
-`run` supports different startup options to choose whether or not to enable the WebApps, the REST API or Swagger UI.
-By default, all three are enabled.
+The `JMX_PROMETHEUS` configuration is not supported, and while `DEBUG` can be 
+used to enable debug output, it doesn't start a debug socket.
 
-Passing startup parameters to enable them selectively can be done by passing any combination of `--webapps`, `--rest` or 
-`--swaggerui` like in the following example:
+`run` supports different startup options to choose whether or not to enable the 
+WebApps, the REST API or Swagger UI. By default, all three are enabled.
+
+Passing startup parameters to enable them selectively can be done by passing any 
+combination of `--webapps`, `--rest` or `--swaggerui` like in the following 
+example:
 
 Enable only WebApps: 
 ```bash
@@ -88,16 +105,17 @@ Enable only REST API and Swagger UI:
 docker run camunda/camunda-bpm-platform:run ./camunda.sh --rest --swaggerui
 ```
 
-Additionally, a `--production` parameter is supported to switch the configuration to `/camunda/configuration/production.yml`. 
-This parameter also disables Swagger UI by default.
+Additionally, a `--production` parameter is supported to switch the 
+configuration to `/camunda/configuration/production.yml`. This parameter also 
+disables Swagger UI by default.
 
 ## Java Versions
 
 Our docker images are using the latest LTS OpenJDK version supported by
 Camunda Platform. This currently means:
 
- - Camunda 7.12 will be based on OpenJDK 11
- - All previous versions are based on OpenJDK 8
+ - Camunda 7.12 or later will be based on OpenJDK 11.
+ - All previous versions are based on OpenJDK 8.
 
 While all the OpenJDK versions supported by Camunda will work, we will not
 provide a ready to use image for them.
@@ -190,8 +208,8 @@ and configure the database settings manually by linking the configuration file
 into the container.
 
 To skip the configuration of the database by the docker container and use your
-own configuration set the environment variable `SKIP_DB_CONFIG` to a non
-empty value:
+own configuration set the environment variable `SKIP_DB_CONFIG` to a non-empty 
+value:
 
 ```
 docker run -d --name camunda -p 8080:8080 -e SKIP_DB_CONFIG=true \
@@ -200,10 +218,13 @@ docker run -d --name camunda -p 8080:8080 -e SKIP_DB_CONFIG=true \
 
 ## Waiting for database
 
-Starting the Camunda Platform Docker image requires the database to be already available.
-This is quite a challenge when the database and the Camunda Platform are both docker containers spawned simualtenously eg. by `docker-compose` or inside a Kubernetes Pod.
-To help with that, the Camunda Platform Docker image includes [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to allow the container to wait until a 'host:port' is ready.
-The mechanism can be configured by two environment variables:
+Starting the Camunda Platform Docker image requires the database to be already 
+available. This is quite a challenge when the database and Camunda Platform are 
+both docker containers spawned simultaneously, for example, by `docker-compose` 
+or inside a Kubernetes Pod. To help with that, the Camunda Platform Docker image 
+includes [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to allow the 
+container to wait until a 'host:port' is ready. The mechanism can be configured 
+by two environment variables:
 
 - `WAIT_FOR`: the service `host:port` to wait for
 - `WAIT_FOR_TIMEOUT`: how long to wait for the service to be available in seconds
@@ -226,9 +247,9 @@ docker run -d --name camunda -p 8080:8080 --link postgresql:db \
 ## Volumes
 
 The Camunda Platform is installed inside the `/camunda` directory. Which
-means the tomcat configuration files are inside the `/camunda/conf/` directory
-and the deployments on tomcat are in `/camunda/webapps/`. The directory
-structure depends on the application server.
+means the Apache Tomcat configuration files are inside the `/camunda/conf/` 
+directory and the deployments on Apache Tomcat are in `/camunda/webapps/`. 
+The directory structure depends on the application server.
 
 ## Debug
 
@@ -239,24 +260,28 @@ This is only supported for `wildfly` and `tomcat` distributions.
 
 ## Prometheus JMX Exporter
 
-To enable Prometheus JMX Exporter inside the container you can set the environment 
-variable `JMX_PROMETHEUS=true` on startup of the container. 
+To enable Prometheus JMX Exporter inside the container you can set the 
+environment variable `JMX_PROMETHEUS=true` on startup of the container. 
 This will allow you to get metrics in Prometheus format at `<host>:9404/metrics`. 
 For configuring exporter you need attach your configuration as a container volume 
-at `/camunda/javaagent/prometheus-jmx.yml`.
-This is only supported for `wildfly` and `tomcat` distributions.
+at `/camunda/javaagent/prometheus-jmx.yml`. This is only supported for `wildfly` 
+and `tomcat` distributions.
 
 ## Build
 
-The image can be used to build a Docker image for a given Camunda Platform
+You can use the image to build a Docker image for a given Camunda Platform
 version and distribution.
 
 ### Build a released version
 
 To build a community image specify the `DISTRO` and `VERSION` build
-argument. Possible values for `DISTRO` are `tomcat`, `wildfly` and `run` (if the
-Camunda Platform version already supported it). The `VERSION` is the
-Camunda Platform version you want to build, i.e. `7.12.0`.
+argument. Possible values for `DISTRO` are:
+* `tomcat`
+* `wildfly`
+* `run` (if the Camunda Platform version already supports it)
+
+The `VERSION` argument is the Camunda Platform version you want to build, 
+i.e. `7.17.0`.
 
 ```
 docker build -t camunda-bpm-platform \
@@ -267,7 +292,7 @@ docker build -t camunda-bpm-platform \
 
 ### Build a SNAPSHOT version
 
-Additonally you can build SNAPSHOT versions for the upcoming releases by
+Additionally, you can build SNAPSHOT versions for the upcoming releases by
 setting the `SNAPSHOT` build argument to `true`.
 
 ```
@@ -281,14 +306,18 @@ docker build -t camunda-bpm-platform \
 ### Build a enterprise version
 
 If you are a Camunda enterprise customer you can use this image to build
-an enterprise version of the Docker image. Therefore set the `VERSION`
-build argument to the Camunda version with out the ee suffix, i.e. `7.8.1`,
+an enterprise version of the Docker image. Therefore, set the `VERSION`
+build argument to the Camunda version without the ee suffix, i.e. `7.16.1`,
 set the `EE` build argument to `true` and
 the `USER` and `PASSWORD` build argument to your enterprise credentials.
 
-**Note:** As the image uses a multi stage Dockerfile the credentials are
+It is recommended that you `git checkout` the branch for the Camunda version
+you would like to build. For example, if you want to build a Docker image for
+Camunda version `7.16.3`, first execute `git checkout 7.16` on this repository. 
+
+**Note:** As the image uses a multi-stage Dockerfile the credentials are
 **not** part of the Docker image history of the final image. But please be
-aware that you should not distribute this image outside of your company.
+aware that you should not distribute this image outside your company.
 
 ```
 docker build -t camunda-bpm-platform \
@@ -302,7 +331,12 @@ docker build -t camunda-bpm-platform \
 
 ### Build when behind a proxy
 
-The following arguments can be passed to set proxy settings to Maven: `MAVEN_PROXY_HOST`, `MAVEN_PROXY_PORT`, `MAVEN_PROXY_USER`, `MAVEN_PROXY_PASSWORD`
+You can pass the following arguments to set proxy settings to Maven: 
+
+* `MAVEN_PROXY_HOST`
+* `MAVEN_PROXY_PORT`
+* `MAVEN_PROXY_USER`
+* `MAVEN_PROXY_PASSWORD`
 
 Example for a released version of a community edition:
 
@@ -322,7 +356,8 @@ docker build -t camunda-bpm-platform \
 ### Change Configuration Files
 
 You can use docker volumes to link your own configuration files inside the
-container.  For example if you want to change the `bpm-platform.xml` on tomcat:
+container.  For example if you want to change the `bpm-platform.xml` on 
+Apache Tomcat:
 
 ```
 docker run -d --name camunda -p 8080:8080 \
@@ -330,11 +365,11 @@ docker run -d --name camunda -p 8080:8080 \
            camunda/camunda-bpm-platform:latest
 ```
 
-
 ### Add Own Process Application
 
-If you want to add an own process application to the docker container also use
-volumes. For example if you want to deploy the [twitter demo][] on tomcat:
+If you want to add your own process application to the docker container, you can
+use Docker volumes. For example if you want to deploy the [twitter demo][] 
+on Apache Tomcat:
 
 ```
 docker run -d --name camunda -p 8080:8080 \
@@ -342,17 +377,17 @@ docker run -d --name camunda -p 8080:8080 \
            camunda/camunda-bpm-platform:latest
 ```
 
-This also allows you to modify the app outside of the container and it will
+This also allows you to modify the app outside the container, and it will
 be redeployed inside the platform.
 
 
 ### Clean Distro Without Webapps and Examples
 
 To remove all webapps and examples from the distro and only deploy your
-own applications or your own configured cockpit also use volumes. You
+own applications or your own configured cockpit also use Docker volumes. You
 only have to overlay the deployment folder of the application server with
-a directory on your local machine. So in tomcat you would mount a directory
-to `/camunda/webapps/`:
+a directory on your local machine. So in Apache Tomcat you would mount a 
+directory to `/camunda/webapps/`:
 
 ```
 docker run -d --name camunda -p 8080:8080 \
@@ -363,7 +398,7 @@ docker run -d --name camunda -p 8080:8080 \
 
 ### Extend Docker Image
 
-As we release these docker images on the offical [docker registry][] it is
+As we release these docker images on the official [docker registry][] it is
 easy to create your own image. This way you can deploy your applications
 with docker or provided an own demo image. Just specify in the `FROM`
 clause which Camunda image you want to use as a base image:
@@ -377,7 +412,8 @@ ADD my.war /camunda/webapps/my.war
 
 ### Change timezone
 
-To change the timezone of the docker container you can set the environment variable `TZ`.
+To change the timezone of the docker container you can set the environment 
+variable `TZ`.
 
 ```
 docker run -d --name camunda -p 8080:8080 \
@@ -390,8 +426,10 @@ docker run -d --name camunda -p 8080:8080 \
 
 Branches and their roles in this repository:
 
-- `next` (default branch) is the branch where new features and bugfixes needed to support the current `master` of [camunda-bpm-platform repo](https://github.com/camunda/camunda-bpm-platform) go into
-- `7.x` branches get created from `next` when a Camunda Platform minor release happened and only receive backports of bugfixes when absolutely necessary
+- `next` (default branch) is the branch where new features and bugfixes needed 
+  to support the current `master` of [camunda-bpm-platform repo](https://github.com/camunda/camunda-bpm-platform) go.
+- `7.x` branches get created from `next` when a Camunda Platform minor version
+  is released. They only receive backports of bugfixes when absolutely necessary.
 
 
 ## License
