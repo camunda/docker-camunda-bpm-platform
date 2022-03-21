@@ -6,9 +6,23 @@ Camunda Platform or can be extended with own process applications. It is
 planned to provide images on the official [docker registry][] for every upcoming
 release, which includes alpha releases.
 
+The Camunda Platform Docker images are wrappers for the pre-packaged Camunda
+distributions. The pre-packaged distributions are intended for users who want a 
+getting started experience. In case you want to use the Camunda Docker images 
+in production, please consider reading our [security instructions](https://docs.camunda.org/manual/latest/user-guide/security/).
+
+## Distributions
+
+You can find more detailed documentation on the pre-packaged (community) 
+distributions that Camunda provides at the following links:
+
+* Apache Tomcat - [Camunda Tomcat integration documentation](https://docs.camunda.org/manual/latest/user-guide/runtime-container-integration/tomcat/)
+* Wildfly - [Camunda Tomcat integration documentation](https://docs.camunda.org/manual/latest/user-guide/runtime-container-integration/jboss/)
+* Camunda Platform Run - [documentation](https://docs.camunda.org/manual/latest/user-guide/camunda-bpm-run/)
+
 ## Get started
 
-To start the latest release:
+To start a Docker container of the latest Camunda Platform 7 release:
 
 ```
 docker pull camunda/camunda-bpm-platform:latest
@@ -56,7 +70,20 @@ application server distributions of Camunda Platform.
 If no `${DISTRO}` is specified the `tomcat` distribution is used. For all 
 available tags see the [docker hub tags][].
 
-## Configuration of the `run` distribution
+## Camunda Platform 7 configuration
+
+You can find the complete Camunda documentation at https://docs.camunda.org/.
+
+If you prefer to start your Camunda Docker image right away, you will find the
+following links useful:
+
+* [Camunda Platform configuration file properties](https://docs.camunda.org/manual/latest/reference/deployment-descriptors/descriptors/bpm-platform-xml/)
+* [Process Engine Plugins guide](https://docs.camunda.org/manual/latest/user-guide/process-engine/process-engine-plugins/)
+* [Camunda Logging](https://docs.camunda.org/manual/latest/user-guide/logging/)
+
+## Camunda Docker image configuration
+
+### Configuration of the `run` distribution
 
 Because `run` is a Spring Boot-based distribution, it can be configured through 
 the respective environment variables. For example:
@@ -109,7 +136,7 @@ Additionally, a `--production` parameter is supported to switch the
 configuration to `/camunda/configuration/production.yml`. This parameter also 
 disables Swagger UI by default.
 
-## Java Versions
+### Java Versions
 
 Our docker images are using the latest LTS OpenJDK version supported by
 Camunda Platform. This currently means:
@@ -120,7 +147,7 @@ Camunda Platform. This currently means:
 While all the OpenJDK versions supported by Camunda will work, we will not
 provide a ready to use image for them.
 
-### Java Options
+#### Java Options
 
 To override the default Java options the environment variable `JAVA_OPTS` can
 be set. The default value is set to limit the heap size to 768 MB and the
@@ -130,7 +157,7 @@ metaspace size to 256 MB.
 JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
 ```
 
-### Use docker memory limits
+#3## Use docker memory limits
 
 Instead of specifying the Java memory settings it is also possible to instruct
 the JVM to respect the docker memory settings. As the image uses Java 11 it does
@@ -142,7 +169,7 @@ by setting the following environment variable.
 JAVA_OPTS="-XX:-UseContainerSupport"
 ```
 
-## Database environment variables
+### Database environment variables
 
 The used database can be configured by providing the following environment
 variables:
@@ -216,7 +243,7 @@ docker run -d --name camunda -p 8080:8080 -e SKIP_DB_CONFIG=true \
            camunda/camunda-bpm-platform:latest
 ```
 
-## Waiting for database
+### Waiting for database
 
 Starting the Camunda Platform Docker image requires the database to be already 
 available. This is quite a challenge when the database and Camunda Platform are 
@@ -244,21 +271,21 @@ docker run -d --name camunda -p 8080:8080 --link postgresql:db \
            camunda/camunda-bpm-platform:latest
 ```
 
-## Volumes
+### Volumes
 
 The Camunda Platform is installed inside the `/camunda` directory. Which
 means the Apache Tomcat configuration files are inside the `/camunda/conf/` 
 directory and the deployments on Apache Tomcat are in `/camunda/webapps/`. 
 The directory structure depends on the application server.
 
-## Debug
+### Debug
 
 To enable JPDA inside the container you can set the environment variable
 `DEBUG=true` on startup of the container. This will allow you to connect to the
 container on port `8000` to debug your application.
 This is only supported for `wildfly` and `tomcat` distributions.
 
-## Prometheus JMX Exporter
+### Prometheus JMX Exporter
 
 To enable Prometheus JMX Exporter inside the container you can set the 
 environment variable `JMX_PROMETHEUS=true` on startup of the container. 
@@ -266,6 +293,17 @@ This will allow you to get metrics in Prometheus format at `<host>:9404/metrics`
 For configuring exporter you need attach your configuration as a container volume 
 at `/camunda/javaagent/prometheus-jmx.yml`. This is only supported for `wildfly` 
 and `tomcat` distributions.
+
+### Change timezone
+
+To change the timezone of the docker container you can set the environment
+variable `TZ`.
+
+```
+docker run -d --name camunda -p 8080:8080 \
+           -e TZ=Europe/Berlin \
+          camunda/camunda-bpm-platform:latest
+```
 
 ## Build
 
@@ -396,7 +434,7 @@ docker run -d --name camunda -p 8080:8080 \
 ```
 
 
-### Extend Docker Image
+## Extend Docker Image
 
 As we release these docker images on the official [docker registry][] it is
 easy to create your own image. This way you can deploy your applications
@@ -408,19 +446,6 @@ FROM camunda/camunda-bpm-platform:tomcat-latest
 
 ADD my.war /camunda/webapps/my.war
 ```
-
-
-### Change timezone
-
-To change the timezone of the docker container you can set the environment 
-variable `TZ`.
-
-```
-docker run -d --name camunda -p 8080:8080 \
-           -e TZ=Europe/Berlin \
-          camunda/camunda-bpm-platform:latest
-```
-
 
 ## Branching Model
 
