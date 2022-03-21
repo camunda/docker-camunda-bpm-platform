@@ -1,5 +1,9 @@
 # Camunda Platform Docker Images
 
+> :information_source: We will soon disable the GitHub issues on this repository.
+> In the future, please use our [JIRA issue tracker](https://jira.camunda.com/projects/CAM/issues/CAM-2099?filter=allopenissues) for bug reports or feature requests.
+> For help requests, please open a help request topic on the [Camunda forum](https://forum.camunda.org/) or [a help request support ticket](https://docs.camunda.org/enterprise/support/#how-to-create-a-support-issue) if you are an enterprise customer.
+
 This Camunda project provides docker images of the latest 
 Camunda Platform releases. The images can be used to demonstrate and test the
 Camunda Platform or can be extended with own process applications. It is
