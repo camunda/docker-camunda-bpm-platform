@@ -1,5 +1,5 @@
 name: Build, test, and publish CE
-on: [pull_request, push]
+on: [pull_request, push, workflow_dispatch]
 jobs:
   build-and-test:
     runs-on: ubuntu-18.04
