@@ -1,5 +1,5 @@
 name: Build and Test EE
-on: [pull_request]
+on: [pull_request, workflow_dispatch]
 jobs:
   build-and-test-ee:
     if: github.event.pull_request.head.repo.full_name == github.repository
