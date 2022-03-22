@@ -1,4 +1,4 @@
-# Camunda Platform Docker Images
+# Camunda Platform Docker images
 
 > :information_source: We will soon disable the GitHub issues on this repository.
 > In the future, use our [JIRA issue tracker](https://jira.camunda.com/projects/CAM/issues/CAM-2099?filter=allopenissues) for bug reports or feature requests.
@@ -13,7 +13,7 @@ release, which includes alpha releases.
 The Camunda Platform Docker images are wrappers for the pre-packaged Camunda
 distributions. The pre-packaged distributions are intended for users who want a 
 getting started experience. In case you want to use the Camunda Docker images 
-in production, please consider reading our [security instructions](https://docs.camunda.org/manual/latest/user-guide/security/).
+in production, consider reading our [security instructions](https://docs.camunda.org/manual/latest/user-guide/security/).
 
 ## Distributions
 
@@ -33,29 +33,27 @@ docker pull camunda/camunda-bpm-platform:latest
 docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
 ```
 
-### Tasklist, Cockpit, Admin Web Apps
+### Tasklist, Cockpit, Admin web apps
 
-The three Camunda webapps are accessible through the landing page: 
+The three Camunda web apps are accessible through the landing page: 
 http://localhost:8080/camunda-welcome/index.html
 
-The default credentials for admin access to the webapps is:
+The default credentials for admin access to the web apps is:
 
 - Username: `demo`
 - Password: `demo`
 
-### Rest-API
+### REST API
 
 The Camunda Rest-API is accessible through: http://localhost:8080/engine-rest
 
-See the [Rest-API](https://docs.camunda.org/manual/latest/reference/rest/)
+See the [REST API](https://docs.camunda.org/manual/latest/reference/rest/)
 documentation for more details on how to use it.
 
-**Note**: The Rest-API does not require authentication by default. Please
-follow the instructions from the [documentation](https://docs.camunda.org/manual/latest/reference/rest/overview/authentication/)
-to enable authentication for the Rest-API.
+**Note**: The REST API does not require authentication by default. Follow the instructions from the [documentation](https://docs.camunda.org/manual/latest/reference/rest/overview/authentication/)
+to enable authentication for the REST API.
 
-
-## Supported Tags/Releases
+## Supported tags/releases
 
 The following tag schema is used. The user has the choice between different
 application server distributions of Camunda Platform.
@@ -71,7 +69,7 @@ application server distributions of Camunda Platform.
 * `wildfly`
 * `run`
 
-If no `${DISTRO}` is specified the `tomcat` distribution is used. For all 
+If no `${DISTRO}` is specified, the `tomcat` distribution is used. For all 
 available tags see the [docker hub tags][].
 
 ## Camunda Platform 7 configuration
@@ -105,7 +103,7 @@ When not set or otherwise specified, the integrated H2 database is used.
 Any other `SPRING_*` variables can be used to further configure the app. 
 Alternatively, a `default.yml` file can be mounted to `/camunda/configuration/default.yml`.
 More information on configuring Spring Boot applications can be found in the 
-[Spring Boot Docs](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config).
+[Spring Boot documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config).
 
 The following environment variables are supported for convenience and 
 compatibility and are internally mapped to `SPRING_DATASOURCE_*` variables 
@@ -127,7 +125,8 @@ Passing startup parameters to enable them selectively can be done by passing any
 combination of `--webapps`, `--rest` or `--swaggerui` like in the following 
 example:
 
-Enable only WebApps: 
+Enable only web apps:
+
 ```bash
 docker run camunda/camunda-bpm-platform:run ./camunda.sh --webapps
 ``` 
@@ -140,7 +139,7 @@ Additionally, a `--production` parameter is supported to switch the
 configuration to `/camunda/configuration/production.yml`. This parameter also 
 disables Swagger UI by default.
 
-### Java Versions
+### Java versions
 
 Our docker images are using the latest LTS OpenJDK version supported by
 Camunda Platform. This currently means:
@@ -151,7 +150,7 @@ Camunda Platform. This currently means:
 While all the OpenJDK versions supported by Camunda will work, we will not
 provide a ready to use image for them.
 
-#### Java Options
+#### Java options
 
 To override the default Java options the environment variable `JAVA_OPTS` can
 be set. The default value is set to limit the heap size to 768 MB and the
@@ -199,7 +198,7 @@ variables:
 - `WAIT_FOR` wait for a `host:port` to be available over TCP before starting
 - `WAIT_FOR_TIMEOUT` how long to wait for the service to be avaiable - defaults to 30 seconds
 
-For example to use a postgresql docker image as database you can start the
+For example, to use a `postgresql` docker image as database you can start the
 platform as follows:
 
 ```
@@ -226,15 +225,15 @@ DB_PASSWORD=camunda
 WAIT_FOR=db:5432
 ```
 
-and use this file to start the container:
+Use this file to start the container:
 
 ```
 docker run -d --name camunda -p 8080:8080 --link postgresql:db \
            --env-file db-env.txt camunda/camunda-bpm-platform:latest
 ```
 
-The docker image already contains drivers for `h2`, `mysql` and `postgresql`.
-If you want to use other databases you have to add the driver to the container
+The docker image already contains drivers for `h2`, `mysql`, and `postgresql`.
+If you want to use other databases, you have to add the driver to the container
 and configure the database settings manually by linking the configuration file
 into the container.
 
@@ -277,21 +276,21 @@ docker run -d --name camunda -p 8080:8080 --link postgresql:db \
 
 ### Volumes
 
-The Camunda Platform is installed inside the `/camunda` directory. Which
+Camunda Platform is installed inside the `/camunda` directory. Which
 means the Apache Tomcat configuration files are inside the `/camunda/conf/` 
 directory and the deployments on Apache Tomcat are in `/camunda/webapps/`. 
 The directory structure depends on the application server.
 
 ### Debug
 
-To enable JPDA inside the container you can set the environment variable
+To enable JPDA inside the container, you can set the environment variable
 `DEBUG=true` on startup of the container. This will allow you to connect to the
 container on port `8000` to debug your application.
 This is only supported for `wildfly` and `tomcat` distributions.
 
 ### Prometheus JMX Exporter
 
-To enable Prometheus JMX Exporter inside the container you can set the 
+To enable Prometheus JMX Exporter inside the container, you can set the 
 environment variable `JMX_PROMETHEUS=true` on startup of the container. 
 This will allow you to get metrics in Prometheus format at `<host>:9404/metrics`. 
 For configuring exporter you need attach your configuration as a container volume 
@@ -300,7 +299,7 @@ and `tomcat` distributions.
 
 ### Change timezone
 
-To change the timezone of the docker container you can set the environment
+To change the timezone of the docker container, you can set the environment
 variable `TZ`.
 
 ```
@@ -334,7 +333,7 @@ docker build -t camunda-bpm-platform \
 
 ### Build a SNAPSHOT version
 
-Additionally, you can build SNAPSHOT versions for the upcoming releases by
+Additionally, you can build `SNAPSHOT` versions for the upcoming releases by
 setting the `SNAPSHOT` build argument to `true`.
 
 ```
@@ -345,9 +344,9 @@ docker build -t camunda-bpm-platform \
   .
 ```
 
-### Build a enterprise version
+### Build an enterprise version
 
-If you are a Camunda enterprise customer you can use this image to build
+If you are a Camunda enterprise customer, you can use this image to build
 an enterprise version of the Docker image. Therefore, set the `VERSION`
 build argument to the Camunda version without the ee suffix, i.e. `7.16.1`,
 set the `EE` build argument to `true` and
@@ -358,7 +357,7 @@ you would like to build. For example, if you want to build a Docker image for
 Camunda version `7.16.3`, first execute `git checkout 7.16` on this repository. 
 
 **Note:** As the image uses a multi-stage Dockerfile the credentials are
-**not** part of the Docker image history of the final image. But please be
+**not** part of the Docker image history of the final image. Be
 aware that you should not distribute this image outside your company.
 
 ```
@@ -393,12 +392,12 @@ docker build -t camunda-bpm-platform \
   .
 ```
 
-## Use Cases
+## Use cases
 
-### Change Configuration Files
+### Change configuration files
 
 You can use docker volumes to link your own configuration files inside the
-container.  For example if you want to change the `bpm-platform.xml` on 
+container.  For example, if you want to change the `bpm-platform.xml` on 
 Apache Tomcat:
 
 ```
@@ -407,10 +406,10 @@ docker run -d --name camunda -p 8080:8080 \
            camunda/camunda-bpm-platform:latest
 ```
 
-### Add Own Process Application
+### Add own process application
 
 If you want to add your own process application to the docker container, you can
-use Docker volumes. For example if you want to deploy the [twitter demo][] 
+use Docker volumes. For example, if you want to deploy the [twitter demo][] 
 on Apache Tomcat:
 
 ```
@@ -423,12 +422,12 @@ This also allows you to modify the app outside the container, and it will
 be redeployed inside the platform.
 
 
-### Clean Distro Without Webapps and Examples
+### Clean distro without web apps and examples
 
-To remove all webapps and examples from the distro and only deploy your
+To remove all web apps and examples from the distro and only deploy your
 own applications or your own configured cockpit also use Docker volumes. You
 only have to overlay the deployment folder of the application server with
-a directory on your local machine. So in Apache Tomcat you would mount a 
+a directory on your local machine. So in Apache Tomcat, you would mount a 
 directory to `/camunda/webapps/`:
 
 ```
@@ -438,7 +437,7 @@ docker run -d --name camunda -p 8080:8080 \
 ```
 
 
-## Extend Docker Image
+## Extend Docker image
 
 As we release these docker images on the official [docker registry][] it is
 easy to create your own image. This way you can deploy your applications
@@ -451,7 +450,7 @@ FROM camunda/camunda-bpm-platform:tomcat-latest
 ADD my.war /camunda/webapps/my.war
 ```
 
-## Branching Model
+## Branching model
 
 Branches and their roles in this repository:
 
