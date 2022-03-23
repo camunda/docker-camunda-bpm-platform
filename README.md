@@ -160,7 +160,7 @@ metaspace size to 256 MB.
 JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
 ```
 
-#3## Use docker memory limits
+### Use docker memory limits
 
 Instead of specifying the Java memory settings it is also possible to instruct
 the JVM to respect the docker memory settings. As the image uses Java 11 it does
