@@ -63,7 +63,7 @@ fi
 
 mvn dependency:get -U -B --global-settings /tmp/settings.xml \
     $PROXY \
-    -DremoteRepositories="camunda-nexus::::https://app.camunda.com/nexus/content/repositories/${REPO}" \
+    -DremoteRepositories="camunda-nexus::::https://artifacts.camunda.com/artifactory/${REPO}/" \
     -DgroupId="${ARTIFACT_GROUP}" -DartifactId="${ARTIFACT}" \
     -Dversion="${ARTIFACT_VERSION}" -Dpackaging="tar.gz" -Dtransitive=false
 cambpm_distro_file=$(find /m2-repository -name "${ARTIFACT}-${ARTIFACT_VERSION}.tar.gz" -print | head -n 1)
@@ -78,7 +78,7 @@ cp /tmp/camunda-${GROUP}.sh /camunda/camunda.sh
 # download and register database drivers
 mvn dependency:get -U -B --global-settings /tmp/settings.xml \
     $PROXY \
-    -DremoteRepositories="camunda-nexus::::https://app.camunda.com/nexus/content/groups/${NEXUS_GROUP}" \
+    -DremoteRepositories="camunda-nexus::::https://artifacts.camunda.com/artifactory/${NEXUS_GROUP}/" \
     -DgroupId="org.camunda.bpm" -DartifactId="camunda-database-settings" \
     -Dversion="${ARTIFACT_VERSION}" -Dpackaging="pom" -Dtransitive=false
 cambpmdbsettings_pom_file=$(find /m2-repository -name "camunda-database-settings-${ARTIFACT_VERSION}.pom" -print | head -n 1)
