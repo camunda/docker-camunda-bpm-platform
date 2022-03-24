@@ -67,7 +67,7 @@ CMD="/camunda/bin/standalone.sh"
 
 if [ "${DEBUG}" = "true" ]; then
   echo "Enabling debug mode, JPDA accesible under port 8000"
-  CMD+=" --debug 8000"
+  CMD+=" --debug *:8000"
 fi
 
 if [ "$JMX_PROMETHEUS" = "true" ] ; then
