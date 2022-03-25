@@ -153,12 +153,7 @@ provide a ready to use image for them.
 #### Java options
 
 To override the default Java options the environment variable `JAVA_OPTS` can
-be set. The default value is set to limit the heap size to 768 MB and the
-metaspace size to 256 MB.
-
-```
-JAVA_OPTS="-Xmx768m -XX:MaxMetaspaceSize=256m"
-```
+be set.
 
 ### Use docker memory limits
 
