@@ -21,7 +21,7 @@ You can find more detailed documentation on the pre-packaged (community)
 distributions that Camunda provides at the following links:
 
 * Apache Tomcat - [Camunda Tomcat integration documentation](https://docs.camunda.org/manual/latest/user-guide/runtime-container-integration/tomcat/)
-* Wildfly - [Camunda Tomcat integration documentation](https://docs.camunda.org/manual/latest/user-guide/runtime-container-integration/jboss/)
+* Wildfly - [Camunda Wildfly Subsystem documentation](https://docs.camunda.org/manual/latest/user-guide/runtime-container-integration/jboss/)
 * Camunda Platform Run - [documentation](https://docs.camunda.org/manual/latest/user-guide/camunda-bpm-run/)
 
 ## Get started
