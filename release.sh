@@ -4,13 +4,27 @@ EE=${EE:-false}
 VERSION=${VERSION:-$(grep VERSION= Dockerfile | head -n1 | cut -d = -f 2)}
 DISTRO=${DISTRO:-$(grep DISTRO= Dockerfile | cut -d = -f 2)}
 SNAPSHOT=${SNAPSHOT:-$(grep SNAPSHOT= Dockerfile | cut -d = -f 2)}
+PLATFORMS=${PLATFORMS:-linux/amd64}
+NEXUS_USER=${NEXUS_USER:-}
+NEXUS_PASS=${NEXUS_PASS:-}
 
 IMAGE=camunda/camunda-bpm-platform
 
-function tag_and_push {
-    local tag=${1}
-    docker tag ${IMAGE}:${DISTRO} ${IMAGE}:${tag}
-    docker push ${IMAGE}:${tag}
+function build_and_push {
+    local tags=("$@")
+    printf -v tag_arguments -- "--tag $IMAGE:%s " "${tags[@]}"
+    docker buildx build .                         \
+        $tag_arguments                            \
+        --build-arg DISTRO=${DISTRO}              \
+        --build-arg EE=${EE}                      \
+        --build-arg USER=${NEXUS_USER}            \
+        --build-arg PASSWORD=${NEXUS_PASS}        \
+        --cache-from type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image" \
+        --platform $PLATFORMS \
+        --push
+
+      echo "Tags released:" >> $GITHUB_STEP_SUMMARY
+      printf -- "- $IMAGE:%s\n" "${tags[@]}" >> $GITHUB_STEP_SUMMARY
 }
 
 if [ "${EE}" = "true" ]; then
@@ -26,31 +40,35 @@ fi
 
 docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}"
 
+tags=()
+
 if [ "${SNAPSHOT}" = "true" ]; then
-    tag_and_push "${DISTRO}-${VERSION}-SNAPSHOT"
-    tag_and_push "${DISTRO}-SNAPSHOT"
+    tags+=("${DISTRO}-${VERSION}-SNAPSHOT")
+    tags+=("${DISTRO}-SNAPSHOT")
 
     if [ "${DISTRO}" = "tomcat" ]; then
-        tag_and_push "${VERSION}-SNAPSHOT"
-        tag_and_push "SNAPSHOT"
+        tags+=("${VERSION}-SNAPSHOT")
+        tags+=("SNAPSHOT")
     fi
 else
-    tag_and_push "${DISTRO}-${VERSION}"
+    tags+=("${DISTRO}-${VERSION}")
     if [ "${DISTRO}" = "tomcat" ]; then
-        tag_and_push "${VERSION}"
+        tags+=("${VERSION}")
     fi
 fi
 
 # Latest Docker image is created and pushed just once when a new version is relased.
 # Latest tag refers to the latest minor release of Camunda Platform.
 # https://github.com/camunda/docker-camunda-bpm-platform/blob/next/README.md#supported-tagsreleases
-# The 1st condition matches only when the version branch is the same as the main branch. 
+# The 1st condition matches only when the version branch is the same as the main branch.
 git fetch origin next
 if [ $(git rev-parse HEAD) = $(git rev-parse FETCH_HEAD) ] && [ "${SNAPSHOT}" = "false" ]; then
     # tagging image as latest
-    tag_and_push "${DISTRO}-latest"
-    tag_and_push "${DISTRO}"
+    tags+=("${DISTRO}-latest")
+    tags+=("${DISTRO}")
     if [ "${DISTRO}" = "tomcat" ]; then
-        tag_and_push "latest"
+        tags+=("latest")
     fi
 fi
+
+build_and_push "${tags[@]}"
