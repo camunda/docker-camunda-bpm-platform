@@ -6,7 +6,7 @@ source test_helper.sh
 
 start_container
 
-WAIT=35 poll_log "starting to acquire jobs" "Application run failed" || _exit 1 "Server not started"
+WAIT=60 poll_log "starting to acquire jobs" "Application run failed" || _exit 1 "Server not started"
 
 _log "Server started"
 
