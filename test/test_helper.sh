@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 RETRIES=20
-WAIT=5
+WAIT=17
 function _log {
   >&2 echo $@
 }
