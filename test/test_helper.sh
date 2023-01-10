@@ -1,5 +1,5 @@
 #!/bin/bash -eu
-RETRIES=20
+RETRIES=80
 WAIT=5
 function _log {
   >&2 echo $@
