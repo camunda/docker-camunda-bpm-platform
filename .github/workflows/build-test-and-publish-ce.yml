@@ -13,6 +13,8 @@ jobs:
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
+          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
+          NEXUS_USER: ${{ secrets.NEXUS_USER }}
       - name: Publish image
         if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
         run: ./release.sh
