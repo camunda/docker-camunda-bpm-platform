@@ -33,6 +33,8 @@ jobs:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
           PLATFORM: ${{ matrix.PLATFORM }}
+          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
+          NEXUS_USER: ${{ secrets.NEXUS_USER }}
       - name: Test
         run: ./test.sh
         working-directory: test
