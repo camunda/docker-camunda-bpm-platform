@@ -76,3 +76,5 @@ jobs:
           PLATFORMS: linux/arm64,linux/amd64
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           DOCKER_HUB_USERNAME:  ${{ secrets.DOCKER_HUB_USERNAME }}
+          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
+          NEXUS_USER: ${{ secrets.NEXUS_USER }}
