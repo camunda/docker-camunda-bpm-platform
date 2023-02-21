@@ -76,7 +76,7 @@ services:
         restart: unless-stopped
 
     mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         environment:
             - MYSQL_ROOT_PASSWORD=camunda
             - MYSQL_USER=camunda
@@ -84,7 +84,7 @@ services:
             - MYSQL_DATABASE=process-engine
 
     postgres:
-        image: postgres:9.6
+        image: postgres:15
         environment:
             - POSTGRES_USER=camunda
             - POSTGRES_PASSWORD=camunda
