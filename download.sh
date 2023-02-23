@@ -87,7 +87,7 @@ POSTGRESQL_VERSION=$(xmlstarlet sel -t -v //_:version.postgresql $cambpmdbsettin
 
 mvn dependency:copy -B \
     $PROXY \
-    -Dartifact="mysql:mysql-connector-java:${MYSQL_VERSION}:jar" \
+    -Dartifact="com.mysql:mysql-connector-j:${MYSQL_VERSION}:jar" \
     -DoutputDirectory=/tmp/
 mvn dependency:copy -B \
     $PROXY \
@@ -100,8 +100,8 @@ case ${DISTRO} in
 batch
 embed-server --std-out=echo
 
-module add --name=mysql.mysql-connector-java --slot=main --resources=/tmp/mysql-connector-java-${MYSQL_VERSION}.jar --dependencies=javax.api,javax.transaction.api
-/subsystem=datasources/jdbc-driver=mysql:add(driver-name="mysql",driver-module-name="mysql.mysql-connector-java",driver-xa-datasource-class-name=com.mysql.cj.jdbc.MysqlXADataSource)
+module add --name=com.mysql.mysql-connector-j --slot=main --resources=/tmp/mysql-connector-j-${MYSQL_VERSION}.jar --dependencies=javax.api,javax.transaction.api
+/subsystem=datasources/jdbc-driver=mysql:add(driver-name="mysql",driver-module-name="com.mysql.mysql-connector-j",driver-xa-datasource-class-name=com.mysql.cj.jdbc.MysqlXADataSource)
 
 module add --name=org.postgresql.postgresql --slot=main --resources=/tmp/postgresql-${POSTGRESQL_VERSION}.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=postgresql:add(driver-name="postgresql",driver-module-name="org.postgresql.postgresql",driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
@@ -112,11 +112,11 @@ EOF
         rm -rf /camunda/standalone/configuration/standalone_xml_history/current/*
         ;;
     run*)
-        cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /camunda/configuration/userlib
+        cp /tmp/mysql-connector-j-${MYSQL_VERSION}.jar /camunda/configuration/userlib
         cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /camunda/configuration/userlib
         ;;
     tomcat*)
-        cp /tmp/mysql-connector-java-${MYSQL_VERSION}.jar /camunda/lib
+        cp /tmp/mysql-connector-j-${MYSQL_VERSION}.jar /camunda/lib
         cp /tmp/postgresql-${POSTGRESQL_VERSION}.jar /camunda/lib
         # remove default CATALINA_OPTS from environment settings
         echo "" > /camunda/bin/setenv.sh
