@@ -10,8 +10,8 @@ docker buildx build .                         \
     --build-arg EE=${EE}                      \
     --build-arg USER=${NEXUS_USER}            \
     --build-arg PASSWORD=${NEXUS_PASS}        \
-    --cache-to type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image" \
-    --cache-from type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image" \
+    --cache-to type=gha,scope="$GITHUB_RUN_ID-$DISTRO-image" \
+    --cache-from type=gha,scope="$GITHUB_RUN_ID-$DISTRO-image" \
     --load
 
 docker inspect "${IMAGE_NAME}" | grep "Architecture" -A2
