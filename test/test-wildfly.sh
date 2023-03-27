@@ -10,7 +10,7 @@ poll_log 'started in' 'started (with errors) in' || _exit 1 "Server not started"
 
 _log "Server started"
 
-grep_log 'Deployed "camunda-example-invoice-7.' || _exit 2 "Process application not deployed"
+grep_log 'Deployed "camunda-example-invoice-jakarta-7.' || _exit 2 "Process application not deployed"
 
 _log "Process application deployed"
 
