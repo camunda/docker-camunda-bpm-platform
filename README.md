@@ -305,8 +305,11 @@ docker run -d --name camunda -p 8080:8080 \
 
 ## Build
 
-You can use the image to build a Docker image for a given Camunda Platform
-version and distribution.
+You can build a Docker image for a given Camunda Platform version and distribution yourself.
+If you want to build the community edition (CE), make sure to adjust the 
+[settings.xml](https://github.com/camunda/docker-camunda-bpm-platform/blob/next/settings.xml)
+and remove the `camunda-nexus` mirror.
+If you want to build the enterprise edition (EE), check out [the dedicated README section](#build-an-enterprise-version).
 
 ### Build a released version
 
@@ -341,8 +344,8 @@ docker build -t camunda-bpm-platform \
 
 ### Build an enterprise version
 
-If you are a Camunda enterprise customer, you can use this image to build
-an enterprise version of the Docker image. Therefore, set the `VERSION`
+If you are a Camunda enterprise customer, you can build
+an enterprise version of the Docker image. Set the `VERSION`
 build argument to the Camunda version without the ee suffix, i.e. `7.16.1`,
 set the `EE` build argument to `true` and
 the `USER` and `PASSWORD` build argument to your enterprise credentials.
