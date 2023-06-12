@@ -62,7 +62,7 @@ RUN apk add --no-cache \
         bash \
         ca-certificates \
         curl \
-        openjdk11-jre-headless \
+        openjdk17-jre-headless \
         tzdata \
         tini \
         xmlstarlet \
