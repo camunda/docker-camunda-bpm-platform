@@ -1,7 +1,6 @@
 # Camunda Platform Docker images
 
-> :information_source: We will soon disable the GitHub issues on this repository.
-> In the future, use our [JIRA issue tracker](https://jira.camunda.com/projects/CAM/issues/CAM-2099?filter=allopenissues) for bug reports or feature requests.
+> Use our [GitHub issue tracker](https://github.com/camunda/camunda-bpm-platform/issues) for bug reports or feature requests.
 > For help requests, open a help request topic on the [Camunda forum](https://forum.camunda.org/) or [a help request support ticket](https://docs.camunda.org/enterprise/support/#how-to-create-a-support-issue) if you are an enterprise customer.
 
 This Camunda project provides docker images of the latest 
@@ -144,11 +143,12 @@ disables Swagger UI by default.
 Our docker images are using the latest LTS OpenJDK version supported by
 Camunda Platform. This currently means:
 
- - Camunda 7.12 or later will be based on OpenJDK 11.
+ - Camunda 7.20 or later will be based on OpenJDK 17.
+ - Camunda 7.12 - 7.19 is be based on OpenJDK 11.
  - All previous versions are based on OpenJDK 8.
 
-While all the OpenJDK versions supported by Camunda will work, we will not
-provide a ready to use image for them.
+While all the OpenJDK versions supported by Camunda will work for Tomcat and WildFly, we will not
+provide a ready to use image for them. (Camunda Run supports only JDK 17.)
 
 #### Java options
 
@@ -158,7 +158,7 @@ be set.
 ### Use docker memory limits
 
 Instead of specifying the Java memory settings it is also possible to instruct
-the JVM to respect the docker memory settings. As the image uses Java 11 it does
+the JVM to respect the docker memory settings. As the image uses Java 17 it does
 not have to be enabled explicitly using the `JAVA_OPTS` environment variable. 
 If you want to set the memory limits manually you can restore the pre-Java-11-behavior
 by setting the following environment variable.
