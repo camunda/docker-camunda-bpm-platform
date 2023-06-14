@@ -144,11 +144,13 @@ Our docker images are using the latest LTS OpenJDK version supported by
 Camunda Platform. This currently means:
 
  - Camunda 7.20 or later will be based on OpenJDK 17.
- - Camunda 7.12 - 7.19 is be based on OpenJDK 11.
+   - Camunda 7.19 image for Camunda Run is supported only for JDK 17.
+ - Camunda 7.12 - 7.19 is based on OpenJDK 11.
+   - Camunda 7.19 image for WildFly is supported only for JDK 11 and JDK 17.
  - All previous versions are based on OpenJDK 8.
 
-While all the OpenJDK versions supported by Camunda will work for Tomcat and WildFly, we will not
-provide a ready to use image for them. (Camunda Run supports only JDK 17.)
+While all the OpenJDK versions supported by Camunda will work (without the exceptions specified above),
+we will not provide a ready to use image for them.
 
 #### Java options
 
