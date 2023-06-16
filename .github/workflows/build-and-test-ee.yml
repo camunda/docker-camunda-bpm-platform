@@ -22,7 +22,7 @@ jobs:
         uses: nick-fields/retry@v2
         with:
           timeout_seconds: 300  # seconds
-          max_attempts: 2
+          max_attempts: 3
           command: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
