@@ -29,11 +29,7 @@ jobs:
               }
             });
       - name: Build
-        uses: nick-fields/retry@v2
-        with:
-          timeout_seconds: 300  # seconds
-          max_attempts: 2
-          command: ./pipeline.sh
+        run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
