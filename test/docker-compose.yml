@@ -7,6 +7,9 @@ services:
         ports:
             - "8080:8080"
         restart: unless-stopped
+        volumes:
+            - ./camunda-data/conf:/camunda/conf
+            - ./camunda-data/webapps:/camunda/webapps
 
     camunda-mysql:
         image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
@@ -21,6 +24,9 @@ services:
             - mysql
         ports:
             - "8080:8080"
+        volumes:
+            - ./camunda-data/conf:/camunda/conf
+            - ./camunda-data/webapps:/camunda/webapps
         restart: unless-stopped
 
     camunda-postgres:
@@ -36,6 +42,9 @@ services:
             - postgres
         ports:
             - "8080:8080"
+        volumes:
+            - ./camunda-data/conf:/camunda/conf
+            - ./camunda-data/webapps:/camunda/webapps
         restart: unless-stopped
 
     camunda-debug:
@@ -46,6 +55,9 @@ services:
         ports:
             - "8080:8080"
             - "8000:8000"
+        volumes:
+            - ./camunda-data/conf:/camunda/conf
+            - ./camunda-data/webapps:/camunda/webapps
         restart: unless-stopped
 
     camunda-prometheus-jmx:
@@ -56,6 +68,9 @@ services:
         ports:
             - "8080:8080"
             - "9404:9404"
+        volumes:
+            - ./camunda-data/conf:/camunda/conf
+            - ./camunda-data/webapps:/camunda/webapps
         restart: unless-stopped
 
     camunda-password-file:
@@ -73,6 +88,9 @@ services:
             - mysql
         ports:
             - "8080:8080"
+        volumes:
+            - ./camunda-data/conf:/camunda/conf
+            - ./camunda-data/webapps:/camunda/webapps
         restart: unless-stopped
 
     mysql:

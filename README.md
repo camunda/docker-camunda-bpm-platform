@@ -276,7 +276,13 @@ docker run -d --name camunda -p 8080:8080 --link postgresql:db \
 Camunda Platform is installed inside the `/camunda` directory. Which
 means the Apache Tomcat configuration files are inside the `/camunda/conf/` 
 directory and the deployments on Apache Tomcat are in `/camunda/webapps/`. 
-The directory structure depends on the application server.
+The directory structure depends on the application server.  
+When using Tomcat, to make the data persistent, you can use the following code, just remember to create the folders camunda-data/conf and camunda-data/webapps:
+```
+volumes:
+    - ./camunda-data/conf:/camunda/conf
+    - ./camunda-data/webapps:/camunda/webapps
+```
 
 ### Debug
 
