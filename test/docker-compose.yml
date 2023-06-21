@@ -21,6 +21,9 @@ services:
             - mysql
         ports:
             - "8080:8080"
+        volumes:
+            - ./camunda-data/conf:/camunda/conf
+            - ./camunda-data/webapps:/camunda/webapps    
         restart: unless-stopped
 
     camunda-postgres:
