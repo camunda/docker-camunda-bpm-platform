@@ -3,6 +3,8 @@ set -Eeu
 
 trap 'Error on line $LINENO' ERR
 
+source $(dirname "$0")/camunda-lib.sh
+
 # Set default values for DB_ variables
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
@@ -80,9 +82,7 @@ if [ "$JMX_PROMETHEUS" = "true" ] ; then
   export PREPEND_JAVA_OPTS="${PREPEND_JAVA_OPTS} -javaagent:/camunda/javaagent/jmx_prometheus_javaagent.jar=${JMX_PROMETHEUS_PORT}:${JMX_PROMETHEUS_CONF}"
 fi
 
-if [ -n "${WAIT_FOR}" ]; then
-  CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
-fi
+wait_for_it
 
 # shellcheck disable=SC2086
 exec ${CMD}

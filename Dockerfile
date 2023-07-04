@@ -26,6 +26,7 @@ RUN apk add --no-cache \
 COPY settings.xml download.sh camunda-run.sh camunda-tomcat.sh camunda-wildfly.sh  /tmp/
 
 RUN /tmp/download.sh
+COPY camunda-lib.sh /camunda/
 
 
 ##### FINAL IMAGE #####

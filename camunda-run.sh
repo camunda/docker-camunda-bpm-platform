@@ -3,6 +3,8 @@ set -Eeu
 
 trap 'Error on line $LINENO' ERR
 
+source $(dirname "$0")/camunda-lib.sh
+
 # Set Password as Docker Secrets for Swarm-Mode
 if [[ -z "${DB_PASSWORD:-}" && -n "${DB_PASSWORD_FILE:-}" && -f "${DB_PASSWORD_FILE:-}" ]]; then
   export DB_PASSWORD="$(< "${DB_PASSWORD_FILE}")"
@@ -30,9 +32,7 @@ fi
 
 CMD="/camunda/internal/run.sh start"
 
-if [ -n "${WAIT_FOR}" ]; then
-  CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
-fi
+wait_for_it
 
 # shellcheck disable=SC2086
 exec ${CMD} "$@"

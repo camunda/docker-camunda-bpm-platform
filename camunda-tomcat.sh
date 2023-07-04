@@ -3,6 +3,8 @@ set -Eeu
 
 trap 'Error on line $LINENO' ERR
 
+source $(dirname "$0")/camunda-lib.sh
+
 # Use existing tomcat distribution if present..
 CATALINA_HOME="${CATALINA_HOME:-/camunda}"
 
@@ -58,9 +60,7 @@ fi
 
 CMD+=" run"
 
-if [ -n "${WAIT_FOR}" ]; then
-  CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
-fi
+wait_for_it
 
 # shellcheck disable=SC2086
 exec ${CMD}
