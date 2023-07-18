@@ -1,5 +1,14 @@
 name: Build and Test EE
-on: [pull_request, workflow_dispatch]
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Camunda enterprise version to be tested'
+      snapshot:
+        description: 'Whether the version is a snapshot'
+  pull_request:
+
 jobs:
   build-and-test-ee:
     if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'workflow_dispatch'
@@ -26,6 +35,8 @@ jobs:
           PLATFORM: ${{ matrix.PLATFORM }}
           NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          VERSION: ${{ github.event.inputs.version }}
+          SNAPSHOT: ${{ github.event.inputs.snapshot }}
       - name: Test
         run: ./test.sh
         working-directory: test
@@ -33,3 +44,5 @@ jobs:
           DISTRO: ${{ matrix.DISTRO }}
           EE: true
           PLATFORM: ${{ matrix.PLATFORM }}
+          VERSION: ${{ github.event.inputs.version }}
+          SNAPSHOT: ${{ github.event.inputs.snapshot }}
