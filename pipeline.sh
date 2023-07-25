@@ -8,7 +8,6 @@ else
   SNAPSHOT_ARGUMENT="--build-arg SNAPSHOT=${SNAPSHOT}"
 fi
 
-# evaluate if the version argument must be passed
 if [ -z "$VERSION" ]; then
   VERSION_ARGUMENT=""
 else
