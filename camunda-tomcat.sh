@@ -59,7 +59,20 @@ fi
 CMD+=" run"
 
 if [ -n "${WAIT_FOR}" ]; then
-  CMD="wait-for-it.sh ${WAIT_FOR} -s -t ${WAIT_FOR_TIMEOUT} -- ${CMD}"
+  found=0
+  for tmp in $(echo "${WAIT_FOR}" | tr ',' '\n'); do
+    if wait-for-it.sh "$tmp" -s -t ${WAIT_FOR_TIMEOUT} ; then
+	    echo "$tmp up"
+	    found=1
+	    break
+    else
+      echo "$tmp down"
+    fi
+  done
+  if [ "$found" -eq 0 ] ; then
+    echo "nothing up in WAIT_FOR=$WAIT_FOR"
+    exit 1
+  fi
 fi
 
 # shellcheck disable=SC2086
