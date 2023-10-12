@@ -13,14 +13,13 @@ IMAGE=camunda/camunda-bpm-platform
 function build_and_push {
     local tags=("$@")
     printf -v tag_arguments -- "--tag $IMAGE:%s " "${tags[@]}"
-    docker buildx build .                         \
-        $tag_arguments                            \
-        --build-arg DISTRO=${DISTRO}              \
-        --build-arg EE=${EE}                      \
-        --build-arg USER=${NEXUS_USER}            \
-        --build-arg PASSWORD=${NEXUS_PASS}        \
-        --cache-from type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image" \
-        --platform $PLATFORMS \
+    docker buildx build .                   \
+        $tag_arguments                      \
+        --build-arg DISTRO=${DISTRO}        \
+        --build-arg EE=${EE}                \
+        --build-arg USER=${NEXUS_USER}      \
+        --build-arg PASSWORD=${NEXUS_PASS}  \
+        --platform $PLATFORMS               \
         --push
 
       echo "Tags released:" >> $GITHUB_STEP_SUMMARY
