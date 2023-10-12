@@ -18,6 +18,7 @@ IMAGE_NAME=camunda/camunda-bpm-platform:${DISTRO}
 
 echo "Runner architecture: $(uname -m)"
 
+echo "::group::Docker build"
 docker build .                          \
     -t "${IMAGE_NAME}"                  \
     --build-arg DISTRO=${DISTRO}        \
@@ -26,5 +27,6 @@ docker build .                          \
     --build-arg PASSWORD=${NEXUS_PASS}  \
     ${VERSION_ARGUMENT}                 \
     ${SNAPSHOT_ARGUMENT}
+echo "::endgroup::"
 
 docker inspect "${IMAGE_NAME}" | grep "Architecture" -A2

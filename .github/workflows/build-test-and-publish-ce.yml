@@ -7,7 +7,7 @@ jobs:
       fail-fast: false
       matrix:
         DISTRO: [tomcat, wildfly, run]
-        PLATFORM: [ubuntu-22.04, macos-13]
+        PLATFORM: [ubuntu-22.04, aws-arm-core-2-default]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,7 +25,7 @@ jobs:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
   publish:
-    runs-on: arm
+    runs-on: aws-arm-core-2-default
     needs: build-and-test
     if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
     strategy:

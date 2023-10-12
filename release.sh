@@ -11,6 +11,7 @@ NEXUS_PASS=${NEXUS_PASS:-}
 IMAGE=camunda/camunda-bpm-platform
 
 function build_and_push {
+    echo "::group::Docker build push"
     local tags=("$@")
     printf -v tag_arguments -- "--tag $IMAGE:%s " "${tags[@]}"
     docker buildx build .                   \
@@ -21,9 +22,10 @@ function build_and_push {
         --build-arg PASSWORD=${NEXUS_PASS}  \
         --platform $PLATFORMS               \
         --push
+    echo "::endgroup::"
 
-      echo "Tags released:" >> $GITHUB_STEP_SUMMARY
-      printf -- "- $IMAGE:%s\n" "${tags[@]}" >> $GITHUB_STEP_SUMMARY
+    echo "Tags released:" >> $GITHUB_STEP_SUMMARY
+    printf -- "- $IMAGE:%s\n" "${tags[@]}" >> $GITHUB_STEP_SUMMARY
 }
 
 if [ "${EE}" = "true" ]; then

@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         DISTRO: [tomcat, wildfly, run]
-        PLATFORM: [ubuntu-22.04, macos-13]
+        PLATFORM: [ubuntu-22.04, aws-arm-core-2-default]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
