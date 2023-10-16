@@ -20,6 +20,8 @@ function build_and_push {
         --build-arg EE=${EE}                \
         --build-arg USER=${NEXUS_USER}      \
         --build-arg PASSWORD=${NEXUS_PASS}  \
+        --cache-to type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image"    \
+        --cache-from type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image"  \
         --platform $PLATFORMS
     echo "::endgroup::"
 

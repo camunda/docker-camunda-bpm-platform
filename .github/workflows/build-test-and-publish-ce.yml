@@ -11,6 +11,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        if: ${{ matrix.PLATFORM == 'aws-arm-core-2-default' }}
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build
         run: ./pipeline.sh
         env:
@@ -36,6 +42,18 @@ jobs:
         uses: actions/checkout@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+        with:
+          platforms: linux/arm64,linux/amd64
+      - name: Expose GitHub Runtime
+        uses: actions/github-script@v6
+        with:
+          script: |
+            Object.keys(process.env).forEach(function (key) {
+              if (key.startsWith('ACTIONS_')) {
+                core.info(`${key}=${process.env[key]}`);
+                core.exportVariable(key, process.env[key]);
+              }
+            });
       - name: Publish multi-platform images
         run: ./release.sh
         env:
