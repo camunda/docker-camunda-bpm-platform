@@ -305,8 +305,12 @@ docker run -d --name camunda -p 8080:8080 \
 
 ## Build
 
-You can use the image to build a Docker image for a given Camunda Platform
-version and distribution.
+You can build a Docker image for a given Camunda Platform version and distribution yourself.
+Make sure to adjust the [settings.xml](settings.xml) and remove the `camunda-nexus` server and mirror 
+(no matter if you are building a community or enterprise edition).
+If you want to build the enterprise edition (EE), 
+check out [the dedicated README section](#build-an-enterprise-version).
+
 
 ### Build a released version
 
