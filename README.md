@@ -306,7 +306,7 @@ docker run -d --name camunda -p 8080:8080 \
 ## Build
 
 You can build a Docker image for a given Camunda Platform version and distribution yourself.
-Make sure to adjust the [settings.xml](settings.xml) and remove the `camunda-nexus` server and mirror 
+Make sure to adjust the [settings.xml](settings.xml) and remove the `camunda-nexus` mirror 
 (no matter if you are building a community or enterprise edition).
 If you want to build the enterprise edition (EE), 
 check out [the dedicated README section](#build-an-enterprise-version).
