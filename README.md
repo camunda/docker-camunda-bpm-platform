@@ -253,7 +253,10 @@ includes [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to allow the
 container to wait until a 'host:port' is ready. The mechanism can be configured 
 by two environment variables:
 
-- `WAIT_FOR`: the service `host:port` to wait for
+- `WAIT_FOR`: the service `host:port` to wait for. (In case of active/passive database setup,
+expecting to connect to the first available,
+you can also provide multiple host-port pairs separated by a comma or an empty space:
+(`"host1:port1 host2:port2"`)
 - `WAIT_FOR_TIMEOUT`: how long to wait for the service to be available in seconds
 
 Example with a PostgreSQL container:
