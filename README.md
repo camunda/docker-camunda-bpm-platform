@@ -140,7 +140,7 @@ disables Swagger UI by default.
 
 ### Java versions
 
-Our docker images are using the LTS OpenJDK version supported by
+Our docker images are using a LTS OpenJDK version supported by
 Camunda Platform. This currently means:
 
  - Camunda 7.20 or later will be based on OpenJDK 17.
