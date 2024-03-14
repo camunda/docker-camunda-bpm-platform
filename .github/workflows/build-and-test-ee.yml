@@ -12,27 +12,19 @@ on:
 jobs:
   build-and-test-ee:
     if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.PLATFORM }}
     strategy:
       matrix:
         DISTRO: [tomcat, wildfly, run]
-        PLATFORM: [amd64, arm64]
+        PLATFORM: [ubuntu-22.04, aws-arm-core-2-default]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-        if: ${{ matrix.PLATFORM != 'amd64' }}
-        with:
-          platforms: ${{ matrix.PLATFORM }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
       - name: Build
         run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: true
-          PLATFORM: ${{ matrix.PLATFORM }}
           NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
           VERSION: ${{ github.event.inputs.version }}
@@ -43,6 +35,5 @@ jobs:
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: true
-          PLATFORM: ${{ matrix.PLATFORM }}
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}

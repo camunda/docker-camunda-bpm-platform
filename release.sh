@@ -11,20 +11,22 @@ NEXUS_PASS=${NEXUS_PASS:-}
 IMAGE=camunda/camunda-bpm-platform
 
 function build_and_push {
+    echo "::group::Docker build push"
     local tags=("$@")
     printf -v tag_arguments -- "--tag $IMAGE:%s " "${tags[@]}"
-    docker buildx build .                         \
-        $tag_arguments                            \
-        --build-arg DISTRO=${DISTRO}              \
-        --build-arg EE=${EE}                      \
-        --build-arg USER=${NEXUS_USER}            \
-        --build-arg PASSWORD=${NEXUS_PASS}        \
-        --cache-from type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image" \
-        --platform $PLATFORMS \
-        --push
+    docker buildx build .                   \
+        $tag_arguments                      \
+        --build-arg DISTRO=${DISTRO}        \
+        --build-arg EE=${EE}                \
+        --build-arg USER=${NEXUS_USER}      \
+        --build-arg PASSWORD=${NEXUS_PASS}  \
+        --cache-to type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image"    \
+        --cache-from type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image"  \
+        --platform $PLATFORMS
+    echo "::endgroup::"
 
-      echo "Tags released:" >> $GITHUB_STEP_SUMMARY
-      printf -- "- $IMAGE:%s\n" "${tags[@]}" >> $GITHUB_STEP_SUMMARY
+    echo "Tags released:" >> $GITHUB_STEP_SUMMARY
+    printf -- "- $IMAGE:%s\n" "${tags[@]}" >> $GITHUB_STEP_SUMMARY
 }
 
 if [ "${EE}" = "true" ]; then
@@ -38,7 +40,7 @@ if [ $(docker manifest inspect $IMAGE:${DISTRO}-${VERSION} > /dev/null ; echo $?
     exit 0
 fi
 
-docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}"
+#docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}"
 
 tags=()
 

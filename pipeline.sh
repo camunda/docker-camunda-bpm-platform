@@ -14,19 +14,19 @@ else
   VERSION_ARGUMENT="--build-arg VERSION=${VERSION}"
 fi
 
-IMAGE_NAME=camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
+IMAGE_NAME=camunda/camunda-bpm-platform:${DISTRO}
 
-docker buildx build .                         \
-    -t "${IMAGE_NAME}"                        \
-    --platform linux/${PLATFORM}              \
-    --build-arg DISTRO=${DISTRO}              \
-    --build-arg EE=${EE}                      \
-    --build-arg USER=${NEXUS_USER}            \
-    --build-arg PASSWORD=${NEXUS_PASS}        \
-    ${VERSION_ARGUMENT}                       \
-    ${SNAPSHOT_ARGUMENT}                      \
-    --cache-to type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image" \
-    --cache-from type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image" \
-    --load
+echo "Runner architecture: $(uname -m)"
+
+echo "::group::Docker build"
+docker build .                          \
+    -t "${IMAGE_NAME}"                  \
+    --build-arg DISTRO=${DISTRO}        \
+    --build-arg EE=${EE}                \
+    --build-arg USER=${NEXUS_USER}      \
+    --build-arg PASSWORD=${NEXUS_PASS}  \
+    ${VERSION_ARGUMENT}                 \
+    ${SNAPSHOT_ARGUMENT}
+echo "::endgroup::"
 
 docker inspect "${IMAGE_NAME}" | grep "Architecture" -A2
