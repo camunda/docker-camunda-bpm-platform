@@ -192,8 +192,8 @@ variables:
   Make sure that `DB_PASSWORD` is not set when using this variable!
 - `SKIP_DB_CONFIG` skips the automated database configuration to use manual
   configuration
-- `WAIT_FOR` wait for a `host:port` to be available over TCP before starting
-- `WAIT_FOR_TIMEOUT` how long to wait for the service to be avaiable - defaults to 30 seconds
+- `WAIT_FOR` wait for a `host:port` to be available over TCP before starting. Check [Waiting for database](#waiting-for-database) for details.
+- `WAIT_FOR_TIMEOUT` how long to wait for the service to be avaiable - defaults to 30 seconds. Check [Waiting for database](#waiting-for-database) for details.
 
 For example, to use a `postgresql` docker image as database you can start the
 platform as follows:
@@ -253,11 +253,13 @@ includes [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to allow the
 container to wait until a 'host:port' is ready. The mechanism can be configured 
 by two environment variables:
 
-- `WAIT_FOR`: the service `host:port` to wait for. (In case of active/passive database setup,
-expecting to connect to the first available,
-you can also provide multiple host-port pairs separated by a comma or an empty space:
-(`"host1:port1 host2:port2"`)
 - `WAIT_FOR_TIMEOUT`: how long to wait for the service to be available in seconds
+- `WAIT_FOR`: the service `host:port` to wait for. You can provide multiple
+host-port pairs separated by a comma or an empty space (Example:
+`"host1:port1 host2:port2"`).
+The `WAIT_FOR_TIMEOUT` applies to each specified host, i.e. Camunda will wait for
+`host1:port1` to become available and, if unavailable for the complete `WAIT_FOR_TIMEOUT`
+duration, will wait for `host2:port2` for another `WAIT_FOR_TIMEOUT` period.
 
 Example with a PostgreSQL container:
 
