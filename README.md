@@ -192,8 +192,8 @@ variables:
   Make sure that `DB_PASSWORD` is not set when using this variable!
 - `SKIP_DB_CONFIG` skips the automated database configuration to use manual
   configuration
-- `WAIT_FOR` wait for a `host:port` to be available over TCP before starting. See [Waiting for database](#waiting-for-database) for details.
-- `WAIT_FOR_TIMEOUT` how long to wait for the service to be avaiable - defaults to 30 seconds. See [Waiting for database](#waiting-for-database) for details.
+- `WAIT_FOR` wait for a `host:port` to be available over TCP before starting. Check [Waiting for database](#waiting-for-database) for details.
+- `WAIT_FOR_TIMEOUT` how long to wait for the service to be avaiable - defaults to 30 seconds. Check [Waiting for database](#waiting-for-database) for details.
 
 For example, to use a `postgresql` docker image as database you can start the
 platform as follows:
