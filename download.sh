@@ -82,8 +82,12 @@ mvn dependency:get -U -B --global-settings /tmp/settings.xml \
     -DgroupId="org.camunda.bpm" -DartifactId="camunda-database-settings" \
     -Dversion="${ARTIFACT_VERSION}" -Dpackaging="pom" -Dtransitive=false
 cambpmdbsettings_pom_file=$(find /m2-repository -name "camunda-database-settings-${ARTIFACT_VERSION}.pom" -print | head -n 1)
-MYSQL_VERSION=$(xmlstarlet sel -t -v //_:version.mysql $cambpmdbsettings_pom_file)
-POSTGRESQL_VERSION=$(xmlstarlet sel -t -v //_:version.postgresql $cambpmdbsettings_pom_file)
+if [ -z "$MYSQL_VERSION" ]; then
+    MYSQL_VERSION=$(xmlstarlet sel -t -v //_:version.mysql $cambpmdbsettings_pom_file)
+fi
+if [ -z "$POSTGRESQL_VERSION" ]; then
+    POSTGRESQL_VERSION=$(xmlstarlet sel -t -v //_:version.postgresql $cambpmdbsettings_pom_file)
+fi
 
 mvn dependency:copy -B \
     $PROXY \
