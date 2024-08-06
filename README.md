@@ -247,7 +247,7 @@ docker run -d --name camunda -p 8080:8080 -e SKIP_DB_CONFIG=true \
 
 Starting the Camunda Platform Docker image requires the database to be already 
 available. This is quite a challenge when the database and Camunda Platform are 
-both docker containers spawned simultaneously, for example, by `docker-compose` 
+both docker containers spawned simultaneously, for example, by `docker compose` 
 or inside a Kubernetes Pod. To help with that, the Camunda Platform Docker image 
 includes [wait-for-it.sh](https://github.com/vishnubob/wait-for-it) to allow the 
 container to wait until a 'host:port' is ready. The mechanism can be configured 
