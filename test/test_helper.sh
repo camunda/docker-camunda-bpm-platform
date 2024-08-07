@@ -1,6 +1,13 @@
 #!/bin/bash -eu
 RETRIES=100
 WAIT=5
+
+GHA=${GITHUB_ACTIONS:-false}
+if [ "${GHA}" = "true" ]; then
+  shopt -s expand_aliases
+  alias docker-compose="docker compose"
+fi
+
 function _log {
   >&2 echo $@
 }
