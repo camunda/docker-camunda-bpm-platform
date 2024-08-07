@@ -4,6 +4,7 @@ WAIT=5
 
 GHA=${GITHUB_ACTIONS:-false}
 if [ "${GHA}" = "true" ]; then
+  shopt -s expand_aliases
   alias docker-compose="docker compose"
 fi
 
