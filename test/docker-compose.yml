@@ -13,7 +13,7 @@ services:
         platform: linux/${PLATFORM}
         environment:
             - DB_DRIVER=com.mysql.cj.jdbc.Driver
-            - DB_URL=jdbc:mysql://mysql:3306/process-engine?sendFractionalSeconds=false
+            - DB_URL=jdbc:mysql://mysql:3306/process-engine?sendFractionalSeconds=false&sessionVariables=transaction_isolation='READ-COMMITTED'
             - DB_USERNAME=camunda
             - DB_PASSWORD=camunda
             - WAIT_FOR=mysql:3306
