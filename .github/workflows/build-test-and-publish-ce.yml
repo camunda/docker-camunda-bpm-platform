@@ -44,7 +44,7 @@ jobs:
           EE: false
           PLATFORM: ${{ matrix.PLATFORM }}
   publish:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: build-and-test
     if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
     strategy:
