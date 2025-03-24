@@ -56,6 +56,8 @@ services:
         ports:
             - "8080:8080"
             - "9404:9404"
+        volumes:
+            - $PWD/prometheus-jmx.yml:/camunda/javaagent/prometheus-jmx.yml
         restart: unless-stopped
 
     camunda-password-file:
