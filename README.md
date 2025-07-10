@@ -193,7 +193,7 @@ variables:
 - `SKIP_DB_CONFIG` skips the automated database configuration to use manual
   configuration
 - `WAIT_FOR` wait for a `host:port` to be available over TCP before starting. Check [Waiting for database](#waiting-for-database) for details.
-- `WAIT_FOR_TIMEOUT` how long to wait for the service to be avaiable - defaults to 30 seconds. Check [Waiting for database](#waiting-for-database) for details.
+- `WAIT_FOR_TIMEOUT` how long to wait for the service to be available - defaults to 30 seconds. Check [Waiting for database](#waiting-for-database) for details.
 
 For example, to use a `postgresql` docker image as database you can start the
 platform as follows:
@@ -397,7 +397,7 @@ docker build -t camunda-bpm-platform \
   .
 ```
 ### Override MySQL and PostgreSQL driver versions. 
-By default, the driver versions are fetched from https://github.com/camunda/camunda-bpm-platform/blob/master/database/pom.xml. That can be overriden by passing `MYSQL_VERSION` and `POSTGRESQL_VERSION` build args
+By default, the driver versions are fetched from https://github.com/camunda/camunda-bpm-platform/blob/master/database/pom.xml. That can be overridden by passing `MYSQL_VERSION` and `POSTGRESQL_VERSION` build args
 
 ```
 docker build -t camunda-bpm-platform \
