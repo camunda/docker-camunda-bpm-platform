@@ -1,4 +1,4 @@
-FROM alpine:3.18 as builder
+FROM alpine:3.22 as builder
 
 ARG VERSION=7.23.0
 ARG DISTRO=tomcat
@@ -34,7 +34,7 @@ COPY camunda-lib.sh /camunda/
 
 ##### FINAL IMAGE #####
 
-FROM alpine:3.18
+FROM alpine:3.22
 
 ARG VERSION=7.23.0
 
