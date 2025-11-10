@@ -35,8 +35,8 @@ jobs:
           PLATFORM: ${{ matrix.PLATFORM }}
           NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
-          VERSION: ${{ github.event.inputs.version }}
-          SNAPSHOT: ${{ github.event.inputs.snapshot }}
+          VERSION: 7.24.2-SNAPSHOT
+          SNAPSHOT: true
       - name: Test
         run: ./test.sh
         working-directory: test
