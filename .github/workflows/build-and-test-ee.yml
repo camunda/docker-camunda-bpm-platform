@@ -36,7 +36,8 @@ jobs:
           NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
           VERSION: 7.24.2
-          SNAPSHOT: true
+          VERSION: ${{ github.event.inputs.version }}
+          SNAPSHOT: ${{ github.event.inputs.snapshot }}
       - name: Test
         run: ./test.sh
         working-directory: test
