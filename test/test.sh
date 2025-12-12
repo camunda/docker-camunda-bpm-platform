@@ -9,6 +9,9 @@ source test_helper.sh
 echo "Docker version:"
 docker --version
 
+echo "Docker compose version:"
+docker compose version
+
 docker compose up --force-recreate -d postgres mysql
 ./test-${DISTRO}.sh camunda
 ./test-${DISTRO}.sh camunda-mysql
