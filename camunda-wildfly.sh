@@ -70,7 +70,10 @@ fi
 if [ "$JMX_PROMETHEUS" = "true" ] ; then
   echo "Enabling Prometheus JMX Exporter on port ${JMX_PROMETHEUS_PORT}"
   [ ! -f "$JMX_PROMETHEUS_CONF" ] && touch "$JMX_PROMETHEUS_CONF"
-  export PREPEND_JAVA_OPTS="${PREPEND_JAVA_OPTS} -javaagent:/camunda/javaagent/jmx_prometheus_javaagent.jar=${JMX_PROMETHEUS_PORT}:${JMX_PROMETHEUS_CONF}"
+  # Use MODULE_OPTS so standalone.sh prepends jboss-modules.jar as a javaagent first,
+  # which bootstraps the JBoss Log Manager before the prometheus agent premain() runs.
+  # See: https://issues.jboss.org/browse/LOGMGR-218
+  export MODULE_OPTS="${MODULE_OPTS:+$MODULE_OPTS }-javaagent:/camunda/javaagent/jmx_prometheus_javaagent.jar=${JMX_PROMETHEUS_PORT}:${JMX_PROMETHEUS_CONF}"
 fi
 
 wait_for_it
