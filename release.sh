@@ -7,24 +7,35 @@ SNAPSHOT=${SNAPSHOT:-$(grep SNAPSHOT= Dockerfile | cut -d = -f 2)}
 PLATFORMS=${PLATFORMS:-linux/amd64}
 NEXUS_USER=${NEXUS_USER:-}
 NEXUS_PASS=${NEXUS_PASS:-}
+ARCH_SUFFIX=${ARCH_SUFFIX:-}
 
 IMAGE=camunda/camunda-bpm-platform
 
 function build_and_push {
+    echo "::group::Docker build and push"
     local tags=("$@")
-    printf -v tag_arguments -- "--tag $IMAGE:%s " "${tags[@]}"
-    docker buildx build .                         \
-        $tag_arguments                            \
-        --build-arg DISTRO=${DISTRO}              \
-        --build-arg EE=${EE}                      \
-        --build-arg USER=${NEXUS_USER}            \
-        --build-arg PASSWORD=${NEXUS_PASS}        \
-        --cache-from type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image" \
-        --platform $PLATFORMS \
-        --push
+    local push_tags=()
+    for tag in "${tags[@]}"; do
+        push_tags+=("${tag}${ARCH_SUFFIX}")
+    done
+    printf -v tag_arguments -- "--tag $IMAGE:%s " "${push_tags[@]}"
+    local rc=0
+    docker buildx build .                   \
+        $tag_arguments                      \
+        --build-arg DISTRO=${DISTRO}        \
+        --build-arg EE=${EE}                \
+        --build-arg USER=${NEXUS_USER}      \
+        --build-arg PASSWORD=${NEXUS_PASS}  \
+        --cache-to type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image"    \
+        --cache-from type=gha,scope="$GITHUB_REF_NAME-$DISTRO-image"  \
+        --platform $PLATFORMS               \
+        --push                              \
+        || rc=$?
+    echo "::endgroup::"
+    [ $rc -ne 0 ] && exit $rc
 
-      echo "Tags released:" >> $GITHUB_STEP_SUMMARY
-      printf -- "- $IMAGE:%s\n" "${tags[@]}" >> $GITHUB_STEP_SUMMARY
+    echo "Tags released:" >> $GITHUB_STEP_SUMMARY
+    printf -- "- $IMAGE:%s\n" "${push_tags[@]}" >> $GITHUB_STEP_SUMMARY
 }
 
 if [ "${EE}" = "true" ]; then
@@ -32,13 +43,13 @@ if [ "${EE}" = "true" ]; then
     exit 0
 fi
 
-# check whether the CE image for distro was already released and exit in that case
-if [ $(docker manifest inspect $IMAGE:${DISTRO}-${VERSION} > /dev/null ; echo $?) == '0' ]; then
-    echo "Not pushing already released CE image"
+# check whether the CE image for distro+arch was already released and exit in that case
+CHECK_TAG="${DISTRO}-${VERSION}${ARCH_SUFFIX}"
+if docker manifest inspect "$IMAGE:${CHECK_TAG}" > /dev/null 2>&1; then
+    echo "Not pushing already released CE image (${CHECK_TAG})"
     exit 0
 fi
 
-docker login -u "${DOCKER_HUB_USERNAME}" -p "${DOCKER_HUB_PASSWORD}"
 
 tags=()
 
