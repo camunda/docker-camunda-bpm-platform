@@ -1,5 +1,5 @@
 # Effective 2026-04-24, we no longer publish images to a public Docker Hub.
-name: Build, test, and publish CE
+name: Build and test CE
 on: [pull_request, push, workflow_dispatch]
 jobs:
   build-and-test:
