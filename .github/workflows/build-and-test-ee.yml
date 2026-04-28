@@ -1,4 +1,3 @@
-# Effective 2026-04-24, we no longer publish images to a public Docker Hub.
 name: Build and Test EE
 
 on:
@@ -21,6 +20,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        if: ${{ matrix.RUNNER == 'aws-arm-core-4-default' }}
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build
         run: ./pipeline.sh
         env:

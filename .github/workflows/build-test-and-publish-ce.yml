@@ -1,4 +1,3 @@
-# Effective 2026-04-24, we no longer publish images to a public Docker Hub.
 name: Build, test, and publish CE
 on: [pull_request, push, workflow_dispatch]
 jobs:
@@ -34,6 +33,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Build
         run: ./pipeline.sh
         env:
@@ -47,3 +51,85 @@ jobs:
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
+  publish:
+    runs-on: ${{ matrix.RUNNER }}
+    needs: [build-and-test, build-and-test-arm]
+    if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - DISTRO: tomcat
+            RUNNER: ubuntu-22.04
+            PLATFORM: linux/amd64
+            ARCH_SUFFIX: -amd64
+          - DISTRO: tomcat
+            RUNNER: aws-arm-core-4-default
+            PLATFORM: linux/arm64
+            ARCH_SUFFIX: -arm64
+          - DISTRO: wildfly
+            RUNNER: ubuntu-22.04
+            PLATFORM: linux/amd64
+            ARCH_SUFFIX: -amd64
+          - DISTRO: wildfly
+            RUNNER: aws-arm-core-4-default
+            PLATFORM: linux/arm64
+            ARCH_SUFFIX: -arm64
+          - DISTRO: run
+            RUNNER: ubuntu-22.04
+            PLATFORM: linux/amd64
+            ARCH_SUFFIX: -amd64
+          - DISTRO: run
+            RUNNER: aws-arm-core-4-default
+            PLATFORM: linux/arm64
+            ARCH_SUFFIX: -arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Expose GitHub Runtime
+        uses: actions/github-script@v7
+        with:
+          script: |
+            Object.keys(process.env).forEach(function (key) {
+              if (key.startsWith('ACTIONS_')) {
+                core.info(`${key}=${process.env[key]}`);
+                core.exportVariable(key, process.env[key]);
+              }
+            });
+      - name: Build and push
+        run: ./release.sh
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
+          EE: false
+          PLATFORMS: ${{ matrix.PLATFORM }}
+          ARCH_SUFFIX: ${{ matrix.ARCH_SUFFIX }}
+          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
+          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+  create-manifests:
+    runs-on: ubuntu-22.04
+    needs: publish
+    if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
+    strategy:
+      matrix:
+        DISTRO: [tomcat, wildfly, run]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Create multi-arch manifests
+        run: ./create-manifests.sh
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
