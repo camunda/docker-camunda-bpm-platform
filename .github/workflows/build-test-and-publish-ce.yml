@@ -23,6 +23,15 @@ jobs:
           secrets: |
             secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_USR | NEXUS_USER;
             secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_PSW | NEXUS_PASS;
+            secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
+            secret/data/products/cambpm/ci/harbor password | HARBOR_PASSWORD;
+      - name: Login to Harbor
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: registry.camunda.cloud
+          username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
+          password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
       - name: Build
         run: ./pipeline.sh
         env:
@@ -30,6 +39,7 @@ jobs:
           EE: false
           NEXUS_PASS: ${{ steps.secrets.outputs.NEXUS_PASS }}
           NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
+          PUSH_REGISTRY: ${{ github.event_name != 'pull_request' && 'registry.camunda.cloud/team-cambpm' || '' }}
       - name: Test
         run: ./test.sh
         working-directory: test
@@ -58,6 +68,15 @@ jobs:
           secrets: |
             secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_USR | NEXUS_USER;
             secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_PSW | NEXUS_PASS;
+            secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
+            secret/data/products/cambpm/ci/harbor password | HARBOR_PASSWORD;
+      - name: Login to Harbor
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: registry.camunda.cloud
+          username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
+          password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
       - name: Build
         run: ./pipeline.sh
         env:
@@ -65,6 +84,7 @@ jobs:
           EE: false
           NEXUS_PASS: ${{ steps.secrets.outputs.NEXUS_PASS }}
           NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
+          PUSH_REGISTRY: ${{ github.event_name != 'pull_request' && 'registry.camunda.cloud/team-cambpm' || '' }}
       - name: Test
         run: ./test.sh
         working-directory: test
