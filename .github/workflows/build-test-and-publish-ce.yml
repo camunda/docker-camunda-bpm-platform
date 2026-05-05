@@ -28,14 +28,26 @@ jobs:
                 core.exportVariable(key, process.env[key]);
               }
             });
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_USR | NEXUS_USER;
+            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_PSW | NEXUS_PASS;
       - name: Build
         run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
           PLATFORM: ${{ matrix.PLATFORM }}
-          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
-          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          NEXUS_PASS: ${{ steps.secrets.outputs.NEXUS_PASS }}
+          NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
       - name: Test
         run: ./test.sh
         working-directory: test
@@ -69,13 +81,27 @@ jobs:
                 core.exportVariable(key, process.env[key]);
               }
             });
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_USR | NEXUS_USER;
+            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_PSW | NEXUS_PASS;
+            secret/data/products/cambpm/ci/dockerhub USER | DOCKER_HUB_USERNAME;
+            secret/data/products/cambpm/ci/dockerhub PAT_RO | DOCKER_HUB_PASSWORD;
       - name: Publish multi-platform images
         run: ./release.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
           PLATFORMS: linux/arm64,linux/amd64
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          DOCKER_HUB_USERNAME:  ${{ secrets.DOCKER_HUB_USERNAME }}
-          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
-          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          DOCKER_HUB_PASSWORD: ${{ steps.secrets.outputs.DOCKER_HUB_PASSWORD }}
+          DOCKER_HUB_USERNAME: ${{ steps.secrets.outputs.DOCKER_HUB_USERNAME }}
+          NEXUS_PASS: ${{ steps.secrets.outputs.NEXUS_PASS }}
+          NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
