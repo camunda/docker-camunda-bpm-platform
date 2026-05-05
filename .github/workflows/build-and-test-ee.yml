@@ -21,15 +21,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_USR | NEXUS_USER;
+            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_PSW | NEXUS_PASS;
+            secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
+            secret/data/products/cambpm/ci/harbor password | HARBOR_PASSWORD;
+      - name: Login to Harbor
+        if: github.event_name == 'workflow_dispatch'
+        uses: docker/login-action@v3
+        with:
+          registry: registry.camunda.cloud
+          username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
+          password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
       - name: Build
         run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: true
-          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
-          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          NEXUS_PASS: ${{ steps.secrets.outputs.NEXUS_PASS }}
+          NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
+          PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/team-cambpm' || '' }}
+          PUSH_TAG: ${{ github.event.inputs.version }}
       - name: Test
         run: ./test.sh
         working-directory: test
