@@ -38,18 +38,21 @@ echo "Runner architecture: $(uname -m) -> PLATFORM=${PLATFORM}"
 
 echo "::group::Docker build"
 rc=0
-docker build .                          \
-    -t "${IMAGE_NAME}"                  \
-    ${EXTRA_TAG_ARG}                    \
-    --build-arg DISTRO=${DISTRO}        \
-    --build-arg EE=${EE}                \
-    --build-arg USER=${NEXUS_USER}      \
-    --build-arg PASSWORD=${NEXUS_PASS}  \
-    ${VERSION_ARGUMENT}                 \
-    ${SNAPSHOT_ARGUMENT}                \
+docker build .                            \
+    -t "${IMAGE_NAME}"                    \
+    ${EXTRA_TAG_ARG}                      \
+    --build-arg "DISTRO=${DISTRO}"        \
+    --build-arg "EE=${EE}"                \
+    --build-arg "USER=${NEXUS_USER}"      \
+    --build-arg "PASSWORD=${NEXUS_PASS}"  \
+    ${VERSION_ARGUMENT}                   \
+    ${SNAPSHOT_ARGUMENT}                  \
     || rc=$?
 echo "::endgroup::"
-[ $rc -ne 0 ] && exit $rc
+if [ $rc -ne 0 ]; then
+  echo "Docker build failed with exit code $rc" >&2
+  exit $rc
+fi
 
 docker inspect "${IMAGE_NAME}" | grep "Architecture" -A2
 
