@@ -1,6 +1,14 @@
 # Effective 2026-04-24, we no longer publish images to a public Docker Hub.
-name: Build, test, and publish CE
-on: [pull_request, push, workflow_dispatch]
+name: Build, Test, and Publish CE
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Camunda CE version to build, test, and publish (e.g., 7.24.8)'
+      snapshot:
+        description: 'Whether the version is a snapshot'
 jobs:
   build-and-test:
     runs-on: ubuntu-22.04
@@ -39,6 +47,8 @@ jobs:
           EE: false
           NEXUS_PASS: ${{ steps.secrets.outputs.NEXUS_PASS }}
           NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
+          VERSION: ${{ github.event.inputs.version }}
+          SNAPSHOT: ${{ github.event.inputs.snapshot }}
           PUSH_REGISTRY: ${{ github.event_name != 'pull_request' && 'registry.camunda.cloud/team-cambpm' || '' }}
       - name: Test
         run: ./test.sh
@@ -46,6 +56,8 @@ jobs:
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
+          VERSION: ${{ github.event.inputs.version }}
+          SNAPSHOT: ${{ github.event.inputs.snapshot }}
   build-and-test-arm:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: aws-arm-core-4-default
@@ -84,6 +96,8 @@ jobs:
           EE: false
           NEXUS_PASS: ${{ steps.secrets.outputs.NEXUS_PASS }}
           NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
+          VERSION: ${{ github.event.inputs.version }}
+          SNAPSHOT: ${{ github.event.inputs.snapshot }}
           PUSH_REGISTRY: ${{ github.event_name != 'pull_request' && 'registry.camunda.cloud/team-cambpm' || '' }}
       - name: Test
         run: ./test.sh
@@ -91,6 +105,8 @@ jobs:
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
+          VERSION: ${{ github.event.inputs.version }}
+          SNAPSHOT: ${{ github.event.inputs.snapshot }}
 
   create-manifests-ce:
     if: github.event_name != 'pull_request'
@@ -126,5 +142,7 @@ jobs:
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
+          VERSION: ${{ github.event.inputs.version }}
+          SNAPSHOT: ${{ github.event.inputs.snapshot }}
           PUSH_REGISTRY: registry.camunda.cloud/team-cambpm
 

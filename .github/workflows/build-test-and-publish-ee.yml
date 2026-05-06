@@ -1,11 +1,11 @@
 # Effective 2026-04-24, we no longer publish images to a public Docker Hub.
-name: Build and Test EE
+name: Build, Test, and Publish EE
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Camunda enterprise version to be tested'
+        description: 'Camunda EE version to build, test, and publish (e.g., 7.24.8)'
       snapshot:
         description: 'Whether the version is a snapshot'
   pull_request:
