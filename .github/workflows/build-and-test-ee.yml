@@ -52,7 +52,6 @@ jobs:
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
           PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/team-cambpm' || '' }}
-          PUSH_TAG: ${{ github.event.inputs.version }}
       - name: Test
         run: ./test.sh
         working-directory: test
@@ -61,3 +60,41 @@ jobs:
           EE: true
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
+
+  create-manifests-ee:
+    if: github.event_name == 'workflow_dispatch'
+    needs: build-and-test-ee
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        DISTRO: [tomcat, wildfly, run]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
+            secret/data/products/cambpm/ci/harbor password | HARBOR_PASSWORD;
+      - name: Login to Harbor
+        uses: docker/login-action@v3
+        with:
+          registry: registry.camunda.cloud
+          username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
+          password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
+      - name: Create multi-arch manifests
+        run: ./create-manifests.sh
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
+          EE: true
+          VERSION: ${{ github.event.inputs.version }}
+          SNAPSHOT: ${{ github.event.inputs.snapshot }}
+          PUSH_REGISTRY: registry.camunda.cloud/team-cambpm
+
