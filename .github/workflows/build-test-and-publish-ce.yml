@@ -21,8 +21,8 @@ jobs:
           secretId: ${{ secrets.VAULT_SECRET_ID }}
           exportEnv: false
           secrets: |
-            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_USR | NEXUS_USER;
-            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_PSW | NEXUS_PASS;
+            secret/data/products/cambpm/ci/nexus USER | NEXUS_USER;
+            secret/data/products/cambpm/ci/nexus PASSWORD | NEXUS_PASS;
             secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
             secret/data/products/cambpm/ci/harbor password | HARBOR_PASSWORD;
       - name: Login to Harbor
@@ -66,8 +66,8 @@ jobs:
           secretId: ${{ secrets.VAULT_SECRET_ID }}
           exportEnv: false
           secrets: |
-            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_USR | NEXUS_USER;
-            secret/data/products/cambpm/ci/nexus NEXUS_APP_CAMUNDA_COM_PSW | NEXUS_PASS;
+            secret/data/products/cambpm/ci/nexus USER | NEXUS_USER;
+            secret/data/products/cambpm/ci/nexus PASSWORD | NEXUS_PASS;
             secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
             secret/data/products/cambpm/ci/harbor password | HARBOR_PASSWORD;
       - name: Login to Harbor
