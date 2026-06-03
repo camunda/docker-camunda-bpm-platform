@@ -15,7 +15,7 @@
 #   latest                                                (DISTRO=tomcat AND CE non-alpha)
 #
 # Required env vars:
-#   PUSH_REGISTRY  - registry host + project, e.g. registry.camunda.cloud/team-cambpm
+#   PUSH_REGISTRY  - registry host + project, e.g. registry.camunda.cloud/cambpm-ee
 #
 # Optional env vars (with sensible defaults):
 #   PUSH_REPO      - repository name within the project. Defaults to
@@ -35,7 +35,7 @@ SNAPSHOT=${SNAPSHOT:-$(grep '^ARG SNAPSHOT=' Dockerfile | head -n1 | cut -d = -f
 ARCHITECTURES=${ARCHITECTURES:-"amd64 arm64"}
 
 if [ -z "${PUSH_REGISTRY:-}" ]; then
-    echo "PUSH_REGISTRY must be set (e.g. registry.camunda.cloud/team-cambpm)" >&2
+    echo "PUSH_REGISTRY must be set (e.g. registry.camunda.cloud/cambpm-ee)" >&2
     exit 1
 fi
 

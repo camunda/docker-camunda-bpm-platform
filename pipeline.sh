@@ -59,7 +59,7 @@ docker inspect "${IMAGE_NAME}" | grep "Architecture" -A2
 # these per-arch tags and produces the multi-arch manifests with the final
 # user-facing tag layout (see Jenkins-DSL parity logic in that script).
 #
-#   PUSH_REGISTRY  - registry host + project, e.g. registry.camunda.cloud/team-cambpm
+#   PUSH_REGISTRY  - registry host + project, e.g. registry.camunda.cloud/cambpm-ee
 #   PUSH_REPO      - repository name within the project (default: camunda-bpm-platform,
 #                    or camunda-bpm-platform-ee when EE=true)
 if [ -n "${PUSH_REGISTRY:-}" ]; then

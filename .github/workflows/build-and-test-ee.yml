@@ -51,7 +51,7 @@ jobs:
           NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
-          PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/team-cambpm' || '' }}
+          PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/cambpm-ee' || '' }}
       - name: Test
         run: ./test.sh
         working-directory: test
@@ -96,5 +96,5 @@ jobs:
           EE: true
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
-          PUSH_REGISTRY: registry.camunda.cloud/team-cambpm
+          PUSH_REGISTRY: registry.camunda.cloud/cambpm-ee
 
