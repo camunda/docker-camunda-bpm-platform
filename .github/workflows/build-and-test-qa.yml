@@ -10,8 +10,9 @@
 #
 # Native multi-arch (mirrors build-and-test-ee.yml):
 #   * `build-and-test-qa` runs once per native runner (amd64 + arm64). Each runner builds
-#     ONLY its native architecture (no QEMU emulation) and pushes a per-arch source tag
-#     `:<version>-<arch>` to registry.camunda.cloud/team-cambpm/weblogic14r1|14r12.
+#     ONLY its native architecture with a classic `docker build` (no buildx, no QEMU) and
+#     pushes a per-arch source tag `:<version>-<arch>` to
+#     registry.camunda.cloud/team-cambpm/weblogic14r1|14r12.
 #   * `create-manifests-qa` merges the per-arch tags into the final user-facing tags
 #     `:<version>` (e.g. 7.24.1-ee) and `:<major>-latest` (e.g. 7.24-latest, consumed by
 #     the Portainer QA stacks).
@@ -105,8 +106,6 @@ jobs:
           username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
           password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
 
-      - name: Set up Docker Buildx
-        run: docker buildx create --driver docker-container --bootstrap --use
 
       # Nexus-authenticated settings.xml (resolves org.camunda.bpm.weblogic:camunda-bpm-weblogic).
       # Maven interpolates ${env.NEXUS_USR/PSW} at runtime, so no secret is written to disk.
@@ -134,7 +133,6 @@ jobs:
           ./mvnw -s "${RUNNER_TEMP}/settings.xml" -B -f qa/docker/pom.xml clean install \
             -Pbuild-docker-qa \
             -Dversion.camunda-bpm="${VERSION}-${SUFFIX}" \
-            -Dqa.docker.platforms="linux/${ARCH}" \
             -Dqa.docker.primaryTag="${SRC_TAG}" \
             -Dqa.docker.secondaryTag="${SRC_TAG}" \
             -Ddocker.skip.push=false
