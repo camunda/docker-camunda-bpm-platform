@@ -146,6 +146,14 @@ jobs:
 
       # Nexus-authenticated settings.xml (resolves org.camunda.bpm.weblogic:camunda-bpm-weblogic).
       # Maven interpolates ${env.NEXUS_USR/PSW} at runtime, so no secret is written to disk.
+      #
+      # The qa/docker pom declares its `camunda-nexus` repository as artifactory/internal, but the
+      # EE artifacts (camunda-bpm-weblogic et al.) are published to the EE repos and are exposed
+      # through the `private` virtual repo -- the same one the EE Docker build reads via download.sh.
+      # `internal` neither aggregates the weblogic group nor grants the ci/nexus user access (-> 401),
+      # so we mirror the pom's `camunda-nexus` repo onto `private`. The mirror shares the server id,
+      # so the credentials above apply; mirrorOf is scoped to `camunda-nexus` so Maven Central is
+      # left untouched.
       - name: Generate Maven settings.xml
         run: |
           cat > "${RUNNER_TEMP}/settings.xml" <<'EOF'
@@ -157,6 +165,14 @@ jobs:
                 <password>${env.NEXUS_PSW}</password>
               </server>
             </servers>
+            <mirrors>
+              <mirror>
+                <id>camunda-nexus</id>
+                <mirrorOf>camunda-nexus</mirrorOf>
+                <name>Camunda EE artifacts</name>
+                <url>https://artifacts.camunda.com/artifactory/private/</url>
+              </mirror>
+            </mirrors>
           </settings>
           EOF
 
