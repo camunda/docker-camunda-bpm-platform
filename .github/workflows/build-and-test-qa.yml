@@ -8,12 +8,13 @@
 # `qa/docker` module (fabric8 docker-maven-plugin). Those sources therefore live in a
 # different, private repo and are checked out here cross-repo.
 #
-# Native multi-arch (mirrors build-and-test-ee.yml):
-#   * `build-and-test-qa` runs once per native runner (amd64 + arm64). Each runner builds
-#     ONLY its native architecture with a classic `docker build` (no buildx, no QEMU) and
-#     pushes a per-arch source tag `:<version>-<arch>` to
-#     registry.camunda.cloud/team-cambpm/weblogic14r1|14r12.
-#   * `create-manifests-qa` merges the per-arch tags into the final user-facing tags
+# amd64-only (unlike build-and-test-ee.yml, which is multi-arch):
+#   Oracle WebLogic ships no ARM64 distribution, so the `team-cambpm/weblogic` base image is
+#   amd64-only. A native arm64 `docker build` (no QEMU) can't exec the x86 base image and dies on
+#   the first RUN instruction (`returned a non-zero code: 255`), so we build amd64 exclusively.
+#   * `build-and-test-qa` builds amd64 with a classic `docker build` and pushes a per-arch source
+#     tag `:<version>-amd64` to registry.camunda.cloud/team-cambpm/weblogic14r1|14r12.
+#   * `create-manifests-qa` promotes that source tag to the final user-facing tags
 #     `:<version>` (e.g. 7.24.1-ee) and `:<major>-latest` (e.g. 7.24-latest, consumed by
 #     the Portainer QA stacks).
 name: Build and Test QA
@@ -85,7 +86,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        RUNNER: [ubuntu-22.04, aws-arm-core-4-default]
+        # amd64 only: Oracle WebLogic has no ARM64 distribution, so there is no arm64 base image
+        # to build on (a native arm64 build fails on the first RUN with exit code 255).
+        RUNNER: [ubuntu-22.04]
     steps:
       - name: Resolve runner architecture
         id: ctx
@@ -220,22 +223,23 @@ jobs:
           username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
           password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
 
-      - name: Create multi-arch manifests
+      - name: Create final tags
         run: |
           set -euo pipefail
           # VERSION_TAG / LATEST_TAG come from the shared `prepare` job, so they are guaranteed
-          # to match the per-arch source tags pushed by build-and-test-qa.
+          # to match the per-arch source tag pushed by build-and-test-qa.
+          # amd64-only (WebLogic has no arm64 build), so we promote the single amd64 source tag
+          # to the final user-facing tags rather than merging a multi-arch manifest.
           for image in ${QA_IMAGES}; do
-            echo "::group::Manifest ${image}:${VERSION_TAG} / :${LATEST_TAG}"
+            echo "::group::Tag ${image}:${VERSION_TAG} / :${LATEST_TAG}"
             docker buildx imagetools create \
               -t "${image}:${VERSION_TAG}" \
               -t "${image}:${LATEST_TAG}" \
-              "${image}:${VERSION_TAG}-amd64" \
-              "${image}:${VERSION_TAG}-arm64"
+              "${image}:${VERSION_TAG}-amd64"
             echo "::endgroup::"
             if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
               {
-                echo "Multi-arch manifests created:"
+                echo "Final tags created (amd64-only):"
                 echo "- ${image}:${VERSION_TAG}"
                 echo "- ${image}:${LATEST_TAG}"
               } >> "$GITHUB_STEP_SUMMARY"
