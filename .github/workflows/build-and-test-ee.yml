@@ -98,3 +98,38 @@ jobs:
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
           PUSH_REGISTRY: registry.camunda.cloud/cambpm-ee
 
+  # Runs whenever any of the jobs above failed, so failures don't pass by unnoticed.
+  # `if: failure()` deliberately overrides the default "skip if a dependency didn't
+  # succeed" behavior, so this still fires even if e.g. create-manifests-ee was
+  # skipped (PR runs) while build-and-test-ee failed.
+  notify-on-failure:
+    if: failure()
+    needs: [build-and-test-ee, create-manifests-ee]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/slack NOTIFY_INTERNAL_WEBHOOK | NOTIFY_INTERNAL_WEBHOOK;
+
+      - name: Notify Slack
+        run: |
+          set -euo pipefail
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          VERSION_SUFFIX=""
+          if [ -n "${VERSION}" ]; then VERSION_SUFFIX=" (version \`${VERSION}\`)"; fi
+          TEXT=":x: *Build and Test EE* failed on \`${GITHUB_REF_NAME}\`${VERSION_SUFFIX}. <${RUN_URL}|View run>"
+          curl -sf -X POST -H 'Content-type: application/json' \
+            --data "$(jq -n --arg text "${TEXT}" '{text: $text}')" \
+            "${WEBHOOK_URL}"
+        env:
+          WEBHOOK_URL: ${{ steps.secrets.outputs.NOTIFY_INTERNAL_WEBHOOK }}
+          VERSION: ${{ github.event.inputs.version }}
+

@@ -249,3 +249,36 @@ jobs:
           VERSION_TAG: ${{ needs.prepare.outputs.version_tag }}
           LATEST_TAG: ${{ needs.prepare.outputs.latest_tag }}
 
+  # Runs whenever any of the jobs above failed, so failures don't pass by unnoticed.
+  # `if: failure()` deliberately overrides the default "skip if a dependency didn't
+  # succeed" behavior, so this still fires even if e.g. `prepare` failed and the
+  # remaining jobs were consequently skipped rather than failed themselves.
+  notify-on-failure:
+    if: failure()
+    needs: [prepare, build-and-test-qa, create-manifests-qa]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/slack NOTIFY_INTERNAL_WEBHOOK | NOTIFY_INTERNAL_WEBHOOK;
+
+      - name: Notify Slack
+        run: |
+          set -euo pipefail
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          TEXT=":x: *Build and Test QA* failed for version \`${VERSION}\` on \`${GITHUB_REF_NAME}\`. <${RUN_URL}|View run>"
+          curl -sf -X POST -H 'Content-type: application/json' \
+            --data "$(jq -n --arg text "${TEXT}" '{text: $text}')" \
+            "${WEBHOOK_URL}"
+        env:
+          WEBHOOK_URL: ${{ steps.secrets.outputs.NOTIFY_INTERNAL_WEBHOOK }}
+          VERSION: ${{ github.event.inputs.version }}
+
