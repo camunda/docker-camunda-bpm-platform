@@ -1,0 +1,45 @@
+# TEMPORARY — validates the Vault JWT + slack-github-action wiring used in
+# build-and-test-ee.yml / build-and-test-qa.yml. Delete this file once the
+# Slack message has been confirmed to arrive.
+name: TMP - Notify Slack Check
+
+on:
+  pull_request:
+
+jobs:
+  notify-check:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write  # mint GitHub OIDC token for Vault JWT auth
+    steps:
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: jwt
+          path: ${{ secrets.VAULT_JWT_PATH }}
+          role: ${{ secrets.VAULT_JWT_ROLE }}
+          jwtGithubAudience: ${{ secrets.VAULT_JWT_AUDIENCE }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/slack NOTIFY_INTERNAL_WEBHOOK | NOTIFY_INTERNAL_WEBHOOK;
+
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        with:
+          webhook: ${{ steps.secrets.outputs.NOTIFY_INTERNAL_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":test_tube: Vault JWT + slack-github-action test from <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|this workflow run> on PR #${{ github.event.pull_request.number }}. Safe to ignore / delete tmp-notify-check.yml."
+                  }
+                }
+              ]
+            }
