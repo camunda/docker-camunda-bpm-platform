@@ -98,3 +98,46 @@ jobs:
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
           PUSH_REGISTRY: registry.camunda.cloud/cambpm-ee
 
+  # Runs whenever any of the jobs above failed, so failures don't pass by unnoticed.
+  # `if: failure()` deliberately overrides the default "skip if a dependency didn't
+  # succeed" behavior, so this still fires even if e.g. create-manifests-ee was
+  # skipped (PR runs) while build-and-test-ee failed.
+  notify-on-failure:
+    if: failure()
+    needs: [build-and-test-ee, create-manifests-ee]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write  # mint GitHub OIDC token for Vault JWT auth
+    steps:
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: jwt
+          path: ${{ secrets.VAULT_JWT_PATH }}
+          role: ${{ secrets.VAULT_JWT_ROLE }}
+          jwtGithubAudience: ${{ secrets.VAULT_JWT_AUDIENCE }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/slack NOTIFY_INTERNAL_WEBHOOK | NOTIFY_INTERNAL_WEBHOOK;
+
+      - name: Notify Slack
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        with:
+          webhook: ${{ steps.secrets.outputs.NOTIFY_INTERNAL_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":x: *Build and Test EE* failed${{ github.event.inputs.version && format(' for version `{0}`', github.event.inputs.version) || '' }} on `${{ github.ref_name }}`. <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
+                  }
+                }
+              ]
+            }
+
