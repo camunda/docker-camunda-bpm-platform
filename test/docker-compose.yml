@@ -2,13 +2,15 @@ version: '2.4'
 
 services:
     camunda:
-        image: camunda/camunda-bpm-platform:${DISTRO}
+        image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
+        pull_policy: never
         ports:
             - "8080:8080"
         restart: unless-stopped
 
     camunda-mysql:
-        image: camunda/camunda-bpm-platform:${DISTRO}
+        image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
+        pull_policy: never
         environment:
             - DB_DRIVER=com.mysql.cj.jdbc.Driver
             - DB_URL=jdbc:mysql://mysql:3306/process-engine?sendFractionalSeconds=false&sessionVariables=transaction_isolation='READ-COMMITTED'
@@ -22,7 +24,8 @@ services:
         restart: unless-stopped
 
     camunda-postgres:
-        image: camunda/camunda-bpm-platform:${DISTRO}
+        image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
+        pull_policy: never
         environment:
             - DB_DRIVER=org.postgresql.Driver
             - DB_URL=jdbc:postgresql://postgres:5432/camunda
@@ -36,7 +39,8 @@ services:
         restart: unless-stopped
 
     camunda-debug:
-        image: camunda/camunda-bpm-platform:${DISTRO}
+        image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
+        pull_policy: never
         environment:
             - DEBUG=true
         ports:
@@ -45,16 +49,20 @@ services:
         restart: unless-stopped
 
     camunda-prometheus-jmx:
-        image: camunda/camunda-bpm-platform:${DISTRO}
+        image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
+        pull_policy: never
         environment:
             - JMX_PROMETHEUS=true
         ports:
             - "8080:8080"
             - "9404:9404"
+        volumes:
+            - $PWD/prometheus-jmx.yml:/camunda/javaagent/prometheus-jmx.yml
         restart: unless-stopped
 
     camunda-password-file:
-        image: camunda/camunda-bpm-platform:${DISTRO}
+        image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
+        pull_policy: never
         environment:
             - DB_DRIVER=com.mysql.cj.jdbc.Driver
             - DB_URL=jdbc:mysql://mysql:3306/process-engine?sendFractionalSeconds=false&sessionVariables=transaction_isolation='READ-COMMITTED'
