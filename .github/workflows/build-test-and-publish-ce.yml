@@ -7,33 +7,14 @@ jobs:
       fail-fast: false
       matrix:
         DISTRO: [tomcat, wildfly, run]
-        PLATFORM: [amd64, arm64]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        if: ${{ matrix.PLATFORM != 'amd64' }}
-        with:
-            platforms: ${{ matrix.PLATFORM }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Expose GitHub Runtime
-        uses: actions/github-script@v7
-        with:
-          script: |
-            Object.keys(process.env).forEach(function (key) {
-              if (key.startsWith('ACTIONS_')) {
-                core.info(`${key}=${process.env[key]}`);
-                core.exportVariable(key, process.env[key]);
-              }
-            });
       - name: Build
         run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
-          PLATFORM: ${{ matrix.PLATFORM }}
           NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
       - name: Test
@@ -42,21 +23,74 @@ jobs:
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
-          PLATFORM: ${{ matrix.PLATFORM }}
-  publish:
-    runs-on: ubuntu-24.04
-    needs: build-and-test
-    if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
+  build-and-test-arm:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: aws-arm-core-4-default
     strategy:
+      fail-fast: false
       matrix:
         DISTRO: [tomcat, wildfly, run]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-          platforms: arm64,amd64
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Build
+        run: ./pipeline.sh
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
+          EE: false
+          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
+          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+      - name: Test
+        run: ./test.sh
+        working-directory: test
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
+          EE: false
+  publish:
+    runs-on: ${{ matrix.RUNNER }}
+    needs: [build-and-test, build-and-test-arm]
+    if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - DISTRO: tomcat
+            RUNNER: ubuntu-22.04
+            PLATFORM: linux/amd64
+            ARCH_SUFFIX: -amd64
+          - DISTRO: tomcat
+            RUNNER: aws-arm-core-4-default
+            PLATFORM: linux/arm64
+            ARCH_SUFFIX: -arm64
+          - DISTRO: wildfly
+            RUNNER: ubuntu-22.04
+            PLATFORM: linux/amd64
+            ARCH_SUFFIX: -amd64
+          - DISTRO: wildfly
+            RUNNER: aws-arm-core-4-default
+            PLATFORM: linux/arm64
+            ARCH_SUFFIX: -arm64
+          - DISTRO: run
+            RUNNER: ubuntu-22.04
+            PLATFORM: linux/amd64
+            ARCH_SUFFIX: -amd64
+          - DISTRO: run
+            RUNNER: aws-arm-core-4-default
+            PLATFORM: linux/arm64
+            ARCH_SUFFIX: -arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Expose GitHub Runtime
@@ -69,13 +103,33 @@ jobs:
                 core.exportVariable(key, process.env[key]);
               }
             });
-      - name: Publish multi-platform images
+      - name: Build and push
         run: ./release.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
-          PLATFORMS: linux/arm64,linux/amd64
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          DOCKER_HUB_USERNAME:  ${{ secrets.DOCKER_HUB_USERNAME }}
+          PLATFORMS: ${{ matrix.PLATFORM }}
+          ARCH_SUFFIX: ${{ matrix.ARCH_SUFFIX }}
           NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
+  create-manifests:
+    runs-on: ubuntu-22.04
+    needs: publish
+    if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
+    strategy:
+      matrix:
+        DISTRO: [tomcat, wildfly, run]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Create multi-arch manifests
+        run: ./create-manifests.sh
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
