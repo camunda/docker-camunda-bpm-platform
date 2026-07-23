@@ -51,6 +51,7 @@ jobs:
           NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
+          # TODO: change after testing
           PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/team-cambpm' || '' }}
       - name: Test
         run: ./test.sh
