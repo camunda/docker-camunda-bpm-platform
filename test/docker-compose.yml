@@ -3,14 +3,14 @@ version: '2.4'
 services:
     camunda:
         image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
-        platform: linux/${PLATFORM}
+        pull_policy: never
         ports:
             - "8080:8080"
         restart: unless-stopped
 
     camunda-mysql:
         image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
-        platform: linux/${PLATFORM}
+        pull_policy: never
         environment:
             - DB_DRIVER=com.mysql.cj.jdbc.Driver
             - DB_URL=jdbc:mysql://mysql:3306/process-engine?sendFractionalSeconds=false&sessionVariables=transaction_isolation='READ-COMMITTED'
@@ -25,7 +25,7 @@ services:
 
     camunda-postgres:
         image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
-        platform: linux/${PLATFORM}
+        pull_policy: never
         environment:
             - DB_DRIVER=org.postgresql.Driver
             - DB_URL=jdbc:postgresql://postgres:5432/camunda
@@ -40,7 +40,7 @@ services:
 
     camunda-debug:
         image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
-        platform: linux/${PLATFORM}
+        pull_policy: never
         environment:
             - DEBUG=true
         ports:
@@ -50,17 +50,19 @@ services:
 
     camunda-prometheus-jmx:
         image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
-        platform: linux/${PLATFORM}
+        pull_policy: never
         environment:
             - JMX_PROMETHEUS=true
         ports:
             - "8080:8080"
             - "9404:9404"
+        volumes:
+            - $PWD/prometheus-jmx.yml:/camunda/javaagent/prometheus-jmx.yml
         restart: unless-stopped
 
     camunda-password-file:
         image: camunda/camunda-bpm-platform:${DISTRO}-${PLATFORM}
-        platform: linux/${PLATFORM}
+        pull_policy: never
         environment:
             - DB_DRIVER=com.mysql.cj.jdbc.Driver
             - DB_URL=jdbc:mysql://mysql:3306/process-engine?sendFractionalSeconds=false&sessionVariables=transaction_isolation='READ-COMMITTED'

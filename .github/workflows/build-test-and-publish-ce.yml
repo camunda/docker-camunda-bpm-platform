@@ -1,3 +1,4 @@
+# Effective 2026-04-24, we no longer publish images to a public Docker Hub.
 name: Build, test, and publish CE
 on: [pull_request, push, workflow_dispatch]
 jobs:
@@ -7,75 +8,122 @@ jobs:
       fail-fast: false
       matrix:
         DISTRO: [tomcat, wildfly, run]
-        PLATFORM: [amd64, arm64]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        if: ${{ matrix.PLATFORM != 'amd64' }}
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
         with:
-            platforms: ${{ matrix.PLATFORM }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Expose GitHub Runtime
-        uses: actions/github-script@v7
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/nexus USER | NEXUS_USER;
+            secret/data/products/cambpm/ci/nexus PASSWORD | NEXUS_PASS;
+            secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
+            secret/data/products/cambpm/ci/harbor password | HARBOR_PASSWORD;
+      - name: Login to Harbor
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
         with:
-          script: |
-            Object.keys(process.env).forEach(function (key) {
-              if (key.startsWith('ACTIONS_')) {
-                core.info(`${key}=${process.env[key]}`);
-                core.exportVariable(key, process.env[key]);
-              }
-            });
+          registry: registry.camunda.cloud
+          username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
+          password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
       - name: Build
         run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
-          PLATFORM: ${{ matrix.PLATFORM }}
-          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
-          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          NEXUS_PASS: ${{ steps.secrets.outputs.NEXUS_PASS }}
+          NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
+          PUSH_REGISTRY: ${{ github.event_name != 'pull_request' && 'registry.camunda.cloud/team-cambpm' || '' }}
       - name: Test
         run: ./test.sh
         working-directory: test
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
-          PLATFORM: ${{ matrix.PLATFORM }}
-  publish:
-    runs-on: ubuntu-24.04
-    needs: build-and-test
-    if: ${{ github.ref == 'refs/heads/next' || startsWith(github.ref, 'refs/heads/7.') }}
+  build-and-test-arm:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: aws-arm-core-4-default
     strategy:
+      fail-fast: false
       matrix:
         DISTRO: [tomcat, wildfly, run]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
         with:
-          platforms: arm64,amd64
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Expose GitHub Runtime
-        uses: actions/github-script@v7
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/nexus USER | NEXUS_USER;
+            secret/data/products/cambpm/ci/nexus PASSWORD | NEXUS_PASS;
+            secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
+            secret/data/products/cambpm/ci/harbor password | HARBOR_PASSWORD;
+      - name: Login to Harbor
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
         with:
-          script: |
-            Object.keys(process.env).forEach(function (key) {
-              if (key.startsWith('ACTIONS_')) {
-                core.info(`${key}=${process.env[key]}`);
-                core.exportVariable(key, process.env[key]);
-              }
-            });
-      - name: Publish multi-platform images
-        run: ./release.sh
+          registry: registry.camunda.cloud
+          username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
+          password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
+      - name: Build
+        run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
           EE: false
-          PLATFORMS: linux/arm64,linux/amd64
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          DOCKER_HUB_USERNAME:  ${{ secrets.DOCKER_HUB_USERNAME }}
-          NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
-          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          NEXUS_PASS: ${{ steps.secrets.outputs.NEXUS_PASS }}
+          NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
+          PUSH_REGISTRY: ${{ github.event_name != 'pull_request' && 'registry.camunda.cloud/team-cambpm' || '' }}
+      - name: Test
+        run: ./test.sh
+        working-directory: test
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
+          EE: false
+
+  create-manifests-ce:
+    if: github.event_name != 'pull_request'
+    needs: [build-and-test, build-and-test-arm]
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        DISTRO: [tomcat, wildfly, run]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action@v3.4.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: approle
+          roleId: ${{ secrets.VAULT_ROLE_ID }}
+          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          exportEnv: false
+          secrets: |
+            secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
+            secret/data/products/cambpm/ci/harbor password | HARBOR_PASSWORD;
+      - name: Login to Harbor
+        uses: docker/login-action@v3
+        with:
+          registry: registry.camunda.cloud
+          username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
+          password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
+      - name: Create multi-arch manifests
+        run: ./create-manifests.sh
+        env:
+          DISTRO: ${{ matrix.DISTRO }}
+          EE: false
+          PUSH_REGISTRY: registry.camunda.cloud/team-cambpm
