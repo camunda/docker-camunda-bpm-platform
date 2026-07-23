@@ -54,12 +54,7 @@ if [ -z "$SKIP_DB_CONFIG" ]; then
   modify_datasource
 fi
 
-if [ "$JMX_PROMETHEUS" = "true" ] ; then
-  # See https://issues.jboss.org/browse/LOGMGR-218
-  export JBOSS_MODULES_SYSTEM_PKGS=${JBOSS_MODULES_SYSTEM_PKGS:-"org.jboss.byteman,org.jboss.logmanager"}
-else
-  export JBOSS_MODULES_SYSTEM_PKGS=${JBOSS_MODULES_SYSTEM_PKGS:-"org.jboss.byteman"}
-fi
+export JBOSS_MODULES_SYSTEM_PKGS=${JBOSS_MODULES_SYSTEM_PKGS:-"org.jboss.byteman"}
 
 # Ensure wildfly binds to public interface, preferes IPv4 and runs in the background
 export PREPEND_JAVA_OPTS="-Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Djboss.modules.system.pkgs=${JBOSS_MODULES_SYSTEM_PKGS}"
@@ -75,11 +70,10 @@ fi
 if [ "$JMX_PROMETHEUS" = "true" ] ; then
   echo "Enabling Prometheus JMX Exporter on port ${JMX_PROMETHEUS_PORT}"
   [ ! -f "$JMX_PROMETHEUS_CONF" ] && touch "$JMX_PROMETHEUS_CONF"
-  # See https://github.com/prometheus/jmx_exporter/issues/344
-  LOG_MANAGER_PATH=$(find /camunda/modules -name "jboss-logmanager*.jar")
-  COMMON_PATH=$(find /camunda/modules -name "wildfly-common*.jar")
-  export PREPEND_JAVA_OPTS="${PREPEND_JAVA_OPTS} -Dsun.util.logging.disableCallerCheck=true -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Xbootclasspath/a:$LOG_MANAGER_PATH:$COMMON_PATH"
-  export PREPEND_JAVA_OPTS="${PREPEND_JAVA_OPTS} -javaagent:/camunda/javaagent/jmx_prometheus_javaagent.jar=${JMX_PROMETHEUS_PORT}:${JMX_PROMETHEUS_CONF}"
+  # Use MODULE_OPTS so standalone.sh prepends jboss-modules.jar as a javaagent first,
+  # which bootstraps the JBoss Log Manager before the prometheus agent premain() runs.
+  # See: https://issues.jboss.org/browse/LOGMGR-218
+  export MODULE_OPTS="${MODULE_OPTS:+$MODULE_OPTS }-javaagent:/camunda/javaagent/jmx_prometheus_javaagent.jar=${JMX_PROMETHEUS_PORT}:${JMX_PROMETHEUS_CONF}"
 fi
 
 wait_for_it

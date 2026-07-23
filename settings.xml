@@ -10,12 +10,4 @@
       <password>${env.PASSWORD}</password>
     </server>
   </servers>
-  <mirrors>
-    <mirror>
-      <id>camunda-nexus</id>
-      <mirrorOf>camunda-nexus</mirrorOf>
-      <name>Camunda Nexus</name>
-      <url>https://repository.nexus.camunda.cloud/content/groups/internal/</url>
-    </mirror>
-  </mirrors>
 </settings>
