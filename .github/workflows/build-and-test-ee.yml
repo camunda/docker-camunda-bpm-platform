@@ -100,7 +100,7 @@ jobs:
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
           # TODO: change after testing
-          PUSH_REGISTRY: registry.camunda.cloud/team-cambpm
+          PUSH_REGISTRY: registry.camunda.cloud/cambpm-ee
 
   # Runs whenever any of the jobs above failed, so failures don't pass by unnoticed.
   # `if: failure()` deliberately overrides the default "skip if a dependency didn't
