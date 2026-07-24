@@ -14,6 +14,11 @@ distributions. The pre-packaged distributions are intended for users who want a
 getting started experience. In case you want to use the Camunda Docker images 
 in production, consider reading our [security instructions](https://docs.camunda.org/manual/latest/user-guide/security/).
 
+## Camunda-internal: releases
+
+See [MAINTAINERS.md](MAINTAINERS.md) for information relevant to maintainers,
+including release pipeline and secret management notes.
+
 ## Distributions
 
 You can find more detailed documentation on the pre-packaged (community) 
