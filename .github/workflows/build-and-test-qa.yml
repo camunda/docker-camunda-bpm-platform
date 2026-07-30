@@ -192,6 +192,7 @@ jobs:
             -Dversion.camunda-bpm="${VERSION_TAG}" \
             -Dqa.docker.primaryTag="${SRC_TAG}" \
             -Dqa.docker.secondaryTag="${SRC_TAG}" \
+            -Ddocker.buildx.platforms=linux/amd64 \
             -Ddocker.skip.push=false
         env:
           VERSION_TAG: ${{ needs.prepare.outputs.version_tag }}
