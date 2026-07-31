@@ -33,9 +33,7 @@ env:
   # *-maintenance repo and the branch is the major version (derived from `version` below).
   # For a future non-maintenance (next) line this would be camunda/camunda-bpm-platform-ee @ next.
   EE_REPO: camunda/camunda-bpm-platform-ee-maintenance
-  # Image repository (without registry/tag) produced by the qa/docker build.
-  # weblogic14r1 is the only image defined in qa/docker/pom.xml; there is no weblogic14r12 module.
-  QA_IMAGES: "registry.camunda.cloud/team-cambpm/weblogic14r1"
+  # Image repository is defined in the platform-EE repo's qa/docker module (checked out in the build job).
 
 jobs:
   # Single source of truth: normalize the dispatch inputs ONCE so the build job and the
