@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.RUNNER }}
     strategy:
       matrix:
-        DISTRO: [tomcat, wildfly, run]
+        DISTRO: [tomcat, wildfly, wildfly-ee10, run]
         RUNNER: [ubuntu-22.04, aws-arm-core-4-default]
     steps:
       - name: Checkout
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        DISTRO: [tomcat, wildfly, run]
+        DISTRO: [tomcat, wildfly, wildfly-ee10, run]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
