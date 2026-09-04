@@ -51,7 +51,9 @@ jobs:
           NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
-          PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/cambpm-ee' || '' }}
+          # TODO: don't forget to revert to cambpm-ee
+          PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/team-cambpm' || '' }}
+          # PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/cambpm-ee' || '' }}
       - name: Test
         run: ./test.sh
         working-directory: test
@@ -96,7 +98,9 @@ jobs:
           EE: true
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
-          PUSH_REGISTRY: registry.camunda.cloud/cambpm-ee
+          # TODO: don't forget to revert to cambpm-ee
+          PUSH_REGISTRY: registry.camunda.cloud/team-cambpm
+          # PUSH_REGISTRY: registry.camunda.cloud/cambpm-ee
 
   # Runs whenever any of the jobs above failed, so failures don't pass by unnoticed.
   # `if: failure()` deliberately overrides the default "skip if a dependency didn't
