@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        DISTRO: [tomcat, wildfly, wildfly-ee10, run]
+        DISTRO: [tomcat, wildfly, run]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,7 +52,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        DISTRO: [tomcat, wildfly, wildfly-ee10, run]
+        DISTRO: [tomcat, wildfly, run]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -99,7 +99,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        DISTRO: [tomcat, wildfly, wildfly-ee10, run]
+        DISTRO: [tomcat, wildfly, run]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
