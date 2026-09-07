@@ -12,11 +12,17 @@ on:
 
 jobs:
   build-and-test-ee:
-    if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'workflow_dispatch'
+    # wildfly-ee10 has no released artifact yet (WildFly 40/41 EE10 support is
+    # unreleased) - pull_request/push runs fall back to the Dockerfile's fixed
+    # baseline VERSION/SNAPSHOT (no version input on those events), which
+    # predates this feature and will never resolve it. Only run that
+    # combination via workflow_dispatch, where a real snapshot/version that
+    # has it can be supplied explicitly.
+    if: (github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'workflow_dispatch') && (matrix.DISTRO != 'wildfly-ee10' || github.event_name == 'workflow_dispatch')
     runs-on: ${{ matrix.RUNNER }}
     strategy:
       matrix:
-        DISTRO: [tomcat, wildfly, run]
+        DISTRO: [tomcat, wildfly, wildfly-ee10, run]
         RUNNER: [ubuntu-22.04, aws-arm-core-4-default]
     steps:
       - name: Checkout
@@ -51,7 +57,9 @@ jobs:
           NEXUS_USER: ${{ steps.secrets.outputs.NEXUS_USER }}
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
-          PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/cambpm-ee' || '' }}
+          # TODO: don't forget to revert to cambpm-ee
+          PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/team-cambpm' || '' }}
+          # PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/cambpm-ee' || '' }}
       - name: Test
         run: ./test.sh
         working-directory: test
@@ -67,7 +75,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        DISTRO: [tomcat, wildfly, run]
+        DISTRO: [tomcat, wildfly, wildfly-ee10, run]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -96,7 +104,9 @@ jobs:
           EE: true
           VERSION: ${{ github.event.inputs.version }}
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
-          PUSH_REGISTRY: registry.camunda.cloud/cambpm-ee
+          # TODO: don't forget to revert to cambpm-ee
+          PUSH_REGISTRY: registry.camunda.cloud/team-cambpm
+          # PUSH_REGISTRY: registry.camunda.cloud/cambpm-ee
 
   # Runs whenever any of the jobs above failed, so failures don't pass by unnoticed.
   # `if: failure()` deliberately overrides the default "skip if a dependency didn't
