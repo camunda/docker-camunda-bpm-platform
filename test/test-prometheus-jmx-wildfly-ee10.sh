@@ -14,4 +14,4 @@ grep_log "Enabling Prometheus JMX Exporter on port" || _exit 2 "Prometheus JMX E
 
 curl -s http://localhost:9404/metrics | grep -q "jvm_classes_currently_loaded" || _exit 3 "Prometheus metrics not available"
 
-_exit 0 "Test successfull"
+_exit 0 "Test successful"
