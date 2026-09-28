@@ -18,7 +18,7 @@ test_login admin || _exit 3 "Unable to login to admin"
 test_login cockpit || _exit 4 "Unable to login to cockpit"
 test_login tasklist || _exit 5 "Unable to login to tasklist"
 
-_log "Login successfull"
+_log "Login successful"
 
 test_encoding || _exit 6 "Wrong encoding detected"
 
