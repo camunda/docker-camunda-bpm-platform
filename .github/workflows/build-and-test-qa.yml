@@ -81,6 +81,9 @@ jobs:
           RAW_SNAPSHOT: ${{ github.event.inputs.snapshot }}
 
   build-and-test-qa:
+    permissions:
+      contents: read
+      id-token: write  # mint GitHub OIDC token for Vault JWT auth
     needs: prepare
     runs-on: ${{ matrix.RUNNER }}
     strategy:
@@ -102,12 +105,13 @@ jobs:
 
       - name: Import Secrets
         id: secrets
-        uses: hashicorp/vault-action@v3.4.0
+        uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc  # v4.0.0
         with:
           url: ${{ secrets.VAULT_ADDR }}
-          method: approle
-          roleId: ${{ secrets.VAULT_ROLE_ID }}
-          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          method: jwt
+          role: ${{ secrets.VAULT_JWT_ROLE }}
+          path: ${{ secrets.VAULT_JWT_PATH }}
+          jwtGithubAudience: ${{ secrets.VAULT_JWT_AUDIENCE }}
           exportEnv: false
           secrets: |
             secret/data/products/cambpm/ci/nexus USER | NEXUS_USER;
@@ -200,17 +204,20 @@ jobs:
           NEXUS_PSW: ${{ steps.secrets.outputs.NEXUS_PASS }}
 
   create-manifests-qa:
+    permissions:
+      id-token: write  # mint GitHub OIDC token for Vault JWT auth
     needs: [prepare, build-and-test-qa]
     runs-on: ubuntu-22.04
     steps:
       - name: Import Secrets
         id: secrets
-        uses: hashicorp/vault-action@v3.4.0
+        uses: hashicorp/vault-action@892a26828f195e65540a40b4768ae4571f51ebfc  # v4.0.0
         with:
           url: ${{ secrets.VAULT_ADDR }}
-          method: approle
-          roleId: ${{ secrets.VAULT_ROLE_ID }}
-          secretId: ${{ secrets.VAULT_SECRET_ID }}
+          method: jwt
+          role: ${{ secrets.VAULT_JWT_ROLE }}
+          path: ${{ secrets.VAULT_JWT_PATH }}
+          jwtGithubAudience: ${{ secrets.VAULT_JWT_AUDIENCE }}
           exportEnv: false
           secrets: |
             secret/data/products/cambpm/ci/harbor username | HARBOR_USERNAME;
