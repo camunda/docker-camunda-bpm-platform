@@ -10,6 +10,7 @@ on:
       snapshot:
         description: 'Whether the version is a snapshot'
         required: true
+        type: boolean
   pull_request:
 
 jobs:
