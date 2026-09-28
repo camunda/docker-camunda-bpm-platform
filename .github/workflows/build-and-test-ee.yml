@@ -14,14 +14,6 @@ on:
 
 jobs:
   build-and-test-ee:
-    # wildfly-ee10 has no released artifact yet (WildFly 40/41 EE10 support is
-    # unreleased) - pull_request/push runs fall back to the Dockerfile's fixed
-    # baseline VERSION/SNAPSHOT (no version input on those events), which
-    # predates this feature and will never resolve it. Only run that
-    # combination via workflow_dispatch, where a real snapshot/version that
-    # has it can be supplied explicitly. This is enforced on the Build/Test
-    # steps below (not this job-level if) since the matrix context isn't
-    # available here.
     permissions:
       contents: read
       id-token: write  # mint GitHub OIDC token for Vault JWT auth
