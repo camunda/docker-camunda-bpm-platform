@@ -1,11 +1,27 @@
 #!/bin/sh -ex
 
+# WildFly EE10 is published as a classified variant of the same base wildfly
+# distro artifact (classifier "ee10"), not as a separate Maven artifactId -
+# see distro/wildfly/distro/pom.xml (attach-distro-ee10 execution) in the
+# camunda-bpm-platform(-ee)-maintenance repos. Resolve the base artifactId and
+# the classifier separately so the Nexus lookup below targets the right GAV.
+case ${DISTRO} in
+    wildfly-ee10)
+        BASE_DISTRO="wildfly"
+        CLASSIFIER="ee10"
+        ;;
+    *)
+        BASE_DISTRO="${DISTRO}"
+        CLASSIFIER=""
+        ;;
+esac
+
 # Determine nexus URL parameters
 if [ "${EE}" = "true" ]; then
     echo "Downloading Camunda ${VERSION} Enterprise Edition for ${DISTRO}"
     REPO="private"
     NEXUS_GROUP="private"
-    ARTIFACT="camunda-bpm-ee-${DISTRO}"
+    ARTIFACT="camunda-bpm-ee-${BASE_DISTRO}"
     if [ "${DISTRO}" = "run" ]; then
       ARTIFACT="camunda-bpm-run-ee"
     fi
@@ -14,7 +30,7 @@ else
     echo "Downloading Camunda ${VERSION} Community Edition for ${DISTRO}"
     REPO="camunda-bpm"
     NEXUS_GROUP="public"
-    ARTIFACT="camunda-bpm-${DISTRO}"
+    ARTIFACT="camunda-bpm-${BASE_DISTRO}"
     ARTIFACT_VERSION="${VERSION}"
 fi
 
@@ -61,12 +77,19 @@ if [ -n "$MAVEN_PROXY_HOST" ] ; then
 	fi
 fi
 
+CLASSIFIER_OPTION=""
+DISTRO_FILE_SUFFIX=""
+if [ -n "${CLASSIFIER}" ]; then
+    CLASSIFIER_OPTION="-Dclassifier=${CLASSIFIER}"
+    DISTRO_FILE_SUFFIX="-${CLASSIFIER}"
+fi
+
 mvn dependency:get -U -B --global-settings /tmp/settings.xml \
     $PROXY \
     -DremoteRepositories="camunda-nexus::::https://artifacts.camunda.com/artifactory/${REPO}/" \
     -DgroupId="${ARTIFACT_GROUP}" -DartifactId="${ARTIFACT}" \
-    -Dversion="${ARTIFACT_VERSION}" -Dpackaging="tar.gz" -Dtransitive=false
-cambpm_distro_file=$(find /m2-repository -name "${ARTIFACT}-${ARTIFACT_VERSION}.tar.gz" -print | head -n 1)
+    -Dversion="${ARTIFACT_VERSION}" -Dpackaging="tar.gz" ${CLASSIFIER_OPTION} -Dtransitive=false
+cambpm_distro_file=$(find /m2-repository -name "${ARTIFACT}-${ARTIFACT_VERSION}${DISTRO_FILE_SUFFIX}.tar.gz" -print | head -n 1)
 # Unpack distro to /camunda directory
 mkdir -p /camunda
 case ${DISTRO} in

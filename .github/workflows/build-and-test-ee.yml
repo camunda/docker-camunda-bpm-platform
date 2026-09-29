@@ -6,8 +6,11 @@ on:
     inputs:
       version:
         description: 'Camunda enterprise version to be tested'
+        required: true
       snapshot:
         description: 'Whether the version is a snapshot'
+        required: true
+        type: boolean
   pull_request:
 
 jobs:
@@ -19,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.RUNNER }}
     strategy:
       matrix:
-        DISTRO: [tomcat, wildfly, run]
+        DISTRO: [ tomcat, wildfly, wildfly-ee10, run ]
         RUNNER: [ubuntu-22.04, aws-arm-core-4-default]
     steps:
       - name: Checkout
@@ -47,6 +50,7 @@ jobs:
           username: ${{ steps.secrets.outputs.HARBOR_USERNAME }}
           password: ${{ steps.secrets.outputs.HARBOR_PASSWORD }}
       - name: Build
+        if: matrix.DISTRO != 'wildfly-ee10' || github.event_name == 'workflow_dispatch'
         run: ./pipeline.sh
         env:
           DISTRO: ${{ matrix.DISTRO }}
@@ -57,6 +61,7 @@ jobs:
           SNAPSHOT: ${{ github.event.inputs.snapshot }}
           PUSH_REGISTRY: ${{ github.event_name == 'workflow_dispatch' && 'registry.camunda.cloud/cambpm-ee' || '' }}
       - name: Test
+        if: matrix.DISTRO != 'wildfly-ee10' || github.event_name == 'workflow_dispatch'
         run: ./test.sh
         working-directory: test
         env:
@@ -74,7 +79,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        DISTRO: [tomcat, wildfly, run]
+        DISTRO: [tomcat, wildfly, wildfly-ee10, run]
     steps:
       - name: Checkout
         uses: actions/checkout@v4

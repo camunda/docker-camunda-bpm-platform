@@ -71,6 +71,7 @@ application server distributions of Camunda Platform.
 `${DISTRO}` can be one of the following: 
 * `tomcat`
 * `wildfly`
+* `wildfly-ee10` (WildFly running the Jakarta EE 10 profile instead of the default EE 11; only available for WildFly 40/41)
 * `run`
 
 If no `${DISTRO}` is specified, the `tomcat` distribution is used. For all 
@@ -329,6 +330,7 @@ To build a community image specify the `DISTRO` and `VERSION` build
 argument. Possible values for `DISTRO` are:
 * `tomcat`
 * `wildfly`
+* `wildfly-ee10` (WildFly running the Jakarta EE 10 profile instead of the default EE 11; only available for WildFly 40/41)
 * `run` (if the Camunda Platform version already supports it)
 
 The `VERSION` argument is the Camunda Platform version you want to build, 
