@@ -4,10 +4,10 @@
 > For help requests, open a help request topic on the [Camunda forum](https://forum.camunda.org/) or [a help request support ticket](https://camunda.com/services/enterprise-support-guide/#how-to-create-a-support-issue) if you are an enterprise customer.
 
 This Camunda project provides docker images of the latest 
-Camunda Platform releases. The images can be used to demonstrate and test the
-Camunda Platform or can be extended with own process applications. It is
-planned to provide images on the official [docker registry][] for every upcoming
-release, which includes alpha releases.
+Camunda Platform enterprise releases. The images can be used to demonstrate and test the
+Camunda Platform or can be extended with own process applications. The images are
+published to the Camunda private registry [registry.camunda.cloud][] (project `cambpm-ee`) for every
+upcoming release, which includes alpha releases. Access requires a `docker login` with your Camunda enterprise credentials.
 
 The Camunda Platform Docker images are wrappers for the pre-packaged Camunda
 distributions. The pre-packaged distributions are intended for users who want a 
@@ -21,7 +21,7 @@ including release pipeline and secret management notes.
 
 ## Distributions
 
-You can find more detailed documentation on the pre-packaged (community) 
+You can find more detailed documentation on the pre-packaged (enterprise) 
 distributions that Camunda provides at the following links:
 
 * Apache Tomcat - [Camunda Tomcat integration documentation](https://docs.camunda.org/manual/latest/user-guide/runtime-container-integration/tomcat/)
@@ -30,11 +30,25 @@ distributions that Camunda provides at the following links:
 
 ## Get started
 
-To start a Docker container of the latest Camunda Platform 7 release:
+### Log in to the Camunda private registry
+
+The Camunda Platform enterprise images are hosted on the private registry
+`registry.camunda.cloud`. Log in before pulling any image:
 
 ```
-docker pull camunda/camunda-bpm-platform:latest
-docker run -d --name camunda -p 8080:8080 camunda/camunda-bpm-platform:latest
+docker login registry.camunda.cloud
+```
+
+Use your Camunda enterprise registry credentials when prompted.
+
+### Start a container
+
+To start a Docker container of the latest Camunda Platform 7 enterprise release
+(Apache Tomcat distribution):
+
+```
+docker pull registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
+docker run -d --name camunda -p 8080:8080 registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 ```
 
 ### Tasklist, Cockpit, Admin web apps
@@ -59,7 +73,8 @@ to enable authentication for the REST API.
 
 ## Supported tags/releases
 
-The following tag schema is used. The user has the choice between different
+The images are available in the `cambpm-ee/camunda-bpm-platform-ee` repository of the
+private registry `registry.camunda.cloud`. The following tag schema is used. The user has the choice between different
 application server distributions of Camunda Platform.
 
 - `latest`, `${DISTRO}-latest`: Always the latest minor release of Camunda Platform.
@@ -75,7 +90,8 @@ application server distributions of Camunda Platform.
 * `run`
 
 If no `${DISTRO}` is specified, the `tomcat` distribution is used. For all 
-available tags see the [docker hub tags][].
+available tags, see the tag list of the `cambpm-ee/camunda-bpm-platform-ee` repository in the
+[Camunda private registry][registry.camunda.cloud].
 
 ## Camunda Platform 7 configuration
 
@@ -133,11 +149,11 @@ example:
 Enable only web apps:
 
 ```bash
-docker run camunda/camunda-bpm-platform:run ./camunda.sh --webapps
+docker run registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:run ./camunda.sh --webapps
 ``` 
 Enable only REST API and Swagger UI:
 ```bash
-docker run camunda/camunda-bpm-platform:run ./camunda.sh --rest --swaggerui
+docker run registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:run ./camunda.sh --rest --swaggerui
 ```
 
 Additionally, a `--production` parameter is supported to switch the 
@@ -214,7 +230,7 @@ docker run -d --name camunda -p 8080:8080 --link postgresql:db \
            -e DB_USERNAME=camunda \
            -e DB_PASSWORD=camunda \
            -e WAIT_FOR=db:5432 \
-           camunda/camunda-bpm-platform:latest
+           registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 ```
 
 Another option is to save the database config to an environment file, i.e.
@@ -232,7 +248,7 @@ Use this file to start the container:
 
 ```
 docker run -d --name camunda -p 8080:8080 --link postgresql:db \
-           --env-file db-env.txt camunda/camunda-bpm-platform:latest
+           --env-file db-env.txt registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 ```
 
 The docker image already contains drivers for `h2`, `mysql`, and `postgresql`.
@@ -246,7 +262,7 @@ value:
 
 ```
 docker run -d --name camunda -p 8080:8080 -e SKIP_DB_CONFIG=true \
-           camunda/camunda-bpm-platform:latest
+           registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 ```
 
 ### Waiting for database
@@ -279,7 +295,7 @@ docker run -d --name camunda -p 8080:8080 --link postgresql:db \
            -e DB_PASSWORD=camunda \
            -e WAIT_FOR=db:5432 \
            -e WAIT_FOR_TIMEOUT=60 \
-           camunda/camunda-bpm-platform:latest
+           registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 ```
 
 ### Volumes
@@ -313,20 +329,20 @@ variable `TZ`.
 ```
 docker run -d --name camunda -p 8080:8080 \
            -e TZ=Europe/Berlin \
-          camunda/camunda-bpm-platform:latest
+          registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 ```
 
 ## Build
 
 You can build a Docker image for a given Camunda Platform version and distribution yourself.
 Make sure to adjust the [settings.xml](settings.xml) and remove the `camunda-nexus` mirror 
-(no matter if you are building a community or enterprise edition).
+(no matter if you are building a standard or enterprise edition).
 If you want to build the enterprise edition (EE), 
 check out [the dedicated README section](#build-an-enterprise-version).
 
 ### Build a released version
 
-To build a community image specify the `DISTRO` and `VERSION` build
+To build an image of a released version, specify the `DISTRO` and `VERSION` build
 argument. Possible values for `DISTRO` are:
 * `tomcat`
 * `wildfly`
@@ -378,7 +394,7 @@ docker build -t camunda-bpm-platform \
   --build-arg DISTRO=${DISTRO} \
   --build-arg VERSION=${VERSION} \
   --build-arg USER=${USER} \
-  --build-arg PASSWORD=${PASSWORD} \
+  --build-arg ****** \
   .
 ```
 
@@ -391,7 +407,7 @@ You can pass the following arguments to set proxy settings to Maven:
 * `MAVEN_PROXY_USER`
 * `MAVEN_PROXY_PASSWORD`
 
-Example for a released version of a community edition:
+Example for a released version:
 
 ```
 docker build -t camunda-bpm-platform \
@@ -426,7 +442,7 @@ Apache Tomcat:
 ```
 docker run -d --name camunda -p 8080:8080 \
            -v $PWD/bpm-platform.xml:/camunda/conf/bpm-platform.xml \
-           camunda/camunda-bpm-platform:latest
+           registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 ```
 
 ### Add own process application
@@ -438,7 +454,7 @@ on Apache Tomcat:
 ```
 docker run -d --name camunda -p 8080:8080 \
            -v /PATH/TO/DEMO/twitter.war:/camunda/webapps/twitter.war \
-           camunda/camunda-bpm-platform:latest
+           registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 ```
 
 This also allows you to modify the app outside the container, and it will
@@ -456,19 +472,19 @@ directory to `/camunda/webapps/`:
 ```
 docker run -d --name camunda -p 8080:8080 \
            -v $PWD/webapps/:/camunda/webapps/ \
-           camunda/camunda-bpm-platform:latest
+           registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 ```
 
 
 ## Extend Docker image
 
-As we release these docker images on the official [docker registry][] it is
+As we release these docker images on the Camunda private registry [registry.camunda.cloud][] it is
 easy to create your own image. This way you can deploy your applications
-with docker or provided an own demo image. Just specify in the `FROM`
-clause which Camunda image you want to use as a base image:
+with docker or provided an own demo image. Log in first (see [Log in to the Camunda private registry](#log-in-to-the-camunda-private-registry)),
+then specify in the `FROM` clause which Camunda image you want to use as a base image:
 
 ```
-FROM camunda/camunda-bpm-platform:tomcat-latest
+FROM registry.camunda.cloud/cambpm-ee/camunda-bpm-platform-ee:tomcat-latest
 
 ADD my.war /camunda/webapps/my.war
 ```
@@ -489,5 +505,4 @@ Apache License, Version 2.0
 
 
 [twitter demo]: https://github.com/camunda-consulting/code/tree/master/one-time-examples/twitter
-[docker registry]: https://hub.docker.com/r/camunda/camunda-bpm-platform/
-[docker hub tags]: https://hub.docker.com/r/camunda/camunda-bpm-platform/tags/
+[registry.camunda.cloud]: https://registry.camunda.cloud/
