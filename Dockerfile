@@ -62,11 +62,12 @@ EXPOSE 8080 8000 9404
 
 # Downgrading wait-for-it is necessary until this PR is merged
 # https://github.com/vishnubob/wait-for-it/pull/68
+# The minimum JDK version fixes CVE-2026-114938 and busts cached layers.
 RUN apk add --no-cache \
         bash \
         ca-certificates \
         curl \
-        openjdk17-jre-headless \
+        "openjdk17-jre-headless>=17.0.21.1_p2-r0" \
         tzdata \
         tini \
         xmlstarlet \
